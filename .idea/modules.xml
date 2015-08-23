@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cluster_client/cluster_client.iml" filepath="$PROJECT_DIR$/cluster_client/cluster_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../resourceService/resourceService.iml" filepath="$PROJECT_DIR$/../resourceService/resourceService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yawl-3.0.1.iml" filepath="$PROJECT_DIR$/yawl-3.0.1.iml" />
+    </modules>
+  </component>
+</project>
