@@ -11,7 +11,7 @@ Lab: Worflow lab, SYSU
 　　The management application 'cluster_client' manages a set of workflow engines, provides workitem scheudling and HA services.  
 
 ## Features
-　　1. Heartbeat. 
+　　1. Heartbeat.  
 　　　　Checks if the engines are still available.  
 　　2. Workitem scheduling  
 　　　　Switch active workitems to an available engine when the old engine is down.  
