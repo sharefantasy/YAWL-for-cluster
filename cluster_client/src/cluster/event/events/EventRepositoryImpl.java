@@ -1,5 +1,7 @@
-package cluster;
+package cluster.event;
 
+import cluster.EventRepository;
+import cluster.Manager;
 import cluster.data.EngineInfo;
 import cluster.event.events.EngineConnectedEvent;
 import cluster.event.events.EngineDisconnectEvent;
@@ -17,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by fantasy on 2015/8/22.
  */
-public class EventRepositoryImpl implements EventRepository{
+public class EventRepositoryImpl implements EventRepository {
     private Manager manager = Manager.getInstance();
     private Map<EventObject, Collection<CListener>> repo;
     private static EventRepositoryImpl eventRepoMgt;
@@ -103,5 +105,7 @@ public class EventRepositoryImpl implements EventRepository{
             _logger.warn("Unregistered event " + e.getClass().getName());
         }
     }
-
+    public static void main(String[] args){
+        EventRepositoryImpl eventRepository = new EventRepositoryImpl();
+    }
 }

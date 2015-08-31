@@ -26,6 +26,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
     private EngineGateway _engine;
     private InterfaceC_EngineBasedClient _client;
     private boolean enableCluster;
+    private String engineRole;
     public void init() throws ServletException {
         int maxWaitSeconds = 5;
         try {
@@ -48,8 +49,6 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 _engine = new EngineGatewayImpl(persist, enableHbnStats);
                 _engine.setActualFilePath(context.getRealPath("/"));
                 context.setAttribute("engine", _engine);
-
-
             }
 
             String logging = context.getInitParameter("EnableLogging");
@@ -73,10 +72,6 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                     || "success".equals(_client.connect())){
                 _client.heartbeat();
             }
-            System.out.println(_client.register());
-            System.out.println(_client.connect());
-            System.out.println(_client.disconnect());
-            System.out.println(_client.unregister());
 
         } catch (YPersistenceException e) {
             _log.fatal("Failure to initialise runtime (persistence failure)", e);
@@ -103,10 +98,6 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         OutputStreamWriter outputWriter = ServletUtils.prepareResponse(response);
-        StringBuilder output = new StringBuilder();
-        output.append("<response>");
-        output.append(processPostQuery(request));
-        output.append("</response>");
         if (_engine.enginePersistenceFailure()) {
             _log.fatal("************************************************************");
             _log.fatal("A failure has occurred whilst persisting workflow state to the");
@@ -116,7 +107,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             _log.fatal("************************************************************");
             response.sendError(500, "Database persistence failure detected");
         }
-        outputWriter.write(output.toString());
+        outputWriter.write("<response>" + processPostQuery(request) + "</response>");
         outputWriter.flush();
         outputWriter.close();
         //todo find out how to provide a meaningful 500 message in the format of  a fault message.
@@ -129,6 +120,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
 
         try {
             if (action != null) {
+
                 if (action.equalsIgnoreCase("restore")) {
                     Date date = new Date();
                     _engine.restore(sessionHandle);
@@ -138,6 +130,17 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 else if(action.equalsIgnoreCase("heartbeat")) {
                     msg.append("normal");
                     _log.info("Normal heartbeat at " + new Date().toString());
+                }
+                else if(action.equalsIgnoreCase("setEngineRole")) {
+                    msg.append("success");
+                    engineRole = request.getParameter("engineRole");
+                    _log.info("New engine role '" + engineRole + "'get");
+                }
+                else if(action.equalsIgnoreCase("clusterShutdown")) {
+                    msg.append("success");
+                    _client.clusterShutdown();
+                    engineRole = null;
+                    _log.info("cluster service shutdown");
                 }
             }
 
@@ -155,5 +158,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             }
         }
         super.destroy();
+    }
+
+    public String getEngineRole() {
+        return engineRole;
     }
 }

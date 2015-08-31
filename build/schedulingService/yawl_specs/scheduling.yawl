@@ -7,7 +7,7 @@
       <description>Sample specification to test the custom service #schedulingService#</description>
       <version>0.15</version>
       <persistent>false</persistent>
-      <identifier>UID_22c3b7b0-7712-4d15-a362-50a1dc4d7051</identifier>
+      <password>UID_22c3b7b0-7712-4d15-a362-50a1dc4d7051</password>
     </metaData>
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <!-- planning graph light-->

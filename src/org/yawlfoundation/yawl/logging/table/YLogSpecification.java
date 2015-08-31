@@ -20,6 +20,7 @@ package org.yawlfoundation.yawl.logging.table;
 
 import org.yawlfoundation.yawl.elements.YSpecVersion;
 import org.yawlfoundation.yawl.engine.YSpecificationID;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 /**
@@ -38,6 +39,15 @@ public class YLogSpecification {
     private String version ;
     private String uri;
     private long rootNetID;                                       // FK of YLogNet
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public YLogSpecification() { }
 

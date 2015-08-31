@@ -32,6 +32,9 @@
         <property name="engineInstanceID"     type="string"/>
     	<property name="netID"                type="long"/>
     	<property name="parentTaskInstanceID" type="long"/>
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
 	</class>
 
 </hibernate-mapping>

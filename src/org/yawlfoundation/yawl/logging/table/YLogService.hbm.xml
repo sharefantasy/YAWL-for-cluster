@@ -31,6 +31,9 @@
 
     	<property name="name"       type="string" column="serviceName"/>
         <property name="url"        type="string"/>
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
 	</class>
 
 </hibernate-mapping>

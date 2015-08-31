@@ -34,7 +34,9 @@
     	<property name="value"      column="itemValue" type="text"/>
         <property name="descriptor" type="string"/>
         <property name="dataTypeID" type="long"/>
-
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
 	</class>
 
 </hibernate-mapping>

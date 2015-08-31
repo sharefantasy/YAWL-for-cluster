@@ -21,6 +21,7 @@ package org.yawlfoundation.yawl.elements;
 import org.jdom2.Element;
 import org.yawlfoundation.yawl.authentication.YClient;
 import org.yawlfoundation.yawl.engine.YEngine;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.JDOMUtil;
 import org.yawlfoundation.yawl.util.XNode;
 import org.yawlfoundation.yawl.util.XNodeParser;
@@ -38,6 +39,15 @@ public class YAWLServiceReference extends YClient implements YVerifiable {
     private String _yawlServiceID;                   // the (unique) uri
     private YAWLServiceGateway _webServiceGateway;
     private boolean _assignable = true ;            // default: can be assigned to a task
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     /********************************************/
 

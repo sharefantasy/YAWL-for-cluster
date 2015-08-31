@@ -76,4 +76,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
             }
         },5000,5000);
    }
+    public void clusterShutdown(){
+        timer.cancel();
+    }
 }

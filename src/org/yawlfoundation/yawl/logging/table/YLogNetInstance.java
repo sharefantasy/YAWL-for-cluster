@@ -18,6 +18,7 @@
 
 package org.yawlfoundation.yawl.logging.table;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 /**
@@ -33,6 +34,15 @@ public class YLogNetInstance {
     private String engineInstanceID;      // the 'case id' of the net instance
     private long netID ;                  // FK to YLogNet
     private long parentTaskInstanceID ; // FK to YLogTaskInstance (composite tasks only)
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public YLogNetInstance() { }
 

@@ -18,10 +18,21 @@
 
 package org.yawlfoundation.yawl.engine;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
+
 public class YNetData {
 
     String _data = null;
     String _id = null;
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public YNetData() { }
 

@@ -62,6 +62,10 @@
                      class="org.yawlfoundation.yawl.engine.YWorkItem"
                      access="field"/>
 
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
+
 	</class>
 	
 </hibernate-mapping>

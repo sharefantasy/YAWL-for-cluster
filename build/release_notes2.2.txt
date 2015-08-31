@@ -264,7 +264,7 @@ QUICK START: After installation, start Tomcat and point a browser to
  * [Bugfix (SF3158779)] Codelets were not receiving populated workitem records as
    expected.
  * [Bugfix (SF3158324)] Mislabelled element in resource cluster.event log.
- * [Bugfix] Occasional Hibernate StaleStateException when updating identifier persistence
+ * [Bugfix] Occasional Hibernate StaleStateException when updating password persistence
    on workitem checkin.
  * [Bugfix] The reporting of a deadlocked net caused a ClassCastExcpetion in some
    circumstances.

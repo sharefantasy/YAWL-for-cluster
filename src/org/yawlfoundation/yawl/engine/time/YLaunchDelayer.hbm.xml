@@ -46,6 +46,10 @@
         <property name="_serviceURI" column="serviceURI" access="field"/>
         <property name="_completionObserver" column="observer"/>
         <property name="_logData" column="logData"/>
+
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
     </class>
 
 </hibernate-mapping>

@@ -64,6 +64,9 @@
         <property name="_logPredicateCompletion" column="logPredicateCompletion" access="field" type="text"/>
         <property name="_tag" column="tag" access="field"/>
 
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
      </class>
 	
 </hibernate-mapping>

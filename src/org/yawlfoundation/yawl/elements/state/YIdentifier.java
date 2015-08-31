@@ -21,12 +21,10 @@ package org.yawlfoundation.yawl.elements.state;
 import org.yawlfoundation.yawl.elements.*;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * This class has control over data structures that allow for
@@ -47,6 +45,15 @@ public class YIdentifier {
     private String _idString;
 
     private long _logKey = -1;                    // the FK of the logged task instance
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
 
     public YIdentifier() { }                       // only for hibernate
@@ -312,7 +319,7 @@ public class YIdentifier {
      *
      * @return a hash code value for this object.
      * @see Object#equals(Object)
-     * @see java.util.Hashtable
+     * @see Hashtable
      */
     public int hashCode() {
         return this.toString().hashCode();

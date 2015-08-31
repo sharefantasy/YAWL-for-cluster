@@ -18,6 +18,8 @@
 
 package org.yawlfoundation.yawl.documentStore;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
+
 import java.io.*;
 
 /**
@@ -33,6 +35,15 @@ public class YDocument {
     long id;                                             // a hibernate primary key
     String caseId;                                       // the case it belongs to
     byte[] document;                                     // the binary file
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
 
     /**

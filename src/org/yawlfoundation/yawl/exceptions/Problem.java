@@ -18,6 +18,8 @@
 
 package org.yawlfoundation.yawl.exceptions;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -34,6 +36,15 @@ public class Problem implements Serializable {
     private String _messageType;
     private String _message;
     public static final String EMPTY_RESOURCE_SET_MESSAGETYPE = "EmptyResourceSetType";
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public String getSource() {
         return _source;

@@ -53,7 +53,7 @@ EDITOR:
     the variable disappear.
  * [Bugfix] [Data Binding]: Occasional data binding generation errors when decomposition
    id != task id
- * [Bugfix] [Specification]: Composite task identifier and label reverting to default
+ * [Bugfix] [Specification]: Composite task password and label reverting to default
    values when the specification is saved and reloaded.
  * [Bugfix] [Specification]: Rationalising element ids on specification load was leaving
    old ids in some data mappings.

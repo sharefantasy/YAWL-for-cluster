@@ -1,5 +1,7 @@
 package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 
+import com.mchange.v1.identicator.IdHashMap;
+import org.apache.commons.collections.map.HashedMap;
 import org.yawlfoundation.yawl.engine.interfce.Interface_Client;
 import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
@@ -11,33 +13,59 @@ import java.util.Map;
  * Created by fantasy on 2015/8/5.
  */
 public class InterfaceC_EnvironmentBasedClient extends Interface_Client{
-    private String _url;
-
-    public InterfaceC_EnvironmentBasedClient(String url){
-        _url = url;
+    public Map<String, String> urls;
+    public Map<String ,String> sessionHandles = new HashMap<>();
+    private String engineServiceName;
+    private String engineServicePassword;
+    public InterfaceC_EnvironmentBasedClient(String engineServiceName, String engineServicePassword){
+        urls = new HashMap<>();
+        this.engineServiceName = engineServiceName;
+        this.engineServicePassword = engineServicePassword;
+    }
+    public InterfaceC_EnvironmentBasedClient(Map<String, String> urls){
+        this.urls = urls;
     }
 
-    public String getUrl() {
-        return _url;
+
+    public String connect(String engineId) throws IOException {
+        if (urls.containsKey(engineId)){
+            Map<String, String> params = this.prepareParamMap("connect", null);
+            params.put("userID", engineServiceName);
+            params.put("password", PasswordEncryptor.encrypt(engineServicePassword, null));
+            return this.executePost(urls.get(engineId), params);
+        }
+        return "no such engine";
     }
 
-    public String getBackEndURI() {
-        return this._url;
+    public String checkConnection(String engineId, String sessionHandle) throws IOException {
+        if (urls.containsKey(engineId)){
+            return this.executeGet(urls.get(engineId), this.prepareParamMap("checkConnection", sessionHandle));
+        }
+        return "no such engine";
     }
 
-    public String connect(String userID, String password) throws IOException {
-        Map params = this.prepareParamMap("connect", (String) null);
-        params.put("userID", userID);
-        params.put("password", PasswordEncryptor.encrypt(password, (String)null));
-        return this.executePost(this._url, params);
+    public String disconnect(String engineId) throws IOException {
+        if (urls.containsKey(engineId)){
+            return this.executePost(urls.get(engineId), this.prepareParamMap("disconnect", sessionHandles.get(engineId)));
+        }
+        return "no such engine";
     }
 
-    public String checkConnection(String sessionHandle) throws IOException {
-        return this.executeGet(this._url, this.prepareParamMap("checkConnection", sessionHandle));
+    public String setEngineRole(String engineId, String sessionHandle, String engineRole) throws IOException {
+        if (urls.containsKey(engineId)){
+            Map<String, String> params = prepareParamMap("setEngineRole", sessionHandle);
+            params.put("engineRole", engineRole);
+            return executePost(urls.get(engineId), params);
+        }
+        return "no such engine";
     }
 
-    public String disconnect(String handle) throws IOException {
-        return this.executePost(this._url, this.prepareParamMap("disconnect", handle));
+    public String clusterShutdown() throws IOException {
+        for (String i : urls.keySet()){
+            Map<String, String> params = prepareParamMap("clusterShutdown", sessionHandles.get(i));
+            disconnect(i);
+            executePost(urls.get(i), params);
+        }
+        return "success";
     }
-
 }

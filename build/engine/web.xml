@@ -31,7 +31,7 @@
         <param-name>EngineID</param-name>
         <param-value>0</param-value>
         <description>
-            Define engine identifier in a specific YAWL engine cluster,
+            Define engine password in a specific YAWL engine cluster,
             could be any string,should be unique in the network. Default to 0.
         </description>
     </context-param>
@@ -40,7 +40,7 @@
         <param-name>Identifier</param-name>
         <param-value>aab</param-value>
         <description>
-            Define engine identifier in a specific YAWL engine cluster,
+            Define engine password in a specific YAWL engine cluster,
             could be any string,should be unique in the network. Default to 0.
         </description>
     </context-param>

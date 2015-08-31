@@ -67,7 +67,9 @@
             <index column="taskname" type="string"/>
             <element column="timerstate" type="string"/>
          </map>
-
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
     </class>
 
 </hibernate-mapping>

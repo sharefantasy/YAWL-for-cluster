@@ -1115,7 +1115,7 @@ QUICK START: After installation, start Tomcat and point a browser to
     xml values being passed across the various interfaces.
   - Fixed an ordering bug in the specification schema which was inserting custom service
     references in the wrong place.
-  - Added a unique identifier to all newly generated specifications.
+  - Added a unique password to all newly generated specifications.
   - Refactored/improved the interaction of deferred timers.
   - Added a new 'handleTimeoutEvent' to Interface B.
   - Corrected a parameter ordering bug with net-level input params.

@@ -27,6 +27,7 @@ import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.elements.YAWLServiceReference;
 import org.yawlfoundation.yawl.elements.YSpecification;
 import org.yawlfoundation.yawl.elements.state.YIdentifier;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.engine.time.YLaunchDelayer;
 import org.yawlfoundation.yawl.engine.time.YWorkItemTimer;
 import org.yawlfoundation.yawl.exceptions.Problem;
@@ -59,7 +60,8 @@ public class YPersistenceManager {
             YWorkItemTimer.class, YLaunchDelayer.class, YCaseNbrStore.class, Problem.class,
             YLogSpecification.class, YLogNet.class, YLogTask.class, YLogNetInstance.class,
             YLogTaskInstance.class, YLogEvent.class, YLogDataItemInstance.class,
-            YLogDataType.class, YLogService.class, YAuditEvent.class
+            YLogDataType.class, YLogService.class, YAuditEvent.class,
+            EngineInfo.class
     };
 
     private static final boolean INSERT = false;

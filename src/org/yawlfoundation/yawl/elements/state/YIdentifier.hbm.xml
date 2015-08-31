@@ -40,7 +40,9 @@
 	      <index column="ix"/>
 	      <element column="loc_condition" type="string"/>
 	    </list>
-
+      <many-to-one name="engine" column="engine"
+                   class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                   access="field" />
 	</class>
 	
 </hibernate-mapping>

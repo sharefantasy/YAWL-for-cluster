@@ -51,6 +51,7 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
         String action = request.getParameter("action");
         String engineID = request.getParameter("engineID");
         String identifier = request.getParameter("identifier");
+
         System.out.println(action);
         try {
             if (_debug) {
@@ -59,7 +60,8 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
 
             if (action != null){
                 if ("connect".equals(action)){
-                    msg.append(controller.connect(engineID, identifier));
+                    String url = request.getParameter("url");
+                    msg.append(controller.connect(engineID, identifier, url));
                 }
                 else if ("disconnect".equals(action)){
                     msg.append(controller.disconnect(engineID, identifier));
@@ -94,4 +96,5 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
                     request.getParameter(name));
         }
     }
+
 }

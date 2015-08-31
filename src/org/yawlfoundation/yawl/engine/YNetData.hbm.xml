@@ -30,7 +30,9 @@
     	</id>
 		
     	<property name="_data" column="casedata" type="text" access="field"/>
-
+      <many-to-one name="engine" column="engine"
+                   class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                   access="field" />
 	</class>
 	
 </hibernate-mapping>

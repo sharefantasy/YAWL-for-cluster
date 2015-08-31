@@ -18,6 +18,7 @@
 
 package org.yawlfoundation.yawl.logging.table;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.logging.YLogDataItem;
 import org.yawlfoundation.yawl.util.StringUtil;
 
@@ -34,6 +35,15 @@ public class YLogDataItemInstance {
     private long eventID;                               // FK to YLogEvent
     private YLogDataItem dataItem ;
     private long dataTypeID;                            // FK to YLogDataType
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public YLogDataItemInstance() {
         dataItem = new YLogDataItem();

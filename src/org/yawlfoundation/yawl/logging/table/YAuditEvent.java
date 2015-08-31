@@ -18,11 +18,23 @@
 
 package org.yawlfoundation.yawl.logging.table;
 
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
+
 /**
  * Author: Michael Adams
  * Creation Date: 22/10/2009
  */
 public class YAuditEvent {
+
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public static enum Action { logon, logoff, invalid, unknown, shutdown, expired }
 

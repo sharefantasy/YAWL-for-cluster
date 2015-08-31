@@ -19,6 +19,7 @@
 package org.yawlfoundation.yawl.authentication;
 
 import org.jdom2.Element;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 
 /**
  * Represents the authentication credentials of an external application that may connect
@@ -33,6 +34,16 @@ import org.jdom2.Element;
  */
 
 public class YExternalClient extends YClient {
+
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
     public YExternalClient() { super(); }
 

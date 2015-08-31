@@ -19,6 +19,7 @@
 package org.yawlfoundation.yawl.elements;
 
 import org.yawlfoundation.yawl.engine.YSpecificationID;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.exceptions.YSyntaxException;
 import org.yawlfoundation.yawl.schema.YDataValidator;
 import org.yawlfoundation.yawl.schema.YSchemaVersion;
@@ -50,6 +51,15 @@ public final class YSpecification implements Cloneable, YVerifiable {
 
     public static final String _loaded = "loaded";
     public static final String _unloaded = "unloaded";
+    private EngineInfo engine;
+
+    public EngineInfo getEngine() {
+        return engine;
+    }
+
+    public void setEngine(EngineInfo engine) {
+        this.engine = engine;
+    }
 
 
     public YSpecification() { }

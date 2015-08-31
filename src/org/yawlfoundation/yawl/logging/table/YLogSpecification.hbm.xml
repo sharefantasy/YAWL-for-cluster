@@ -33,6 +33,9 @@
         <property name="identifier" type="string"/>
     	<property name="version"    type="string" column="specVersion"/>
         <property name="uri"        type="string"/>
+        <many-to-one name="engine" column="engine"
+                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
+                     access="field" />
 	</class>
 
 </hibernate-mapping>
