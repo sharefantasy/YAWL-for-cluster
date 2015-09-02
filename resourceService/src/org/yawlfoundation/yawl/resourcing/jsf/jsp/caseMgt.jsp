@@ -230,7 +230,7 @@
                                         id="lbxRunningCases"
                                         items="#{SessionBean.runningCaseListOptions}"
                                         selected="#{SessionBean.runningCaseListChoice}"
-                                        onKeyPress="return disableEnterKey(cluster.event);"
+                                        onKeyPress="return disableEnterKey(event);"
                                         styleClass="caseMgtListbox"/>
 
                             <ui:staticText binding="#{caseMgt.staticText3}"
@@ -301,7 +301,7 @@
                                    id="txtDelayValue"
                                    styleClass="orgDataTextField"
                                    style="left: 85px; top: 140px; width: 184px"
-                                   onKeyPress="return disableEnterKey(cluster.event);"
+                                   onKeyPress="return disableEnterKey(event);"
                                    trim="false"/>
 
                             <ui:button action="#{caseMgt.btnDelayOK_action}"

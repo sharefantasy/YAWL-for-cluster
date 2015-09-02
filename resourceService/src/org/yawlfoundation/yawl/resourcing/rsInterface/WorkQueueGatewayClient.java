@@ -44,7 +44,7 @@ public class WorkQueueGatewayClient extends Interface_Client {
 
     /**
      * the uri of the resource service's **workqueue gateway**
-     * a default would be "http://localhost:413/resourceService/workqueuegateway"
+     * a default would be "http://localhost:8080/resourceService/workqueuegateway"
      */
     private String _serviceURI;
 

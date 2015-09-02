@@ -34,9 +34,8 @@
     	<property name="instanceID"        type="long"/>
         <property name="serviceID"         type="long"/> 
         <property name="rootNetInstanceID" type="long"/>
-        <many-to-one name="engine" column="engine"
-                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                     access="field" />
+        <property name="engine" column="engine" access="field"/>
+
 	</class>
 
 </hibernate-mapping>

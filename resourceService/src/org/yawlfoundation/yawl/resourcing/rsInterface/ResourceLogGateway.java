@@ -53,7 +53,7 @@ public class ResourceLogGateway extends HttpServlet {
     private final String _noService = "<failure>Not connected to Resource Service.</failure>";
     private final String _badPre = "<failure>Resource Log Gateway called with invalid ";
     private final String _badAction = _badPre + "action.</failure>";
-    private final String _badEvent = _badPre + "cluster.event name.</failure>";
+    private final String _badEvent = _badPre + "event name.</failure>";
     private final String _badSpecID = _badPre + "specification ID.</failure>";
     private final String _badTimestamp = _badPre + "timestamp value.</failure>";
  

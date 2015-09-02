@@ -21,6 +21,7 @@ package org.yawlfoundation.yawl.engine;
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -31,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Date: 1/03/2008
  */
 
-public class YCaseNbrStore {
+public class YCaseNbrStore implements Serializable{
 
     private int pkey = 1001 ;                             // primary key for persistence
     private AtomicInteger caseNbr;
@@ -39,6 +40,15 @@ public class YCaseNbrStore {
     private boolean persisting = false ;                  // is persistence on?
     private static YCaseNbrStore _instance ;
     private static final Logger log = Logger.getLogger(YCaseNbrStore.class) ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     protected YCaseNbrStore() {
         caseNbr = new AtomicInteger();

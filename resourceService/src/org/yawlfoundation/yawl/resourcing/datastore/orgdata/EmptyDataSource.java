@@ -21,7 +21,7 @@ package org.yawlfoundation.yawl.resourcing.datastore.orgdata;
 import org.yawlfoundation.yawl.exceptions.YAuthenticationException;
 
 /**
- * This class provides a default DataSource object to the ResourceManager in the cluster.event
+ * This class provides a default DataSource object to the ResourceManager in the event
  * that there is no actual Datasource set and/or initialised.
  *
  * Author: Michael Adams

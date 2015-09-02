@@ -61,10 +61,8 @@
         <many-to-one name="_parent" column="parent"
                      class="org.yawlfoundation.yawl.engine.YWorkItem"
                      access="field"/>
+        <property name="engine" column="engine" access="field"/>
 
-        <many-to-one name="engine" column="engine"
-                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                     access="field" />
 
 	</class>
 	

@@ -27,7 +27,6 @@ import org.yawlfoundation.yawl.elements.state.YIdentifier;
 import org.yawlfoundation.yawl.elements.state.YInternalCondition;
 import org.yawlfoundation.yawl.engine.announcement.YAnnouncement;
 import org.yawlfoundation.yawl.engine.announcement.YEngineEvent;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.engine.time.YTimer;
 import org.yawlfoundation.yawl.engine.time.YTimerVariable;
 import org.yawlfoundation.yawl.engine.time.YWorkItemTimer;
@@ -55,13 +54,13 @@ import java.util.*;
  */
 public class YNetRunner {
 
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

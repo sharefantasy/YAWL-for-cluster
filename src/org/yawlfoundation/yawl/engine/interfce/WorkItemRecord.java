@@ -19,7 +19,6 @@
 package org.yawlfoundation.yawl.engine.interfce;
 
 import org.jdom2.Element;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.JDOMUtil;
 import org.yawlfoundation.yawl.util.StringUtil;
 
@@ -121,13 +120,13 @@ public class WorkItemRecord implements Cloneable {
     private boolean _docoChanged = false;                  // documentation updated?
 
     private String _tag;                                   // for user-defined values
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

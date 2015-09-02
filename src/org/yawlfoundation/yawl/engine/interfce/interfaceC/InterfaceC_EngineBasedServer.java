@@ -1,5 +1,7 @@
 package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 
+import org.yawlfoundation.yawl.engine.YEngine;
+import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.engine.interfce.EngineGateway;
 import org.yawlfoundation.yawl.engine.interfce.EngineGatewayImpl;
 import org.yawlfoundation.yawl.engine.interfce.ServletUtils;
@@ -17,7 +19,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.rmi.RemoteException;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by fantasy on 2015/8/5.
@@ -34,6 +38,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             ServletContext context = getServletContext();
             enableCluster =
                     context.getInitParameter("EnableClusterService").equalsIgnoreCase("true");
+            YPersistenceManager.setIsCluster(enableCluster);
+
+
             if (!enableCluster){
                 return ;
             }
@@ -67,9 +74,13 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             String engineID = context.getInitParameter("EngineID");
             String clusterManagementURL = context.getInitParameter("ClusterManagementURL");
             String identifier = context.getInitParameter("Identifier");
-            _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, identifier);
+            String selfURI = context.getInitParameter("SelfURI");
+            _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, identifier, selfURI);
             if ("success".equals(_client.register())
                     || "success".equals(_client.connect())){
+                String role = _client.getEngineRole();
+                YPersistenceManager.setEngineRole(role);
+                YEngine.getInstance().restore();
                 _client.heartbeat();
             }
 
@@ -134,6 +145,8 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 else if(action.equalsIgnoreCase("setEngineRole")) {
                     msg.append("success");
                     engineRole = request.getParameter("engineRole");
+                    YPersistenceManager.setEngineRole(engineRole);
+                    _engine.restore(sessionHandle);
                     _log.info("New engine role '" + engineRole + "'get");
                 }
                 else if(action.equalsIgnoreCase("clusterShutdown")) {
@@ -142,9 +155,18 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                     engineRole = null;
                     _log.info("cluster service shutdown");
                 }
+                if ("connect".equals(action)) {
+                    String userID = request.getParameter("userID");
+                    String password = request.getParameter("password");
+                    int interval = request.getSession().getMaxInactiveInterval();
+                    msg.append(_engine.connect(userID, password, interval));
+                }
+                else if ("checkConnection".equals(action)) {
+                    msg.append(_engine.checkConnectionForAdmin(sessionHandle));
+                }
             }
 
-        } catch (YPersistenceException e) {
+        } catch (YPersistenceException | RemoteException e) {
             e.printStackTrace();
         }
         return msg.toString();

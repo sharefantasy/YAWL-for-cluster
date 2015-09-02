@@ -50,7 +50,7 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
         String sessionHandle = request.getParameter("sessionHandle");
         String action = request.getParameter("action");
         String engineID = request.getParameter("engineID");
-        String identifier = request.getParameter("identifier");
+        String password = request.getParameter("password");
 
         System.out.println(action);
         try {
@@ -61,19 +61,20 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
             if (action != null){
                 if ("connect".equals(action)){
                     String url = request.getParameter("url");
-                    msg.append(controller.connect(engineID, identifier, url));
+                    String session = request.getParameter("sessionHandle");
+                    msg.append(controller.connect(engineID, password, url, session));
                 }
                 else if ("disconnect".equals(action)){
-                    msg.append(controller.disconnect(engineID, identifier));
+                    msg.append(controller.disconnect(engineID, password));
                 }
                 else if ("register".equals(action)){
-                    msg.append(controller.register(engineID, identifier));
+                    msg.append(controller.register(engineID, password));
                 }
                 else if ("unregister".equals(action)){
-                    msg.append(controller.unregister(engineID, identifier));
+                    msg.append(controller.unregister(engineID, password));
                 }
                 else if ("heartbeat".equals(action)){
-                    msg.append(controller.heartbeat(engineID, identifier));
+                    msg.append(controller.heartbeat(engineID, password));
                 }
             }
         } catch (RemoteException e) {

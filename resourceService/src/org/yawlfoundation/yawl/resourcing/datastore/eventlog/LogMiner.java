@@ -31,7 +31,7 @@ import org.yawlfoundation.yawl.util.XNode;
 import java.util.*;
 
 /**
- * An API to retrieve data from the resource service's cluster.event logs
+ * An API to retrieve data from the resource service's event logs
  * and pass it back as XML.
  *
  * Create Date: 16/12/2008
@@ -103,10 +103,10 @@ public class LogMiner {
                         currentItemID = event.get_itemID();
                         xml.append(String.format("<workitem ID=\"%s\">", currentItemID));
                     }
-                    xml.append("<cluster.event>");
+                    xml.append("<event>");
                     xml.append(StringUtil.wrap(event.get_event(), "type")) ;
                     xml.append(StringUtil.wrap(String.valueOf(event.get_timeStamp()), "time")) ;
-                    xml.append("</cluster.event>");
+                    xml.append("</event>");
                 }
                 xml.append("</workitem></workitems>");
                 result = xml.toString();
@@ -739,9 +739,9 @@ public class LogMiner {
     }
 
     /**
-     * @param caseID the case id to get the cluster.event for
-     * @param eventType which cluster.event to get
-     * @return the case cluster.event
+     * @param caseID the case id to get the event for
+     * @param eventType which event to get
+     * @return the case event
      */
     private ResourceEvent getCaseEvent(String caseID, EventLogger.event eventType) {
         String query = String.format(
@@ -827,7 +827,7 @@ public class LogMiner {
     private String getFieldValue(String caseEventXML, String fieldname) {
         Element eventElem = JDOMUtil.stringToElement(caseEventXML);
         if (eventElem != null) {
-            Element firstEvent = eventElem.getChild("cluster.event");
+            Element firstEvent = eventElem.getChild("event");
             if (firstEvent != null) {
                 return firstEvent.getChildText(fieldname);
             }
@@ -877,7 +877,7 @@ public class LogMiner {
 
                  // only want task events
                 if ((caseNode != null) && (event.get_taskID() != null)) {
-                    XNode eventNode = caseNode.addChild("cluster.event");
+                    XNode eventNode = caseNode.addChild("event");
                     eventNode.addChild("taskname", event.get_taskID());
                     eventNode.addChild("instanceid", event.get_caseID());
                     eventNode.addChild("descriptor", event.get_event());

@@ -31,9 +31,8 @@
 		
     	<property name="caseId" column="caseId"/>
         <property name="document" column="yDoc" type="binary"/>
-      <many-to-one name="engine" column="engine"
-                   class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                   access="field" />
+        <property name="engine" column="engine" access="field"/>
+
 	</class>
 	
 </hibernate-mapping>

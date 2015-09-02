@@ -38,7 +38,7 @@ import java.util.Set;
 public class ResourceLogGatewayClient extends Interface_Client {
 
     /** the uri of the YAWL Resource Service's __logGateway__
-     * a default would be "http://localhost:413/resourceService/logGateway"
+     * a default would be "http://localhost:8080/resourceService/logGateway"
      */
     private String _logURI;
 
@@ -193,9 +193,9 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml record of the logged case launch or cancel cluster.event
+     * Gets an xml record of the logged case launch or cancel event
      * @param caseID the case id
-     * @param launch true for the launch_case cluster.event, false for the cancel_case cluster.event
+     * @param launch true for the launch_case event, false for the cancel_case event
      * @param handle an active sessionhandle
      * @return the resultant String response (log data or error message)
      * @throws java.io.IOException if there's a problem connecting to the service
@@ -357,7 +357,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified participant
      * @param pid the participant identifier
      * @param eventName a String matching one of the EventLogger events (offer, allocate,
@@ -376,7 +376,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified participant within the time range specified
      * @param pid the participant identifier
      * @param eventName a String matching one of the EventLogger events (offer, allocate,
@@ -398,7 +398,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified participant within the time range specified
      * @param pid the participant identifier
      * @param eventName a String matching one of the EventLogger events (offer, allocate,
@@ -418,7 +418,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified resource (can be a Participant or a NonHumanResource)
      * @param id the resource identifier
      * @param eventName a String matching one of the EventLogger events (offer, allocate,
@@ -437,7 +437,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified resource within the time range specified (can be a Participant
      * or a NonHumanResource)
      * @param id the resource identifier
@@ -460,7 +460,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml list of all instances of the specified cluster.event involving the
+     * Gets an xml list of all instances of the specified event involving the
      * specified participant within the time range specified
      * @param id the participant identifier
      * @param eventName a String matching one of the EventLogger events (offer, allocate,
@@ -492,7 +492,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml string of the 'allocate' cluster.event for the specified work item
+     * Gets an xml string of the 'allocate' event for the specified work item
      * @param itemID the work item identifier
      * @param handle an active sessionhandle
      * @return the resultant String response (log data or error message)
@@ -504,7 +504,7 @@ public class ResourceLogGatewayClient extends Interface_Client {
 
 
     /**
-     * Gets an xml string of the 'start' cluster.event for the specified work item
+     * Gets an xml string of the 'start' event for the specified work item
      * @param itemID the work item identifier
      * @param handle an active sessionhandle
      * @return the resultant String response (log data or error message)

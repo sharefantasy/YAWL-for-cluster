@@ -24,16 +24,13 @@
 <hibernate-mapping>
 
     <class name="org.yawlfoundation.yawl.authentication.YExternalClient" table="ClientApps">
-
-        <id name="_userName" column="userID" access="field">
-            <generator class="assigned"/>
-        </id>
-
+        <composite-id>
+            <key-property name="engine" column="engine" access="field"/>
+            <key-property name="_userName" access="field"/>
+        </composite-id>
         <property name="_password" column="passwordText" access="field"/>
         <property name="_documentation" column="documentation" access="field"/>
-        <many-to-one name="engine" column="engine"
-                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                     access="field" />
+
     </class>
 
 </hibernate-mapping>

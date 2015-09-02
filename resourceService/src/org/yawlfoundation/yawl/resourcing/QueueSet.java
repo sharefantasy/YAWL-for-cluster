@@ -118,7 +118,7 @@ public class QueueSet {
 
     public void movetoUnsuspend(WorkItemRecord wir) {
 
-        // explicitly log the resume cluster.event
+        // explicitly log the resume event
         EventLogger.log(wir, _ownerID, EventLogger.event.resume);
         removeFromQueue(wir, WorkQueue.SUSPENDED);
         addToQueue(wir, WorkQueue.STARTED, false);              // don't log as a start

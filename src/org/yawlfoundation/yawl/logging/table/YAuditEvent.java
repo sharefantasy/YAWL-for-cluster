@@ -18,7 +18,6 @@
 
 package org.yawlfoundation.yawl.logging.table;
 
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 
 /**
  * Author: Michael Adams
@@ -26,13 +25,13 @@ import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
  */
 public class YAuditEvent {
 
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

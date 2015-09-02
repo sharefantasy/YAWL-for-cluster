@@ -33,9 +33,7 @@
         <property name="_servicePassword" column="servicePassword" type="string"/>
         <property name="_documentation" column="documentation" type="string"/>
         <property name="_assignable" column="assignable" type="boolean"/>
-        <many-to-one name="engine" column="engine"
-                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                     access="field" />
+        <property name="engine" column="engine" type="string" access="field"/>
 	</class>
 	
 </hibernate-mapping>

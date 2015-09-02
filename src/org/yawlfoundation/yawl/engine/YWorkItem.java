@@ -25,7 +25,6 @@ import org.yawlfoundation.yawl.authentication.YClient;
 import org.yawlfoundation.yawl.elements.*;
 import org.yawlfoundation.yawl.elements.data.YParameter;
 import org.yawlfoundation.yawl.elements.state.YIdentifier;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.engine.time.YTimer;
 import org.yawlfoundation.yawl.engine.time.YWorkItemTimer;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
@@ -51,7 +50,7 @@ import static org.yawlfoundation.yawl.engine.YWorkItemStatus.*;
  */
 public class YWorkItem {
 
-    private EngineInfo engine;
+    private String engine;
 
     private static DateFormat _df = new SimpleDateFormat("MMM:dd, yyyy H:mm:ss");
     private static YEngine _engine = YEngine.getInstance();
@@ -986,11 +985,11 @@ public class YWorkItem {
         return dataItem ;
     }
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 }

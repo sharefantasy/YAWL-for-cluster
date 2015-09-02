@@ -22,7 +22,6 @@ import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.engine.YWorkItem;
 import org.yawlfoundation.yawl.engine.YWorkItemStatus;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
 import javax.xml.datatype.Duration;
@@ -38,13 +37,13 @@ import java.util.Set;
 
 public class YWorkItemTimer implements YTimedObject {
 
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

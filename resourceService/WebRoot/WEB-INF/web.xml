@@ -206,7 +206,7 @@
 
     <context-param>
         <param-name>GenerateRandomOrgData</param-name>
-        <param-value>-1</param-value>
+        <param-value>5</param-value>
         <description>
             Set the param-value to a +ve integer up to 100 to randomly generate that
             number of participants and associated org data. This feature can be used to

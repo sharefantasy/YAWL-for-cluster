@@ -28,6 +28,15 @@
     </context-param>
 
     <context-param>
+        <param-name>EngineRole</param-name>
+        <param-value>0</param-value>
+        <description>
+            Define engine password in a specific YAWL engine cluster,
+            could be any string,should be unique in the network. Default to 0.
+        </description>
+    </context-param>
+
+    <context-param>
         <param-name>EngineID</param-name>
         <param-value>0</param-value>
         <description>
@@ -48,6 +57,14 @@
     <context-param>
         <param-name>ClusterManagementURL</param-name>
         <param-value>http://127.0.0.1:413/cluster/service/</param-value>
+        <description>
+            The address of the given cluster service,
+            must be not blank if 'EnableClusterService' is set to 'true'
+        </description>
+    </context-param>
+    <context-param>
+        <param-name>SelfURI</param-name>
+        <param-value>http://127.0.0.1:8080/yawl/ic/</param-value>
         <description>
             The address of the given cluster service,
             must be not blank if 'EnableClusterService' is set to 'true'
@@ -201,6 +218,16 @@
          your web application, including initialization
          parameters.
     -->
+    <servlet>
+        <servlet-name>InterfaceCServlet</servlet-name>
+        <servlet-class>
+            org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EngineBasedServer
+        </servlet-class>
+        <description>
+            Provide cluster service with centralized cluster server.
+        </description>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 	<servlet>
 		<servlet-name>InterfaceBServlet</servlet-name>
 		<description>
@@ -212,7 +239,7 @@
 		<servlet-class>
             org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EngineBasedServer
         </servlet-class>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>InterfaceAServlet</servlet-name>
@@ -257,16 +284,7 @@
         <load-on-startup>5</load-on-startup>
     </servlet>
 
-    <servlet>
-        <servlet-name>InterfaceCServlet</servlet-name>
-        <servlet-class>
-            org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EngineBasedServer
-        </servlet-class>
-        <description>
-            Provide cluster service with centralized cluster server.
-        </description>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+
     <!-- Define mappings that are used by the servlet container to
          translate a particular request URI (context-relative) to a
          particular servlet.

@@ -87,11 +87,11 @@ public abstract class AbstractAllocator extends AbstractSelector {
 
 
     /**
-     * Gets a list of all resource log rows for a given specification + task + cluster.event
+     * Gets a list of all resource log rows for a given specification + task + event
      * combination.
      * @param wir a workitem record which is an instance of the specification+task in
      * question.
-     * @param event the type of cluster.event to get records for
+     * @param event the type of event to get records for
      * @return the matching list of ResourceEvent objects (each one a row of the log)
      */
     protected List getLoggedEvents(WorkItemRecord wir, EventLogger.event event) {
@@ -176,8 +176,8 @@ public abstract class AbstractAllocator extends AbstractSelector {
     /**
      * Gets the average duration (in msecs) between two events for each participant
      * recorded against those events for a task
-     * @param fromEvent the earlier cluster.event (start of duration)
-     * @param toEvent the later cluster.event (end of duration)
+     * @param fromEvent the earlier event (start of duration)
+     * @param toEvent the later event (end of duration)
      * @param wir a work item to allocate
      * @return a Map of participant ids and average durations
      */
@@ -202,10 +202,10 @@ public abstract class AbstractAllocator extends AbstractSelector {
 
     /**
      * Merges a list of starting events and a list of ending events for a task's
-     * instances into a map of cluster.event pairs
+     * instances into a map of event pairs
      * @param fromEvents the list of earlier events (start of duration)
      * @param toEvents the list of later events (end of duration)
-     * @return a map of work item ids and the corresponding cluster.event pair
+     * @return a map of work item ids and the corresponding event pair
      */
     private Map<String, EventPair> pairEvents(List fromEvents, List toEvents) {
         Map<String, EventPair> pairedEvents = new Hashtable<String, EventPair>();
@@ -227,8 +227,8 @@ public abstract class AbstractAllocator extends AbstractSelector {
 
 
     /**
-     * Gets a set of durations for each participant referenced by a map of cluster.event pairs
-     * @param pairedEvents a set of cluster.event pairs
+     * Gets a set of durations for each participant referenced by a map of event pairs
+     * @param pairedEvents a set of event pairs
      * @return a map of participant ids, each to a set of durations (in msecs)
      */
     private Map<String, Set<Long>> getParticipantTimes(Collection<EventPair> pairedEvents) {

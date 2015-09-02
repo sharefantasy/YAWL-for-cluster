@@ -96,7 +96,7 @@ public class EventLogger {
         }
         catch (Exception e) {
             Logger.getLogger(EventLogger.class).error("'" + eventString +
-                    "' is not a valid cluster.event type.");
+                    "' is not a valid event type.");
         }
     }
 

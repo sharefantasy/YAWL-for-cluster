@@ -31,7 +31,7 @@
         </id>
 
         <property name="_userid" column="userID"/>
-        <property name="_event" column="cluster.event"/>
+        <property name="_event" column="event"/>
         <property name="_timeStamp" column="eventTime" type="long"/>       
      </class>
 	

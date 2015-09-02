@@ -180,7 +180,7 @@ public class InterfaceClients {
      * Sets the Resource Service URI as read from that stored in the Engine
      */
     protected void setServiceURI() {
-        _serviceURI = "http://localhost:413/resourceService/ib";         // a default
+        _serviceURI = "http://localhost:8080/resourceService/ib";         // a default
         Set<YAWLServiceReference> services = getRegisteredServices();
         if (services != null) {
             for (YAWLServiceReference service : services) {
@@ -296,7 +296,7 @@ public class InterfaceClients {
 
     /******************************************************************************/
 
-    // Server methods (outgoing cluster.event announcements) //
+    // Server methods (outgoing event announcements) //
 
     public void announceResourceUnavailable(WorkItemRecord wir) {
         announceResourceUnavailable(null, wir, true);

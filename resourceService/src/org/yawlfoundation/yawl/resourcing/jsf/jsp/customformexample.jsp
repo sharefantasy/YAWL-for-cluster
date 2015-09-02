@@ -57,7 +57,7 @@
     // If your forms are outside the resource service's webapp dir, place the
     // YResourceServiceClient.jar in the same location - it contains all the necessary
     // classes to communicate through the gateway
-    String wqURL = "http://localhost:413/resourceService/workqueuegateway";
+    String wqURL = "http://localhost:8080/resourceService/workqueuegateway";
     WorkQueueGatewayClient wqClient = new WorkQueueGatewayClient(wqURL);
 
     // get the workitem xml. If the form has refreshed, it will be stored in a session

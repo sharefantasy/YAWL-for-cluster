@@ -18,8 +18,10 @@
 
 package org.yawlfoundation.yawl.authentication;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.jdom2.Element;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
+
+import java.io.Serializable;
 
 /**
  * Represents the authentication credentials of an external application that may connect
@@ -33,15 +35,15 @@ import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
  *
  */
 
-public class YExternalClient extends YClient {
+public class YExternalClient extends YClient implements Serializable {
 
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 
@@ -61,5 +63,16 @@ public class YExternalClient extends YClient {
     public String get_userid() { return _userName; }
 
     public String get_documentation() { return _documentation; }
-
+    public int hashCode(){
+        return new HashCodeBuilder(-528253723, -475504089)
+                .appendSuper(super.hashCode())
+                .append(this._userName)
+                .append(this.engine)
+                .toHashCode();
+    }
+    public boolean equals(Object obj) {
+        return obj instanceof YExternalClient
+                && ((YExternalClient) obj)._userName.equals(_userName)
+                && ((YExternalClient) obj).engine.equals(engine);
+    }
 }

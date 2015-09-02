@@ -19,7 +19,6 @@
 package org.yawlfoundation.yawl.logging.table;
 
 import org.jdom2.Element;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 import java.text.SimpleDateFormat;
@@ -39,13 +38,13 @@ public class YLogEvent {
     private long timestamp ;
     private long serviceID;                 // the service that created the cluster.event
     private long rootNetInstanceID;         // convenience for queries
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

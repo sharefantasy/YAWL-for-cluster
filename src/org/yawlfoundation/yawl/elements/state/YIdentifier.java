@@ -21,7 +21,6 @@ package org.yawlfoundation.yawl.elements.state;
 import org.yawlfoundation.yawl.elements.*;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
 import java.util.*;
@@ -45,13 +44,13 @@ public class YIdentifier {
     private String _idString;
 
     private long _logKey = -1;                    // the FK of the logged task instance
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

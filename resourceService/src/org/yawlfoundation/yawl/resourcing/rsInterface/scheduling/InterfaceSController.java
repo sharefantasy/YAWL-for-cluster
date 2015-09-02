@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- *  InterfaceSController passes scheduling cluster.event calls from the resource service to a
+ *  InterfaceSController passes scheduling event calls from the resource service to a
  *  listening scheduling service. This class is a member class of Interface S.
  *
  *  InterfaceB_EnvironmentBasedServer was used as a template for this class.

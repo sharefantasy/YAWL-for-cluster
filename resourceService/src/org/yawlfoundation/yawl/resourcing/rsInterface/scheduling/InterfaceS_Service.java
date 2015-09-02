@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- *  The interface InterfaceS_Service defines the cluster.event methods that are passed
+ *  The interface InterfaceS_Service defines the event methods that are passed
  *  from the resource service to a scheduling listener.
  *
  *  @author Michael Adams

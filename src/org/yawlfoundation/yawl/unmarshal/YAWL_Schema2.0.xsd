@@ -912,7 +912,7 @@
 			<xs:element name="version" type="yawl:VersionType" minOccurs="0"/>
 			<xs:element name="status" type="xs:string" minOccurs="0"/>
 			<xs:element name="persistent" type="xs:boolean" minOccurs="0"/>
-      <xs:element name="password" type="xs:NCName" minOccurs="0"/>
+      <xs:element name="identifier" type="xs:NCName" minOccurs="0"/>
     </xs:sequence>
 	</xs:complexType>
 	<!--

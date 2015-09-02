@@ -38,7 +38,7 @@ public class ExampleAdapter extends ResourceGatewayClientAdapter {
     private String _handle ;
     private String _userName = "admin" ;
     private String _password = "YAWL" ;
-    private String _defURI = "http://localhost:413/resourceService/gateway" ;
+    private String _defURI = "http://localhost:8080/resourceService/gateway" ;
 
     public ExampleAdapter() {
         super();

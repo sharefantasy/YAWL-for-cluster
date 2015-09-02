@@ -20,6 +20,7 @@ package org.yawlfoundation.yawl.engine;
 
 
 import org.apache.log4j.Logger;
+import org.h2.engine.Engine;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -27,7 +28,6 @@ import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.elements.YAWLServiceReference;
 import org.yawlfoundation.yawl.elements.YSpecification;
 import org.yawlfoundation.yawl.elements.state.YIdentifier;
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.engine.time.YLaunchDelayer;
 import org.yawlfoundation.yawl.engine.time.YWorkItemTimer;
 import org.yawlfoundation.yawl.exceptions.Problem;
@@ -35,6 +35,8 @@ import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 import org.yawlfoundation.yawl.logging.table.*;
 import org.yawlfoundation.yawl.util.HibernateStatistics;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class YPersistenceManager {
             YLogSpecification.class, YLogNet.class, YLogTask.class, YLogNetInstance.class,
             YLogTaskInstance.class, YLogEvent.class, YLogDataItemInstance.class,
             YLogDataType.class, YLogService.class, YAuditEvent.class,
-            EngineInfo.class
+
     };
 
     private static final boolean INSERT = false;
@@ -71,12 +73,19 @@ public class YPersistenceManager {
     private static SessionFactory factory = null;
     private boolean restoring = false;
     private boolean enabled = false;
+    private static boolean isCluster;
+    private static String engineRole = "0";
 
     /**
      * Constructor
      */
     public YPersistenceManager() {
         logger = Logger.getLogger(YPersistenceManager.class);
+    }
+
+    public static void setEngineRole(String engineRole) {
+        YPersistenceManager.engineRole = engineRole;
+
     }
 
 
@@ -198,6 +207,12 @@ public class YPersistenceManager {
         if ((!restoring) && isEnabled()) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Adding to insert cache: Type=" + obj.getClass().getName());
+            }
+            try {
+                Method m = obj.getClass().getMethod("setEngine", String.class);
+                m.invoke(obj, engineRole);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.getMessage(); // do something silently
             }
             doPersistAction(obj, INSERT);
         }
@@ -406,7 +421,7 @@ public class YPersistenceManager {
      * @throws YPersistenceException if there's a problem reading the db
      */
     public List getObjectsForClass(String className) throws YPersistenceException {
-        return execQuery("from " + className);
+        return execQuery("from " + className+" where engine="+engineRole);
     }
 
 
@@ -422,7 +437,7 @@ public class YPersistenceManager {
     public List getObjectsForClassWhere(String className, String whereClause)
             throws YPersistenceException {
         try {
-            String qry = String.format("from %s as tbl where tbl.%s",
+            String qry = String.format("from %s as tbl where tbl.%s and tbl.engine="+engineRole,
                     className, whereClause);
             Query query = createQuery(qry);
             return (query != null) ? query.list() : null;
@@ -442,7 +457,7 @@ public class YPersistenceManager {
      */
     public Object selectScalar(String className, String field, String value)
             throws YPersistenceException {
-        String qryStr = String.format("from %s as tbl where tbl.%s=%s",
+        String qryStr = String.format("from %s as tbl where tbl.%s=%s and tbl.engine="+engineRole,
                 className, field, value);
         Iterator itr = createQuery(qryStr).iterate();
         if (itr.hasNext()) return itr.next();
@@ -458,4 +473,7 @@ public class YPersistenceManager {
         return selectScalar(className, field, String.valueOf(value));
     }
 
+    public static void setIsCluster(boolean isCluster) {
+        YPersistenceManager.isCluster = isCluster;
+    }
 }

@@ -35,7 +35,7 @@
         <property name="_taskID" column="taskID"/>
         <property name="_itemID" column="itemID"/>
         <property name="_resourceID" column="participantID"/>
-        <property name="_event" column="cluster.event" length="20"/>
+        <property name="_event" column="event" length="20"/>
         <property name="_timeStamp" column="eventTime" type="long"/>       
      </class>
 	

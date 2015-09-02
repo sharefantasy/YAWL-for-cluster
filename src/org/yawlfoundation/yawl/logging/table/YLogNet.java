@@ -18,7 +18,6 @@
 
 package org.yawlfoundation.yawl.logging.table;
 
-import org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 /**
@@ -32,13 +31,13 @@ public class YLogNet {
     private long netID;                                       // PK - auto generated 
     private String name;
     private long specKey;                                     // FK to YLogSpecification
-    private EngineInfo engine;
+    private String engine;
 
-    public EngineInfo getEngine() {
+    public String getEngine() {
         return engine;
     }
 
-    public void setEngine(EngineInfo engine) {
+    public void setEngine(String engine) {
         this.engine = engine;
     }
 

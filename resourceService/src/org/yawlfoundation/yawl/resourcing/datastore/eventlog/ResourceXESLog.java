@@ -110,7 +110,7 @@ public class ResourceXESLog extends YXESBuilder {
 
 
     private XNode eventNode(XNode yEvent) {
-        XNode eventNode = new XNode("cluster.event");
+        XNode eventNode = new XNode("event");
         eventNode.addChild(dateNode("time:timestamp", yEvent.getChildText("timestamp")));
         eventNode.addChild(stringNode("concept:name", yEvent.getChildText("taskname")));
         eventNode.addChild(stringNode("lifecycle:transition",
@@ -162,11 +162,11 @@ public class ResourceXESLog extends YXESBuilder {
 
 
     private void mergeTraces(XNode master, XNode slave) {
-        for (XNode event : slave.getChildren("cluster.event")) {
+        for (XNode event : slave.getChildren("event")) {
             String transition = getTransition(event);
             if (transition != null) {
 
-                // choose which cluster.event to use for duplicated events
+                // choose which event to use for duplicated events
                 if (mergeableEvent(transition)) {               // start or complete
                     mergeEvent(master, event, transition);
                 }
@@ -221,7 +221,7 @@ public class ResourceXESLog extends YXESBuilder {
 
 
     // These transitions appear in both logs - the resource service will take
-    // precedence since it contains the resource that triggered the cluster.event
+    // precedence since it contains the resource that triggered the event
     private boolean slaveHasPrecedence(String transition) {
         return transition.equals("suspend") || transition.equals("resume");
     }
@@ -237,7 +237,7 @@ public class ResourceXESLog extends YXESBuilder {
 
     private void removeEvent(XNode node, String taskName, String instanceID, String transition) {
         XNode toRemove = null;
-        for (XNode event : node.getChildren("cluster.event")) {
+        for (XNode event : node.getChildren("event")) {
             if (getTransition(event).equals(transition) &&
                     getInstanceID(event).equals(instanceID) &&
                     getTaskName(event).equals(taskName)) {
@@ -255,7 +255,7 @@ public class ResourceXESLog extends YXESBuilder {
         String orgResource = getOrgResource(rsEvent);
         if (orgResource == null) return;
 
-        for (XNode event : node.getChildren("cluster.event")) {
+        for (XNode event : node.getChildren("event")) {
             if (getTransition(event).equals(transition) &&
                     getInstanceID(event).equals(instanceID) &&
                     getTaskName(event).equals(taskName)) {

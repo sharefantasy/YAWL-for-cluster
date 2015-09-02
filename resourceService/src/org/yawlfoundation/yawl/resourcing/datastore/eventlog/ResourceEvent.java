@@ -23,7 +23,7 @@ import org.yawlfoundation.yawl.engine.interfce.WorkItemRecord;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 /**
- * An object representing one resourcing cluster.event for logging.
+ * An object representing one resourcing event for logging.
  *
  * @author Michael Adams
  *         Date: 23/08/2009
@@ -103,14 +103,14 @@ public class ResourceEvent extends BaseEvent implements Cloneable {
 
 
     public String toXML() {
-        StringBuilder xml = new StringBuilder(String.format("<cluster.event key=\"%d\">", _id));
+        StringBuilder xml = new StringBuilder(String.format("<event key=\"%d\">", _id));
         xml.append(StringUtil.wrap(String.valueOf(_specKey), "speckey"))
                 .append(StringUtil.wrap(_caseID, "caseid"))
                 .append(StringUtil.wrap(_taskID, "taskid"))
                 .append(StringUtil.wrap(_itemID, "itemid"))
                 .append(StringUtil.wrap(_resourceID, "resourceid"))
                 .append(super.toXML())
-                .append("</cluster.event>");
+                .append("</event>");
         return xml.toString();
     }
 

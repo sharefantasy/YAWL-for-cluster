@@ -35,7 +35,7 @@ import java.util.Map;
 public class ResourceGatewayClient extends Interface_Client {
 
     /** the uri of the resource service's __ resource gateway__
-     * a default would be "http://localhost:413/resourceService/gateway"
+     * a default would be "http://localhost:8080/resourceService/gateway"
      */
     private String _serviceURI ;
 

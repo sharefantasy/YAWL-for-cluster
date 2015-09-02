@@ -32,7 +32,7 @@ import java.util.Map;
 public class ResourceCalendarGatewayClient extends Interface_Client {
 
     /** the uri of the resource service's __ calendar gateway__
-     * a default would be "http://localhost:413/resourceService/calendarGateway"
+     * a default would be "http://localhost:8080/resourceService/calendarGateway"
      */
     private String _serviceURI ;
 

@@ -271,22 +271,22 @@
 
                   <ui:textField binding="#{calendarMgt.txtStartTime}"
                                 id="txtStartTime"
-                                onKeyPress="return disableEnterKey(cluster.event);"
+                                onKeyPress="return disableEnterKey(event);"
                                 style="left: 100px; top: 42px; width: 40px; position: absolute"/>
 
                   <ui:textField binding="#{calendarMgt.txtEndTime}"
                                 id="txtEndTime"
-                                onKeyPress="return disableEnterKey(cluster.event);"
+                                onKeyPress="return disableEnterKey(event);"
                                 style="left: 240px; top: 42px; width: 40px; position: absolute"/>
 
                   <ui:textField binding="#{calendarMgt.txtWorkload}"
                                 id="txtWorkload"
-                                onKeyPress="return disableEnterKey(cluster.event);"
+                                onKeyPress="return disableEnterKey(event);"
                                 style="left: 100px; top: 72px; width: 40px; position: absolute"/>
 
                   <ui:textField binding="#{calendarMgt.txtComments}"
                                 id="txtComments"
-                                onKeyPress="return disableEnterKey(cluster.event);"
+                                onKeyPress="return disableEnterKey(event);"
                                 style="left: 240px; top: 72px; width: 310px; position: absolute"/>
 
                             <ui:calendar binding="#{calendarMgt.calDuration}"

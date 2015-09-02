@@ -41,10 +41,10 @@ public class AuditEvent extends BaseEvent {
     public void set_userid(String userid) { _userid = userid; }
 
     public String toXML() {
-        StringBuilder xml = new StringBuilder(String.format("<cluster.event key=\"%d\">", _id));
+        StringBuilder xml = new StringBuilder(String.format("<event key=\"%d\">", _id));
         xml.append(StringUtil.wrap(_userid, "userid"))
            .append(super.toXML())
-           .append("</cluster.event>") ;
+           .append("</event>") ;
         return xml.toString();
     }
 

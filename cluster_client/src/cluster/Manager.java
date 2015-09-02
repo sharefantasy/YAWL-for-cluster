@@ -4,6 +4,7 @@ import cluster.data.EngineInfo;
 import cluster.data.EngineStatus;
 import cluster.event.exceptions.GeneralException;
 import org.apache.log4j.Logger;
+import org.omg.PortableInterceptor.INACTIVE;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.util.HibernateEngine;
 import org.yawlfoundation.yawl.util.StringUtil;
@@ -41,7 +42,7 @@ public class Manager {
         return _manager;
     }
 
-    public void login(String id, String password) throws GeneralException {
+    public void login(String id, String password) throws GeneralException, IOException {
         EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
         if (engine != null){
             if (engine.getPassword().equals(password)){
@@ -50,7 +51,7 @@ public class Manager {
                 activeEngineRepo.put(engine.getEngineID(), engine);
                 _logger.info(engine.getEngineID() + " login");
                 // TODO: raise login_event(this, engine)
-                distribute(engine);
+                //distribute(engine);
             }else{
                 throw new GeneralException("wrong password.");
             }
@@ -115,7 +116,12 @@ public class Manager {
         //TODO: raise heartbeat(engine)
         return "success";
     }
-
+    public void setEngineRole(String id, String role){
+        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        if (engine != null){
+            engine.setEngineRole(role);
+        }
+    }
     private void distribute(EngineInfo engine){
         int size = activeEngineRepo.values().size();
         String id = engine.getEngineID();
@@ -125,13 +131,13 @@ public class Manager {
                     String role = UUID.randomUUID().toString();
                     engine.setStatus(EngineStatus.WORKER);
                     engine.setEngineRole(role);
-                    _client.setEngineRole(id,_client.sessionHandles.get(id),role);
+                    _client.setEngineRole(id,role);
                 }
             }
             else {
                 engine.setStatus(EngineStatus.BACKUP);
                 engine.setEngineRole(null);
-                _client.setEngineRole(id,_client.sessionHandles.get(id),null);
+                _client.setEngineRole(id, null);
             }
         }
         catch (IOException e) {
@@ -143,7 +149,13 @@ public class Manager {
     public void set_client(InterfaceC_EnvironmentBasedClient _client) {
         this._client = _client;
     }
-
+    public void releaseAllEngine(){
+        activeEngineRepo.clear();
+        List<EngineInfo> list = _pm.getObjectsForClass("EngineInfo");
+        for (EngineInfo i : list){
+            i.setStatus(EngineStatus.INACTIVE);
+        }
+    }
     private class HeartbeatChecker{
         private Timer timer = new Timer();
         public HeartbeatChecker(){

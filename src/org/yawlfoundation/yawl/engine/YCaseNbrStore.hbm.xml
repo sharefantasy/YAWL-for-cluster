@@ -24,13 +24,13 @@
 <hibernate-mapping>
 
 	<class name="org.yawlfoundation.yawl.engine.YCaseNbrStore" table="CaseNbrStore">
+        <composite-id>
+            <key-property name="pkey" column="pkey" type="int"/>
+            <key-property name="engine" column="engine" access="field"/>
 
-       <id name="pkey" column="pkey" type="int">
-   		    <generator class="assigned"/>
-    	</id>
+        </composite-id>
 
         <property name="caseNbr" type="int" />
-
     </class>
 	
 </hibernate-mapping>

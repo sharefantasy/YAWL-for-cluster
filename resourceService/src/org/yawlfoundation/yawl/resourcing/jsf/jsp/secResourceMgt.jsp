@@ -78,7 +78,7 @@
                                       id="lbxParticipants"
                                       items="#{SessionBean.orgDataParticipantList}"
                                       valueChangeListener="#{secResourceMgt.lbxParticipants_processValueChange}"
-                                      onKeyPress="return disableEnterKey(cluster.event);"
+                                      onKeyPress="return disableEnterKey(event);"
                                       onChange="common_timeoutSubmitForm(this.form, 'lbxParticipants');"
                                       styleClass="secondaryResourcesListbox"/>
 
@@ -100,7 +100,7 @@
                                            id="lbxRoles"
                                            items="#{SessionBean.sortedRoleList}"
                                             valueChangeListener="#{secResourceMgt.lbxRoles_processValueChange}"
-                                            onKeyPress="return disableEnterKey(cluster.event);"
+                                            onKeyPress="return disableEnterKey(event);"
                                             onChange="common_timeoutSubmitForm(this.form, 'lbxRoles');"
                                            styleClass="secondaryResourcesListbox"/>
 
@@ -122,7 +122,7 @@
                                            id="lbxNHResources"
                                            items="#{SessionBean.nhResourcesList}"
                                            valueChangeListener="#{secResourceMgt.lbxNHResources_processValueChange}"
-                                            onKeyPress="return disableEnterKey(cluster.event);"
+                                            onKeyPress="return disableEnterKey(event);"
                                             onChange="common_timeoutSubmitForm(this.form, 'lbxNHResources');"
                                             styleClass="secondaryResourcesListbox"/>
 
@@ -144,7 +144,7 @@
                                            id="lbxNHCategories"
                                            items="#{SessionBean.nhResourcesCategoryListExpanded}"
                                            valueChangeListener="#{secResourceMgt.lbxNHCategories_processValueChange}"
-                                           onKeyPress="return disableEnterKey(cluster.event);"
+                                           onKeyPress="return disableEnterKey(event);"
                                            onChange="common_timeoutSubmitForm(this.form, 'lbxNHCategories');"
                                            styleClass="secondaryResourcesListbox"/>
 
@@ -167,7 +167,7 @@
                                            items="#{SessionBean.selectedSecondaryResources}"
                                            selected="#{SessionBean.selectedSecondaryResource}"
                                            valueChangeListener="#{secResourceMgt.lbxSelected_processValueChange}"
-                                           onKeyPress="return disableEnterKey(cluster.event);"
+                                           onKeyPress="return disableEnterKey(event);"
                                            onChange="common_timeoutSubmitForm(this.form, 'lbxSelected');"
                                            style="height: 450px; left: 12px; top: 35px; position: absolute; width: 276px"/>
 

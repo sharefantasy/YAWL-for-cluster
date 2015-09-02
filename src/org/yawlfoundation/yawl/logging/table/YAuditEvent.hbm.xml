@@ -32,10 +32,9 @@
 
         <property name="_username" column="userName"/>
         <property name="_event" column="eventType"/>
-        <property name="_timeStamp" column="eventTime" type="long"/>
-        <many-to-one name="engine" column="engine"
-                     class="org.yawlfoundation.yawl.engine.interfce.interfaceC.data.EngineInfo"
-                     access="field" />
+        <property name="_timeStamp" column="eventTime" access="field"/>
+        <property name="engine" column="engine" access="field"/>
+
      </class>
 	
 </hibernate-mapping>

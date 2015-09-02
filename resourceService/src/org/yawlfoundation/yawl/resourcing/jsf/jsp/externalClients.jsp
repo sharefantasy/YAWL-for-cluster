@@ -167,7 +167,7 @@
                             <ui:textField binding="#{externalClients.txtName}"
                                           id="txtName"
                                           style="left: 100px; top: 40px; width: 200px; position: absolute"
-                                          onKeyPress="return disableEnterKey(cluster.event);"/>
+                                          onKeyPress="return disableEnterKey(event);"/>
  
                             <!--=====================================================-->
 
@@ -190,12 +190,12 @@
                             <ui:passwordField binding="#{externalClients.txtPassword}"
                                           id="txtPassword"
                                           style="left: 100px; top: 70px; width: 170px; position: absolute"
-                                          onKeyPress="return disableEnterKey(cluster.event);"/>
+                                          onKeyPress="return disableEnterKey(event);"/>
 
                             <ui:passwordField binding="#{externalClients.txtConfirmPassword}"
                                            id="txtConfirmPassword"
                                            style="left: 430px; top: 70px; width: 170px; position: absolute"
-                                           onKeyPress="return disableEnterKey(cluster.event);"/>
+                                           onKeyPress="return disableEnterKey(event);"/>
 
                             <ui:textArea binding="#{externalClients.txtDescription}"
                                          id="txtDescription"
