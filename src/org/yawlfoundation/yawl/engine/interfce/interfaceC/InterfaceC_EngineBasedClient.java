@@ -77,7 +77,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
         return executePost(clusterURI, params);
     }
     public String getEngineRole() throws IOException {
-        Map<String, String> params = prepareParamMap("getenginerole", null);
+        Map<String, String> params = prepareParamMap("getEngineRole", null);
         params.put("engineID", engineID);
         params.put("password", PasswordEncryptor.encrypt(password, null));
         return executePost(clusterURI, params);

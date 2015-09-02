@@ -12,6 +12,7 @@ import org.yawlfoundation.yawl.util.StringUtil;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * Created by fantasy on 2015/8/22.
@@ -23,7 +24,7 @@ public class Manager {
     private HeartbeatChecker checker = new HeartbeatChecker();
     private PersistenceManager _pm;
     private InterfaceC_EnvironmentBasedClient _client;
-    private int MAX_WORKER = -1;
+    private int MAX_WORKER = 1;
     private int MIN_BACKUP = 1;
     private Manager(boolean persist){
         _pm = new PersistenceManager(persist);
@@ -32,12 +33,12 @@ public class Manager {
     private Manager(boolean persist, Map<String, String> params){
         _pm = new PersistenceManager(persist);
         activeEngineRepo = new ConcurrentHashMap<>();
-        MAX_WORKER =  StringUtil.strToInt(params.get("MAX_WORKER"), 10);
-        MIN_BACKUP =  StringUtil.strToInt(params.get("MIN_BACKUP"), 10);
+        MAX_WORKER =  StringUtil.strToInt(params.get("MAX_WORKER"), 1);
+//        MIN_BACKUP =  StringUtil.strToInt(params.get("MIN_BACKUP"), 1);
     }
     public static Manager getInstance(){
         if (_manager == null){
-            _manager = new Manager(false);
+            _manager = new Manager(true);
         }
         return _manager;
     }
@@ -51,12 +52,12 @@ public class Manager {
                 activeEngineRepo.put(engine.getEngineID(), engine);
                 _logger.info(engine.getEngineID() + " login");
                 // TODO: raise login_event(this, engine)
-                //distribute(engine);
             }else{
                 throw new GeneralException("wrong password.");
             }
         }
-        else throw new GeneralException(id + " password is not correct");
+        else
+            throw new GeneralException(id + " password is not correct");
     }
     public void logout(String id, String password) throws GeneralException {
         if (activeEngineRepo.containsKey(id)){
@@ -64,6 +65,9 @@ public class Manager {
                     .getPassword().equals(password)){
                 _logger.info(id + " disconnect");
                 activeEngineRepo.remove(id);
+                EngineInfo engine = activeEngineRepo.get(id);
+                engine.setStatus(EngineStatus.INACTIVE);
+                _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
             }
             else {
                 EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
@@ -90,7 +94,8 @@ public class Manager {
         EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
         if (engine == null)
             throw new GeneralException(id + "is not registered");
-        if (activeEngineRepo.containsKey(engine.getEngineID())){
+        if (activeEngineRepo.containsKey(engine.getEngineID())
+                || password.equals(engine.getPassword())){
             activeEngineRepo.remove(engine.getEngineID(), engine);
         }
         _pm.exec(engine, HibernateEngine.DB_DELETE, true);
@@ -100,7 +105,7 @@ public class Manager {
     public boolean isLogin(String id, String password) throws GeneralException {
         EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
         if (engine == null)
-            throw new GeneralException(id + "is not registered");
+            throw new GeneralException(id + " is not registered");
         if (!engine.getPassword().equals(password))
             throw new GeneralException(id + " password is not correct");
         return activeEngineRepo.containsKey(id);
@@ -111,9 +116,10 @@ public class Manager {
         if (isLogin(id, password)){
             EngineInfo engine = activeEngineRepo.get(id);
             engine.clearLost();
-
-        }
-        //TODO: raise heartbeat(engine)
+            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
+            _logger.info(String.format("%s as %s heartbeat", id, engine.getEngineRole()));
+        }else
+            throw new GeneralException(id + " doesn't not login");
         return "success";
     }
     public void setEngineRole(String id, String role){
@@ -122,39 +128,49 @@ public class Manager {
             engine.setEngineRole(role);
         }
     }
-    private void distribute(EngineInfo engine){
-        int size = activeEngineRepo.values().size();
-        String id = engine.getEngineID();
-        try {
-            if (size < MAX_WORKER){
-                if (size % 2 == 0){
-                    String role = UUID.randomUUID().toString();
-                    engine.setStatus(EngineStatus.WORKER);
-                    engine.setEngineRole(role);
-                    _client.setEngineRole(id,role);
-                }
-            }
-            else {
-                engine.setStatus(EngineStatus.BACKUP);
-                engine.setEngineRole(null);
-                _client.setEngineRole(id, null);
-            }
+    public String distribute(String id){
+        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        long size = activeEngineRepo.values().stream()
+                .filter(i -> i.getStatus() == EngineStatus.WORKER).count();
+        String role = null;
+        if (size <= MAX_WORKER){
+            role = UUID.randomUUID().toString();
+            engine.setStatus(EngineStatus.WORKER);
+            activeEngineRepo.get(id).setStatus(EngineStatus.BACKUP);
+            engine.setEngineRole(role);
+            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
+            size++;
         }
-        catch (IOException e) {
-            e.printStackTrace();
-            _logger.error(engine.getEngineID() + " lost connect");
+        else {
+            engine.setStatus(EngineStatus.BACKUP);
+            engine.setEngineRole(null);
+            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
+        }
+        _logger.info("worker_num = " + size);
+        return role;
+    }
+    private String takeBackup(EngineInfo engine) throws GeneralException, IOException {
+        EngineInfo backup;
+        try{
+            backup = activeEngineRepo.values().stream()
+                    .filter(e -> e.getStatus() == EngineStatus.BACKUP)
+                    .findFirst().get();
+            backup.roleTaking(engine);
+            backup.setStatus(EngineStatus.WORKER);
+            _client.setEngineRole(backup.getEngineID(), backup.getEngineRole());
+            _pm.exec(backup,HibernateEngine.DB_UPDATE, true);
+            return backup.getEngineID();
+        }catch (NullPointerException e){
+            throw new GeneralException("no backup, engineRole " + engine.getEngineRole() + " lost");
         }
     }
-
     public void set_client(InterfaceC_EnvironmentBasedClient _client) {
         this._client = _client;
     }
     public void releaseAllEngine(){
         activeEngineRepo.clear();
-        List<EngineInfo> list = _pm.getObjectsForClass("EngineInfo");
-        for (EngineInfo i : list){
-            i.setStatus(EngineStatus.INACTIVE);
-        }
+        List<EngineInfo> list = (List<EngineInfo>)_pm.getObjectsForClass("EngineInfo");
+        list.stream().forEach(i -> i.setStatus(EngineStatus.INACTIVE));
     }
     private class HeartbeatChecker{
         private Timer timer = new Timer();
@@ -162,22 +178,28 @@ public class Manager {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Date d = new Date();
-                    boolean flag = true;
-                    for(EngineInfo e : activeEngineRepo.values()){
-                        if (d.getTime() - e.getLastHeartbeatTime().getTime() > 5000){
-                            _logger.warn("lost " + e.getEngineID() + " at " + d.toString());
-                            flag = false;
-                            e.setStatus(EngineStatus.UNHEALTHY);
-                            //TODO: raise miss_heartbeat(engine)
-                        }
-                    }
-                    if (flag){
+                    final boolean[] flag = {true};
+                    activeEngineRepo.values().stream()
+                            .filter(e -> (new Date()).getTime() - e.getLastHeartbeatTime().getTime() > 5000)
+                            .forEach(e -> {
+                                _logger.warn(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
+                                flag[0] = false;
+                                try {
+                                    _logger.info(String.format("%s take up %s", takeBackup(e), e.getEngineRole()));
+                                    e.setStatus(EngineStatus.UNHEALTHY);
+                                    activeEngineRepo.remove(e.getEngineID());
+                                } catch (GeneralException e1) {
+                                    _logger.error(e1.getMsg());
+                                } catch (IOException e1) {
+                                    _logger.error(e1.getMessage());
+                                }
+                            });
+                    if (flag[0])
                         _logger.info("heartbeat all clear");
-                    }
                 }
             },10000,10000);
         }
+
     }
 
 

@@ -52,7 +52,6 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
         String engineID = request.getParameter("engineID");
         String password = request.getParameter("password");
 
-        System.out.println(action);
         try {
             if (_debug) {
                 debug(request, "Post");
@@ -75,6 +74,9 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
                 }
                 else if ("heartbeat".equals(action)){
                     msg.append(controller.heartbeat(engineID, password));
+                }
+                else if ("getEngineRole".equals(action)){
+                    msg.append(controller.getEngineRole(engineID, password));
                 }
             }
         } catch (RemoteException e) {

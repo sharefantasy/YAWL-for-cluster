@@ -1,5 +1,6 @@
 package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 
+import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.engine.interfce.EngineGateway;
@@ -31,6 +32,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
     private InterfaceC_EngineBasedClient _client;
     private boolean enableCluster;
     private String engineRole;
+    private Logger _logger = Logger.getLogger(InterfaceC_EngineBasedServer.class);
     public void init() throws ServletException {
         int maxWaitSeconds = 5;
         try {
@@ -79,23 +81,28 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             if ("success".equals(_client.register())
                     || "success".equals(_client.connect())){
                 String role = _client.getEngineRole();
-                YPersistenceManager.setEngineRole(role);
-                YEngine.getInstance().restore();
+                System.out.println("role "+ role);
+                _logger.info("role "+ role);
+                if (!role.equals("failed")){
+                    YPersistenceManager.setEngineRole(role);
+                    YEngine.getInstance().restore();
+                    _logger.info("new role " + role);
+                }
                 _client.heartbeat();
             }
 
         } catch (YPersistenceException e) {
-            _log.fatal("Failure to initialise runtime (persistence failure)", e);
+            _logger.fatal("Failure to initialise runtime (persistence failure)", e);
             throw new UnavailableException("Persistence failure");
         } catch (IOException e) {
             e.printStackTrace();
-            _log.error("cluster management lost");
+            _logger.error("cluster management lost");
         }
 
         if (_engine != null) {
             _engine.notifyServletInitialisationComplete(maxWaitSeconds);
         } else {
-            _log.fatal("Failed to initialise Engine (unspecified failure). Please " +
+            _logger.fatal("Failed to initialise Engine (unspecified failure). Please " +
                     "consult the logs for details");
             throw new UnavailableException("Unspecified engine failure");
         }
@@ -110,12 +117,12 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
 
         OutputStreamWriter outputWriter = ServletUtils.prepareResponse(response);
         if (_engine.enginePersistenceFailure()) {
-            _log.fatal("************************************************************");
-            _log.fatal("A failure has occurred whilst persisting workflow state to the");
-            _log.fatal("database. Check the status of the database connection defined");
-            _log.fatal("for the YAWL service, and restart the YAWL web application.");
-            _log.fatal("Further information may be found within the Tomcat log files.");
-            _log.fatal("************************************************************");
+            _logger.fatal("************************************************************");
+            _logger.fatal("A failure has occurred whilst persisting workflow state to the");
+            _logger.fatal("database. Check the status of the database connection defined");
+            _logger.fatal("for the YAWL service, and restart the YAWL web application.");
+            _logger.fatal("Further information may be found within the Tomcat log files.");
+            _logger.fatal("************************************************************");
             response.sendError(500, "Database persistence failure detected");
         }
         outputWriter.write("<response>" + processPostQuery(request) + "</response>");
@@ -136,26 +143,32 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                     Date date = new Date();
                     _engine.restore(sessionHandle);
                     msg.append((new Date()).getTime() - date.getTime());
-                    _log.info("Remote called restore act");
+                    _logger.info("Remote called restore act");
                 }
                 else if(action.equalsIgnoreCase("heartbeat")) {
                     msg.append("normal");
-                    _log.info("Normal heartbeat at " + new Date().toString());
+                    _logger.info("Normal heartbeat at " + new Date().toString());
                 }
                 else if(action.equalsIgnoreCase("setEngineRole")) {
                     msg.append("success");
                     engineRole = request.getParameter("engineRole");
                     YPersistenceManager.setEngineRole(engineRole);
                     _engine.restore(sessionHandle);
-                    _log.info("New engine role '" + engineRole + "'get");
+                    _logger.info("New engine role '" + engineRole + "'get");
                 }
                 else if(action.equalsIgnoreCase("clusterShutdown")) {
                     msg.append("success");
                     _client.clusterShutdown();
                     engineRole = null;
-                    _log.info("cluster service shutdown");
+                    _logger.info("cluster service shutdown");
                 }
-                if ("connect".equals(action)) {
+                else if (action.equalsIgnoreCase("clusterShutdown")) {
+                    msg.append("success");
+                    _client.clusterShutdown();
+                    engineRole = null;
+                    _logger.info("cluster service shutdown");
+                }
+                else if ("connect".equals(action)) {
                     String userID = request.getParameter("userID");
                     String password = request.getParameter("password");
                     int interval = request.getSession().getMaxInactiveInterval();

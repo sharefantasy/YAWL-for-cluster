@@ -69,8 +69,9 @@ public class EngineInfo {
         this.lastLogineTime = lastLogineTime;
     }
 
-    public void roleExchange(EngineInfo changer){
+    public void roleTaking(EngineInfo changer){
         engineRole = changer.engineRole;
+        engineRole = null;
     }
     public void clearLost(){
         lastHeartbeatTime = new Date();

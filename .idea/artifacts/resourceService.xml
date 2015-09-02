@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="resourceService">
+  <artifact type="exploded-war" name="resourceService">
     <output-path>$PROJECT_DIR$/out/artifacts/resourceService</output-path>
-    <root id="archive" name="resourceService.war">
+    <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="resourceService" />

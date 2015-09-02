@@ -64,13 +64,15 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
         try {
             _manager.logout(engineID, identifier);
             _client.disconnect(engineID);
-            _client.urls.remove(engineID);
         } catch (GeneralException e) {
             _logger.info(e.getMsg());
             return e.getMsg();
         } catch (IOException e) {
             _logger.error(engineID + " connection lost");
             return e.getMessage();
+        }finally {
+
+            _client.urls.remove(engineID);
         }
         return "success";
     }
@@ -107,22 +109,26 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
         } catch (GeneralException e) {
             e.printStackTrace();
             _logger.warn(engineID + " heartbeat abnormal");
+            return "abnormal";
         }
-        _logger.info(engineID + " heartbeat");
         return "success";
     }
 
     @Override
     public String getEngineRole(String engineID, String password) throws RemoteException {
-        String role = UUID.randomUUID().toString();
         try {
             if(_manager.isLogin(engineID, password)){
+                String role = _manager.distribute(engineID);
                 _manager.setEngineRole(engineID, role);
+                return role;
+            }else{
+                return "failed";
             }
         } catch (GeneralException e) {
             e.printStackTrace();
+            return "failed";
         }
-        return role;
+
     }
 
     public void destroy(){
