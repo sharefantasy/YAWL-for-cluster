@@ -30,8 +30,8 @@
             type="long">
             <generator class="native"/>
         </id>
-
-        <property name="_wirID" column="wirID"/>
+          <property name="engine" column="engine" access="field" type="string"/>
+          <property name="_wirID" column="wirID"/>
         <property name="_wirStr" column="wir" type="text"/>
 
     </class>

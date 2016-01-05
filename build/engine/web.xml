@@ -29,10 +29,10 @@
 
     <context-param>
         <param-name>EngineRole</param-name>
-        <param-value>0</param-value>
+        <param-value>default</param-value>
         <description>
             Define engine password in a specific YAWL engine cluster,
-            could be any string,should be unique in the network. Default to 0.
+            could be any string,should be unique in the network. Default to 'default'.
         </description>
     </context-param>
 

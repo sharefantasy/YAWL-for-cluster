@@ -41,6 +41,15 @@ public class NonHumanCategory implements Comparable<NonHumanCategory> {
 
     // filters the resources in this category via a set of subcategory strings
     protected Set<NonHumanSubCategory> _subcategories;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public NonHumanCategory() {
         _subcategories = new HashSet<NonHumanSubCategory>();

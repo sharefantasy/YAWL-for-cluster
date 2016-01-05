@@ -61,6 +61,15 @@ public class WorkQueue {
     private String _ownerID ;                                // who owns this queue?
     private int _queueType ;
     private boolean _persisting ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     /******************************************************************************/

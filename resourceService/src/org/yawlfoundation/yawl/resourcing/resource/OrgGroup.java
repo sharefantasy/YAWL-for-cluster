@@ -37,6 +37,15 @@ public class OrgGroup extends AbstractResourceAttribute implements Comparable {
     private GroupType _groupType ;
     private OrgGroup _belongsTo ;
     private String _belongsToID ;               // needed for non-hibernate db backends
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public static enum GroupType {
         GROUP, TEAM, UNIT, BRANCH, DIVISION, CLUSTER, DEPARTMENT

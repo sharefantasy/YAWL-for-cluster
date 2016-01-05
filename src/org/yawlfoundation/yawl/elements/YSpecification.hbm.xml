@@ -29,7 +29,7 @@
         </id>
 
         <property name="persistedXML" column="specXML" type="text"/>
-        <property name="engine" column="engine" access="field" />
+        <property name="engine" column="engine" access="field"  type="string"/>
 	</class>
 	
 </hibernate-mapping>

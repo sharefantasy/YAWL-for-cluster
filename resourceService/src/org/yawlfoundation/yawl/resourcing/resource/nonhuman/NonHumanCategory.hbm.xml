@@ -24,13 +24,15 @@
 
 	<class name="NonHumanCategory" table="rs_NonHumanCategory" lazy="false">
 
+
         <id name="_id"
             column="CategoryID"
             type="string"
             access="field">
         </id>
+        <property name="engine" column="engine" access="field" type="string"/>
 
-    	<property name="_categoryName"
+        <property name="_categoryName"
                   column="CategoryName"
                   type="string"
                   access="field"/>

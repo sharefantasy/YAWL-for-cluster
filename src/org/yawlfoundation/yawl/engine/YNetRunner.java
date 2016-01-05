@@ -40,6 +40,7 @@ import org.yawlfoundation.yawl.logging.YLogDataItemList;
 import org.yawlfoundation.yawl.logging.YLogPredicate;
 import org.yawlfoundation.yawl.util.JDOMUtil;
 
+import java.net.Socket;
 import java.net.URL;
 import java.util.*;
 

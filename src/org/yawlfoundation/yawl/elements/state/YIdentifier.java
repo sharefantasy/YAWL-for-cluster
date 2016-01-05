@@ -23,6 +23,7 @@ import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -32,8 +33,10 @@ import java.util.*;
  * @author Lachlan Aldred
  * @author Michael Adams (refactored for v2.0, 06/08 & 04/09)
  */
-public class YIdentifier {
 
+public class YIdentifier implements Serializable{
+
+    private Long pk;
     // a location may be a condition or a task
     private List<YNetElement> _locations = new Vector<YNetElement>();
 
@@ -191,7 +194,7 @@ public class YIdentifier {
 
 
     public String toString() {
-        return _idString;
+        return engine + "_" + _idString;
     }
 
 
@@ -322,5 +325,13 @@ public class YIdentifier {
      */
     public int hashCode() {
         return this.toString().hashCode();
+    }
+
+    public Long getPk() {
+        return pk;
+    }
+
+    public void setPk(Long pk) {
+        this.pk = pk;
     }
 }

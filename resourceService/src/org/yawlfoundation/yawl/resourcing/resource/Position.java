@@ -39,6 +39,15 @@ public class Position extends AbstractResourceAttribute implements Comparable {
     // needed for non-hibernate db backends
     private String _orgGroupID ;
     private String _reportsToID ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public Position() { super(); }

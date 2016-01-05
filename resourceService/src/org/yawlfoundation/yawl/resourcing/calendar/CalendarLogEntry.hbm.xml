@@ -39,6 +39,7 @@
         <property name="timestamp"   column="entryTime" type="long"/>
         <property name="status"      column="entryStatus"/>
         <property name="calendarKey" type="long"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 	</class>
 
 </hibernate-mapping>

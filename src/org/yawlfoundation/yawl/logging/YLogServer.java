@@ -135,8 +135,8 @@ public class YLogServer {
         if (connected()) {
             try {
                 Iterator itr = _pmgr.createQuery(
-                        "select ni from YLogNet as n, YLogNetInstance as ni " +
-                                "where ni.netID=n.netID and n.specKey=:specKey")
+                        String.format("select ni from YLogNet as n, YLogNetInstance as ni " +
+                                "where ni.netID=n.netID and n.specKey=:specKey and n.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("specKey", specKey).iterate();
                 if (itr.hasNext()) {
                     StringBuilder xml = new StringBuilder();
@@ -167,8 +167,8 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogEvent as e where " +
-                        "e.rootNetInstanceID=:key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogEvent as e " +
+                        "where e.rootNetInstanceID=:keyand e.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("key", rootNetInstanceKey)
                         .iterate();
                 if (itr.hasNext()) {
@@ -199,7 +199,9 @@ public class YLogServer {
         if (connected()) {
             try {
                 Iterator itr = _pmgr.createQuery(
-                        "from YLogNetInstance as n where n.engineInstanceID=:caseID")
+                        String.format("from YLogNetInstance as n " +
+                                "where n.engineInstanceID=:caseID " +
+                                "and e.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("caseID", caseID).iterate();
                 if (itr.hasNext()) {
                     YLogNetInstance instance = (YLogNetInstance) itr.next();
@@ -222,11 +224,10 @@ public class YLogServer {
         if (connected()) {
             try {
                 Iterator itr = _pmgr.createQuery(
-                        "from YLogTaskInstance as ti, YLogTask as t " +
-                                "where (ti.engineInstanceID=:caseID " +
-                                "or ti.engineInstanceID like :caseIDlike) " +
-                                "and ti.taskID=t.taskID " +
-                                "and t.name=:taskName")
+                        String.format("from YLogTaskInstance as ti, YLogTask as t " +
+                                "where (ti.engineInstanceID=:caseID or ti.engineInstanceID like :caseIDlike) " +
+                                "and ti.taskID=t.taskID and t.name=:taskName " +
+                                "and ti.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("caseID", caseID)
                         .setString("caseIDlike", caseID + ".%")
                         .setString("taskName", taskName).iterate();
@@ -258,8 +259,9 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogEvent as e where " +
-                        "e.instanceID=:key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogEvent as e " +
+                        "where e.instanceID=:key " +
+                        "and e.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("key", instanceKey)
                         .iterate();
                 if (itr.hasNext()) {
@@ -289,8 +291,9 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogDataItemInstance as di where " +
-                        "di.eventID=:key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogDataItemInstance as di " +
+                        "where di.eventID=:key " +
+                        "and di.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("key", eventKey)
                         .iterate();
                 if (itr.hasNext()) {
@@ -319,8 +322,9 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogDataType as dt where " +
-                        "dt.dataTypeID=:key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogDataType as dt " +
+                        "where dt.dataTypeID=:key " +
+                        "and dt.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("key", dataTypeKey)
                         .iterate();
                 if (itr.hasNext()) {
@@ -345,8 +349,9 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogTaskInstance as ti where " +
-                        "ti.engineInstanceID like :key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogTaskInstance as ti " +
+                        "where ti.engineInstanceID like :key " +
+                        "and ti.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("key", caseID + ".%")
                         .iterate();
                 if (itr.hasNext()) {
@@ -375,8 +380,9 @@ public class YLogServer {
         String result;
         if (connected()) {
             try {
-                Iterator itr = _pmgr.createQuery("from YLogTaskInstance as ti where " +
-                        "ti.taskID=:key")
+                Iterator itr = _pmgr.createQuery(String.format("from YLogTaskInstance as ti " +
+                        "where ti.taskID=:key " +
+                        "and ti.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setLong("key", taskKey)
                         .iterate();
                 if (itr.hasNext()) {
@@ -436,9 +442,10 @@ public class YLogServer {
         if (connected()) {
             try {
                 Iterator itr = _pmgr.createQuery(
-                        "select e from YLogEvent as e, YLogNetInstance as ni where " +
-                                "ni.engineInstanceID=:caseID and e.instanceID=ni.netInstanceID " +
-                                "and e.descriptor=:eventType")
+                        String.format("select e from YLogEvent as e, YLogNetInstance as ni " +
+                                "where ni.engineInstanceID=:caseID " +
+                                "and e.instanceID=ni.netInstanceID " +
+                                "and e.descriptor=:eventType and e.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("caseID", caseID)
                         .setString("eventType", eventType)
                         .iterate();
@@ -469,9 +476,10 @@ public class YLogServer {
         if (connected()) {
             try {
                 Iterator itr = _pmgr.createQuery(
-                        "select e from YLogEvent as e, YLogService as s where " +
-                                "s.serviceID=e.serviceID and " +
-                                "s.name=:serviceName and e.descriptor=:cluster.event")
+                        String.format("select e from YLogEvent as e, YLogService as s " +
+                                "where s.serviceID=e.serviceID and " +
+                                "s.name=:serviceName and " +
+                                "e.descriptor=:cluster.event and e.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("serviceName", serviceName)
                         .setString("event", eventType)
                         .iterate();
@@ -979,16 +987,21 @@ public class YLogServer {
             String identifier = specID.getIdentifier();
             Iterator itr;
             if (identifier != null) {
-                itr = _pmgr.createQuery("from YLogSpecification as s where " +
-                        "s.identifier=:id and s.version=:version and s.uri=:uri")
+                itr = _pmgr.createQuery(String.format("from YLogSpecification as s " +
+                        "where s.identifier=:id " +
+                        "and s.version=:version " +
+                        "and s.uri=:uri " +
+                        "and s.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("id", identifier)
                         .setString("version", specID.getVersionAsString())
                         .setString("uri", specID.getUri())
                         .iterate();
             }
             else {
-                itr = _pmgr.createQuery("from YLogSpecification as s where " +
-                        "s.version=:version and s.uri=:uri")
+                itr = _pmgr.createQuery(String.format("from YLogSpecification as s " +
+                        "where s.version=:version " +
+                        "and s.uri=:uri " +
+                        "and s.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("version", specID.getVersionAsString())
                         .setString("uri", specID.getUri())
                         .iterate();
@@ -1011,7 +1024,8 @@ public class YLogServer {
 
     private List getNets(long specKey) throws YPersistenceException {
         if (connected()) {
-            return _pmgr.createQuery("from YLogNet as n where n.specKey=:specKey")
+            return _pmgr.createQuery(String.format("from YLogNet as n " +
+                    "where n.specKey=:specKey and n.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setLong("specKey", specKey)
                     .list();
         }
@@ -1046,8 +1060,9 @@ public class YLogServer {
 
     private List getNetInstances(String caseID) throws YPersistenceException {
         if (connected()) {
-            return _pmgr.createQuery("from YLogNetInstance as ni where " +
-                    "ni.engineInstanceID=:caseid or ni.engineInstanceID like :likeid")
+            return _pmgr.createQuery(String.format("from YLogNetInstance as ni " +
+                    "where ni.engineInstanceID=:caseid or ni.engineInstanceID like :likeid  " +
+                    "and ni.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setString("caseid", caseID)
                     .setString("likeid", caseID + ".%")
                     .list();
@@ -1062,8 +1077,11 @@ public class YLogServer {
             String taskName = getTaskNameForWorkItem(caseID, itemID);
             if (taskName != null) {
                 List result = _pmgr.createQuery(
-                        "from YLogTaskInstance as ti, YLogTask as t where ti.engineInstanceID=:caseID" +
-                                " and t.name=:taskName and t.taskID=ti.taskID")
+                        String.format("from YLogTaskInstance as ti, YLogTask as t " +
+                                "where ti.engineInstanceID=:caseID " +
+                                "and t.name=:taskName " +
+                                "and t.taskID=ti.taskID " +
+                                "and ti.engine='%s'", YPersistenceManager.getEngineRole()))
                         .setString("caseID", caseID)
                         .setString("taskName", taskName)
                         .list();
@@ -1108,8 +1126,8 @@ public class YLogServer {
 
     private List getInstanceEventObjects(long key) throws YPersistenceException {
         if (connected()) {
-            return _pmgr.createQuery("from YLogEvent as e where e.instanceID=:key " +
-                    "order by e.timestamp")
+            return _pmgr.createQuery(String.format("from YLogEvent as e where e.instanceID=:key order by e.timestamp " +
+                    "and e.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setLong("key", key)
                     .list();
         }
@@ -1119,7 +1137,9 @@ public class YLogServer {
     private List getTaskInstanceObjects(long key) throws YPersistenceException {
         if (connected()) {
             return _pmgr.createQuery(
-                    "from YLogTaskInstance as ti where ti.parentNetInstanceID=:key")
+                    String.format("from YLogTaskInstance as ti " +
+                            "where ti.parentNetInstanceID=:key " +
+                            "and ti.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setLong("key", key)
                     .list();
         }
@@ -1128,7 +1148,8 @@ public class YLogServer {
 
     private List getNetInstanceObjects(long key) throws YPersistenceException {
         if (connected()) {
-            return _pmgr.createQuery("from YLogNetInstance as ni where ni.netID=:key")
+            return _pmgr.createQuery(String.format("from YLogNetInstance as ni " +
+                    "where ni.netID=:key and ni.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setLong("key", key)
                     .list();
         }
@@ -1137,7 +1158,9 @@ public class YLogServer {
 
     private List getDataItemInstanceObjects(long key) throws YPersistenceException {
         if (connected()) {
-            return _pmgr.createQuery("from YLogDataItemInstance as di where di.eventID=:key")
+            return _pmgr.createQuery(String.format("from YLogDataItemInstance as di " +
+                    "where di.eventID=:key " +
+                    "and di.engine='%s'", YPersistenceManager.getEngineRole()))
                     .setLong("key", key)
                     .list();
         }

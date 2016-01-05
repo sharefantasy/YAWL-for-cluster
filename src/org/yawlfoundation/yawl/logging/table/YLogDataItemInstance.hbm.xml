@@ -34,7 +34,7 @@
     	<property name="value"      column="itemValue" type="text"/>
         <property name="descriptor" type="string"/>
         <property name="dataTypeID" type="long"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
 	</class>
 

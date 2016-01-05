@@ -34,7 +34,7 @@
     	<property name="instanceID"        type="long"/>
         <property name="serviceID"         type="long"/> 
         <property name="rootNetInstanceID" type="long"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
 	</class>
 

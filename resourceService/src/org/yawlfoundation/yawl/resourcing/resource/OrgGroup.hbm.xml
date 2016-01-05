@@ -49,8 +49,10 @@
                      column="BelongsTo"
                      class="OrgGroup"
                      access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
-     </class>
+
+    </class>
   
 
 </hibernate-mapping>

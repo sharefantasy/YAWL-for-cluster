@@ -45,6 +45,7 @@
             <key column="CapabilityID"/>
             <many-to-many class="Participant" column="ParticipantID" lazy="false"/>
         </set>
+        <property name="engine" column="engine" access="field" type="string"/>
 
     </class>
 	

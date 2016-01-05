@@ -28,6 +28,15 @@ import org.yawlfoundation.yawl.util.StringUtil;
 public class AuditEvent extends BaseEvent {
 
     private String _userid ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public AuditEvent() { }
 

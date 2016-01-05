@@ -32,7 +32,9 @@
 
         <property name="_userid" column="userID"/>
         <property name="_event" column="event"/>
-        <property name="_timeStamp" column="eventTime" type="long"/>       
-     </class>
+        <property name="_timeStamp" column="eventTime" type="long"/>
+        <property name="engine" column="engine" access="field" type="string"/>
+
+    </class>
 	
 </hibernate-mapping>

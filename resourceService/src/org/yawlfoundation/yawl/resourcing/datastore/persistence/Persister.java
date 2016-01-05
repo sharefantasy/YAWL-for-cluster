@@ -27,6 +27,7 @@ import org.yawlfoundation.yawl.resourcing.datastore.eventlog.SpecLog;
 import org.yawlfoundation.yawl.resourcing.resource.UserPrivileges;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public final class Persister implements Serializable {
 
     private static final HibernateEngine _db = HibernateEngine.getInstance(true);
     private static final Persister INSTANCE = new Persister();
-
+    private static String engine;
 
     private Persister() { }
 
@@ -51,25 +52,31 @@ public final class Persister implements Serializable {
     // only want one persister instance at runtime
     public static Persister getInstance() { return INSTANCE; }
 
+    public static void setEngine(String engine) {
+        Persister.engine = engine;
+    }
+    public static String getEngine(){
+        return engine;
+    }
 
-   /*******************************************************************************/
+    /*******************************************************************************/
 
    public Map<String, Object> selectMap(String className) {
        Map<String, Object> result = new HashMap<String, Object>() ;
        if (className.endsWith("UserPrivileges")) {
-           List<UserPrivileges> upList = _db.getObjectsForClass(className) ;
+           List<UserPrivileges> upList = _db.getObjectsForClassWhere(className, String.format("engine='%s'", engine)) ;
            for (UserPrivileges up : upList) result.put(up.getID(), up) ;
        }
        else if (className.endsWith("WorkItemRecord")) {
-           List<WorkItemRecord> qsList = _db.getObjectsForClass(className) ;
+           List<WorkItemRecord> qsList = _db.getObjectsForClassWhere(className, String.format("engine='%s'", engine)) ;
            for (WorkItemRecord wir : qsList) result.put(wir.getID(), wir) ;
        }
        else if (className.endsWith("WorkQueue")) {
-           List<WorkQueue> wqList = _db.getObjectsForClass(className) ;
+           List<WorkQueue> wqList = _db.getObjectsForClassWhere(className, String.format("engine='%s'", engine)) ;
            for (WorkQueue wq : wqList) result.put(wq.getID(), wq) ;
        }
        else if (className.endsWith("SpecLog")) {
-           List<SpecLog> slList = _db.getObjectsForClass(className) ;
+           List<SpecLog> slList = _db.getObjectsForClassWhere(className, String.format("engine='%s'", engine)) ;
            for (SpecLog sl : slList) result.put(sl.getSpecID().getKey() + sl.getVersion(), sl) ;
        }
        commit();
@@ -82,11 +89,11 @@ public final class Persister implements Serializable {
     }
 
     public List select(String className) {
-        return _db.getObjectsForClass(className);
+        return _db.getObjectsForClassWhere(className, String.format("engine='%s'", engine));
     }
 
     public List selectWhere(String className, String whereClause) {
-       return _db.getObjectsForClassWhere(className, whereClause) ;
+       return _db.getObjectsForClassWhere(className, String.format("%s and tbl.engine='%s'",whereClause, engine)) ;
     }
 
     public List execQuery(String query) {
@@ -118,7 +125,13 @@ public final class Persister implements Serializable {
     public void rollback() { _db.rollback(); }
 
     public void closeDB() { _db.closeFactory(); }
-
+    private void setEngine(Object obj){
+        try {
+            obj.getClass().getMethod("setEngine", String.class).invoke(obj, engine);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.getMessage();
+        }
+    }
 
     public Object selectScalar(String className, String id) {
        Object retObj ;
@@ -136,33 +149,45 @@ public final class Persister implements Serializable {
        return retObj ;
     }
 
-    public boolean update(Object obj) { return _db.exec(obj, HibernateEngine.DB_UPDATE); }
+    public boolean update(Object obj)  {
+        setEngine(obj);
+        return _db.exec(obj, HibernateEngine.DB_UPDATE); }
 
-    public boolean delete(Object obj) { return _db.exec(obj, HibernateEngine.DB_DELETE); }
+    public boolean delete(Object obj) {
+        setEngine(obj);
+        return _db.exec(obj, HibernateEngine.DB_DELETE); }
 
-    public boolean insert(Object obj) { return _db.exec(obj, HibernateEngine.DB_INSERT); }
+    public boolean insert(Object obj) {
+        setEngine(obj);
+        return _db.exec(obj, HibernateEngine.DB_INSERT); }
 
     public boolean update(Object obj, Transaction tx) {
+        setEngine(obj);
         return (tx != null) ? _db.exec(obj, HibernateEngine.DB_UPDATE, tx) : update(obj);
     }
 
     public boolean delete(Object obj, Transaction tx) {
+        setEngine(obj);
         return (tx != null) ? _db.exec(obj, HibernateEngine.DB_DELETE, tx) : delete(obj);
     }
 
     public boolean insert(Object obj, Transaction tx) {
+        setEngine(obj);
         return (tx != null) ? _db.exec(obj, HibernateEngine.DB_INSERT, tx): insert(obj);
     }
 
     public boolean update(Object obj, boolean commit) {
+        setEngine(obj);
         return _db.exec(obj, HibernateEngine.DB_UPDATE, commit);
     }
 
     public boolean delete(Object obj, boolean commit) {
+        setEngine(obj);
         return _db.exec(obj, HibernateEngine.DB_DELETE, commit);
     }
 
     public boolean insert(Object obj, boolean commit) {
+        setEngine(obj);
         return _db.exec(obj, HibernateEngine.DB_INSERT, commit);
     }
 

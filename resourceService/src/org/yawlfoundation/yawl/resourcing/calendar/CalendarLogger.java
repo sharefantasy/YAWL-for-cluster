@@ -18,8 +18,10 @@
 
 package org.yawlfoundation.yawl.resourcing.calendar;
 
+import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.resourcing.datastore.persistence.Persister;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +35,7 @@ import java.util.Set;
  * @author Michael Adams
  * @date 18/10/2010
  */
-public class CalendarLogger {
+public class CalendarLogger  implements Serializable{
 
     private Persister _persister;
 
@@ -71,6 +73,7 @@ public class CalendarLogger {
     public List getLogEntriesForCalendarKey(long calEntryID) {
         List list = _persister.createQuery("FROM CalendarLogEntry AS cle " +
                                            "WHERE cle.calendarKey=:key " +
+                                            "AND engine=" + YPersistenceManager.getEngineRole() + " " +
                                            "ORDER BY cle.entryID DESC")
                 .setLong("key", calEntryID)
                 .list();
@@ -83,7 +86,8 @@ public class CalendarLogger {
         return _persister.createQuery("FROM CalendarLogEntry AS cle " +
                                            "WHERE cle.caseID=:caseID " +
                                            "AND cle.activityName=:activityName " +
-                                           "AND cle.resourceRec=:resourceRec")
+                                           "AND cle.resourceRec=:resourceRec" +
+                                           " AND engine=" + YPersistenceManager.getEngineRole())
                 .setString("caseID", caseID)
                 .setString("activityName", activityName)
                 .setString("resourceRec", resourceRec)
@@ -94,7 +98,8 @@ public class CalendarLogger {
     public List getLogEntriesForActivity(String caseID, String activityName) {
         return _persister.createQuery("FROM CalendarLogEntry AS cle " +
                                            "WHERE cle.caseID=:caseID " +
-                                           "AND cle.activityName=:activityName")
+                                           "AND cle.activityName=:activityName" +
+                                           " AND engine=" + YPersistenceManager.getEngineRole())
                 .setString("caseID", caseID)
                 .setString("activityName", activityName)
                 .list();
@@ -103,7 +108,8 @@ public class CalendarLogger {
 
     public List getLogEntriesForCase(String caseID) {
         return _persister.createQuery("FROM CalendarLogEntry AS cle " +
-                                           "WHERE cle.caseID=:caseID ")
+                                           "WHERE cle.caseID=:caseID "+
+                                            " AND engine=" + YPersistenceManager.getEngineRole())
                 .setString("caseID", caseID)
                 .list();
     }

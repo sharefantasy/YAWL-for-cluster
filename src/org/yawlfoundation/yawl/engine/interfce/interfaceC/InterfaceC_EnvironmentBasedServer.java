@@ -27,7 +27,6 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
     public void init(ServletConfig servletConfig) throws ServletException{
         super.init(servletConfig);
         ServletContext context = getServletContext();
-
         String logonName = context.getInitParameter("EngineLogonUserName");
         String logonPassword = context.getInitParameter("EngineLogonPassword");
 

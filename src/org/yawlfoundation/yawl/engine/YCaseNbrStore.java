@@ -41,6 +41,15 @@ public class YCaseNbrStore implements Serializable{
     private static YCaseNbrStore _instance ;
     private static final Logger log = Logger.getLogger(YCaseNbrStore.class) ;
     private String engine;
+    private Long pk;
+
+    public Long getPk() {
+        return pk;
+    }
+
+    public void setPk(Long pk) {
+        this.pk = pk;
+    }
 
     public String getEngine() {
         return engine;

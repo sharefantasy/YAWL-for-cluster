@@ -3,7 +3,7 @@
 
     <context-param>
         <param-name>MAX_WORKER</param-name>
-        <param-value>10</param-value>
+        <param-value>1</param-value>
     </context-param>
     <context-param>
         <param-name>MIN_BACKUP</param-name>

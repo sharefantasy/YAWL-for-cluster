@@ -30,7 +30,7 @@
     	</id>
 		
     	<property name="_data" column="casedata" type="text" access="field"/>
-    	<property name="engine" column="engine" type="text" access="field"/>
+    	<property name="engine" column="engine" type="string" access="field"/>
 
 	</class>
 	

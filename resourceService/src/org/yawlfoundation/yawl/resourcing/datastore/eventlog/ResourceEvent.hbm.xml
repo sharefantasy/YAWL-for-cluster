@@ -36,7 +36,8 @@
         <property name="_itemID" column="itemID"/>
         <property name="_resourceID" column="participantID"/>
         <property name="_event" column="event" length="20"/>
-        <property name="_timeStamp" column="eventTime" type="long"/>       
-     </class>
+        <property name="_timeStamp" column="eventTime" type="long"/>
+        <property name="engine" column="engine" access="field" type="string"/>
+    </class>
 	
 </hibernate-mapping>

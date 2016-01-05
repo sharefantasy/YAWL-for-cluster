@@ -282,7 +282,7 @@ public class ResourceCalendar {
         return _persister.createQuery(
                 "FROM CalendarEntry AS ce " +
                 "WHERE ce.resourceID IN (:idlist) " +
-                "AND ce.startTime < :end AND ce.endTime > :start " +
+                "AND ce.startTime < :end AND ce.endTime > :start " + " and ce.engine" + Persister.getEngine() +
                 "ORDER BY ce.startTime")
                 .setParameterList("idlist", createIDListForQuery(resourceID, isParticipant))
                 .setLong("start", from)
@@ -732,9 +732,11 @@ public class ResourceCalendar {
         if (id == null) {
             return getEntries(from, to);
         }
-        return _persister.createQuery("FROM CalendarEntry AS ce WHERE ce.resourceID=:id" +
-                " AND ce.startTime < :end AND ce.endTime > :start " +
-                " ORDER BY ce.startTime")
+        return _persister.createQuery(String.format("FROM CalendarEntry AS ce " +
+                "WHERE ce.resourceID=:id " +
+                "AND ce.startTime < :end " +
+                "AND ce.endTime > :start AND" +
+                " ce.engine='%s' ORDER BY ce.startTime", Persister.getEngine()))
                 .setString("id", id)
                 .setLong("start", from)
                 .setLong("end", to)
@@ -782,8 +784,8 @@ public class ResourceCalendar {
      * @return true if the removal was successful
      */
     private boolean removeEntry(long entryID) {
-        return _persister.execUpdate("DELETE FROM CalendarEntry AS ce WHERE ce.entryID="
-                + entryID, getCommitFlag()) > 0;
+        return _persister.execUpdate(String.format("DELETE FROM CalendarEntry AS ce " +
+                "WHERE ce.entryID=%d AND ce.engine='%s'", entryID, Persister.getEngine()), getCommitFlag()) > 0;
     }
 
 
@@ -812,8 +814,9 @@ public class ResourceCalendar {
      * @return the number of entries removed
      */
     private int removeEntries(String id) {
-        return _persister.execUpdate("DELETE FROM CalendarEntry AS ce WHERE ce.resourceID='"
-                + id + "'", getCommitFlag());
+        return _persister.execUpdate(String.format("DELETE FROM CalendarEntry AS ce " +
+                "WHERE ce.resourceID='%s' " +
+                "AND ce.engine='%s'", id, Persister.getEngine()), getCommitFlag());
     }
 
 
@@ -839,7 +842,9 @@ public class ResourceCalendar {
     private int removeEntries(String id, long from, long to) {
         String cmd = String.format(
                 "DELETE FROM CalendarEntry AS ce WHERE ce.resourceID='%s' " +
-                "AND ce.startTime < %d AND ce.endTime > %d", id, to, from);
+                "AND ce.startTime < %d " +
+                        "AND ce.endTime > %d " +
+                        "AND ce.engine=%s", id, to, from, Persister.getEngine());
         return _persister.execUpdate(cmd, getCommitFlag());
     }
 

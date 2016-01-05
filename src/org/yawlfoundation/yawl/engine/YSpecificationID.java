@@ -53,6 +53,15 @@ public class YSpecificationID implements Comparable<YSpecificationID> {
     private String identifier;                         // a system generated UUID string
     private YSpecVersion version;
     private String uri;                                // the user-defined name
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public YSpecificationID() { }                      // for persistence

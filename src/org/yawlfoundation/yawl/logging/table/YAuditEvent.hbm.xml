@@ -33,7 +33,7 @@
         <property name="_username" column="userName"/>
         <property name="_event" column="eventType"/>
         <property name="_timeStamp" column="eventTime" access="field"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
      </class>
 	

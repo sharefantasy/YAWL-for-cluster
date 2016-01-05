@@ -33,7 +33,7 @@
     	<property name="taskID"               type="long"/>
         <property name="parentNetInstanceID"  type="long"/>
         <property name="parentTaskInstanceID" type="long"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
 	</class>
 

@@ -29,12 +29,14 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
     private String engineID;
     private String password;
     private String selfURI;
+    private String rsURL;
 
-    public InterfaceC_EngineBasedClient(String clusterURI, String engine_id, String password, String selfURI){
+    public InterfaceC_EngineBasedClient(String clusterURI, String engine_id, String password, String selfURI, String rsURL){
         this.clusterURI = clusterURI;
         engineID = engine_id;
         this.password = password;
         this.selfURI = selfURI;
+        this.rsURL = rsURL;
     }
     public String connect() throws IOException {
         YEngine _engine = YEngine.getInstance();
@@ -97,6 +99,12 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
             }
         },5000,5000);
    }
+    public String setRSEngineRole(String engineRole) throws IOException {
+        Map<String, String> params = prepareParamMap("setEngine", null);
+        params.put("engineID", engineRole);
+        params.put("password", PasswordEncryptor.encrypt(password, null));
+        return executePost(rsURL, params);
+    }
     public void clusterShutdown(){
         timer.cancel();
     }

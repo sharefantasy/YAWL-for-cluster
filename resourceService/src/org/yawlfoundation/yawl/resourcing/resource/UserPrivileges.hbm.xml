@@ -41,7 +41,9 @@
         <property name="canManageCases"       type="boolean" access="field"/>
         <property name="carteblanche"         type="boolean" access="field"
                                               column="allowAll" />
+        <property name="engine" column="engine" access="field" type="string"/>
 
-     </class>
+
+    </class>
 
 </hibernate-mapping>

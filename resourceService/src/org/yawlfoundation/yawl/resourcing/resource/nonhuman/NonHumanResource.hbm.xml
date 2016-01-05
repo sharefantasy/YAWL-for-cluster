@@ -63,7 +63,8 @@
                   class="NonHumanCategory"
                   access="field"
                   cascade="save-update"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
-     </class> 
+    </class>
 	
 </hibernate-mapping>

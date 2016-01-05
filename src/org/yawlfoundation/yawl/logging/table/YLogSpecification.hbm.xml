@@ -33,7 +33,7 @@
         <property name="identifier" type="string"/>
     	<property name="version"    type="string" column="specVersion"/>
         <property name="uri"        type="string"/>
-        <property name="engine" column="engine" access="field" />
+        <property name="engine" column="engine" access="field" type="string" />
 
 	</class>
 

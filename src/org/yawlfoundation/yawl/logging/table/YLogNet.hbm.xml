@@ -31,7 +31,7 @@
 
     	<property name="specKey" type="long"/>
     	<property name="name"    type="string" column="netName" />
-    	<property name="engine" column="engine" access="field"/>
+    	<property name="engine" column="engine" access="field" type="string"/>
 	</class>
 
 </hibernate-mapping>

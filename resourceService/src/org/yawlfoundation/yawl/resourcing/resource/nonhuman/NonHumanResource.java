@@ -31,6 +31,15 @@ public class NonHumanResource extends AbstractResource implements Comparable, Cl
 
     private String _name;
     private NonHumanCategory _category;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public NonHumanResource() { super(); }
 

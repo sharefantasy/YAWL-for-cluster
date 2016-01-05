@@ -34,6 +34,15 @@ public class NonHumanSubCategory {
     private long _id;
     private String _name;
     private Set<NonHumanResource> _resources;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public NonHumanSubCategory() {
         _resources = new HashSet<NonHumanResource>();

@@ -39,7 +39,7 @@
             </component>
             <property name="uri" column="specURI"/>
         </component>
-     
+        <property name="engine" column="engine" access="field" type="string"/>
      </class>
 	
 </hibernate-mapping>

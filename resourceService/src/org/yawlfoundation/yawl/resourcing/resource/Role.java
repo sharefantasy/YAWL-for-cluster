@@ -34,6 +34,15 @@ public class Role extends AbstractResourceAttribute implements Comparable {
     private String _role ;
     private Role _belongsTo ;                   // is this role part of a larger group
     private String _belongsToID ;               // needed for non-hibernate db backends
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public Role() { super() ; }

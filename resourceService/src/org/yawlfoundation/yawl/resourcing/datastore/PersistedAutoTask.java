@@ -33,6 +33,15 @@ public class PersistedAutoTask {
     private long _id;                                    // hibernate primary key
     private String _wirStr;
     private String _wirID;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public PersistedAutoTask() {}

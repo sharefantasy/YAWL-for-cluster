@@ -33,6 +33,15 @@ public class CalendarEntry implements Cloneable {
     private String agent;                             // user/service that made the entry
     private long chainID;                             // opt. FK relation between entries
     private String comment;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public CalendarEntry() {}
 

@@ -108,7 +108,7 @@ public class YEngine implements InterfaceADesign,
     private YBuildProperties _buildProps;
     private String _engineClassesRootFilePath;
     private boolean _allowGenericAdminID;
-
+    private WorkitemCounter workitemCounter = WorkitemCounter.getInstace();
     /********************************************************************************/
 
     /**
@@ -768,6 +768,7 @@ public class YEngine implements InterfaceADesign,
                                 URI completionObserver, String caseParams,
                                 YLogDataItemList logData, String serviceRef, boolean delayed) {
         YIdentifier caseID = runner.getCaseID();
+
         _announcer.announceCheckCaseConstraints(specID, caseID.toString(), caseParams, true); // ix
         _announcer.announceCaseStart(specID, caseID, serviceRef, delayed);          // ib
         if (completionObserver != null) {
@@ -1357,6 +1358,7 @@ public class YEngine implements InterfaceADesign,
     public YWorkItem startWorkItem(String itemID, YClient client)
             throws YStateException, YDataStateException, YQueryException,
                    YPersistenceException, YEngineStateException {
+        workitemCounter.increase();
         YWorkItem item = getWorkItem(itemID);
         if (item != null) {
             return startWorkItem(item, client);
@@ -1402,7 +1404,6 @@ public class YEngine implements InterfaceADesign,
     public YWorkItem startWorkItem(YWorkItem workItem, YClient client)
             throws YStateException, YDataStateException, YQueryException,
             YPersistenceException, YEngineStateException {
-
         debug("--> startWorkItem");
         checkEngineRunning();
         YWorkItem startedItem = null;

@@ -96,7 +96,8 @@
 
          <one-to-one name="_privileges" class="UserPrivileges"
                      cascade="all" access="field" lazy="false"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
-     </class> 
+    </class>
 	
 </hibernate-mapping>

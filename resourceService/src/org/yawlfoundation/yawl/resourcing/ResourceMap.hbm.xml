@@ -40,7 +40,8 @@
 
         <property name="_taskID"          column="taskid"  type="string" access="field"/>
         <property name="_piledResourceID" column="piledid" type="string" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
-     </class> 
+    </class>
 	
 </hibernate-mapping>

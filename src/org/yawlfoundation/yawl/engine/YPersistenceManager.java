@@ -74,7 +74,12 @@ public class YPersistenceManager {
     private boolean restoring = false;
     private boolean enabled = false;
     private static boolean isCluster;
-    private static String engineRole = "0";
+
+    public static String getEngineRole() {
+        return engineRole;
+    }
+
+    private static String engineRole = "default";
 
     /**
      * Constructor
@@ -205,19 +210,21 @@ public class YPersistenceManager {
      */
     protected void storeObject(Object obj) throws YPersistenceException {
         if ((!restoring) && isEnabled()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Adding to insert cache: Type=" + obj.getClass().getName());
-            }
-            try {
-                Method m = obj.getClass().getMethod("setEngine", String.class);
-                m.invoke(obj, engineRole);
-            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.getMessage(); // do something silently
-            }
+            setEngine(obj);
             doPersistAction(obj, INSERT);
         }
     }
-
+    protected void setEngine(Object obj){
+        if (logger.isDebugEnabled()) {
+            logger.debug("Adding to insert cache: Type=" + obj.getClass().getName());
+        }
+        try {
+            Method m = obj.getClass().getMethod("setEngine", String.class);
+            m.invoke(obj, engineRole);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            e.getMessage(); // do something silently
+        }
+    }
 
     /**
      * Causes the supplied object to be updated when the current transaction is committed.
@@ -229,6 +236,7 @@ public class YPersistenceManager {
             if (logger.isDebugEnabled()) {
                 logger.debug("Adding to update cache: Type=" + obj.getClass().getName());
             }
+            setEngine(obj);
             doPersistAction(obj, UPDATE);
         }
     }
@@ -265,6 +273,7 @@ public class YPersistenceManager {
 
     private void updateOrMerge(Object obj) {
         try {
+            setEngine(obj);
             getSession().saveOrUpdate(obj);
         } catch (Exception e) {
             logger.error("Persistence update failed, trying merge. Object: "
@@ -321,6 +330,7 @@ public class YPersistenceManager {
                     obj.getClass().getName() + ": " + obj.toString() +
                     "; Object identity = " + System.identityHashCode(obj));
         }
+        setEngine(obj);
         try {
             if (update) {
                 updateOrMerge(obj);
@@ -421,7 +431,7 @@ public class YPersistenceManager {
      * @throws YPersistenceException if there's a problem reading the db
      */
     public List getObjectsForClass(String className) throws YPersistenceException {
-        return execQuery("from " + className+" where engine="+engineRole);
+        return execQuery(String.format("from %s where engine='%s'", className, engineRole));
     }
 
 
@@ -437,8 +447,8 @@ public class YPersistenceManager {
     public List getObjectsForClassWhere(String className, String whereClause)
             throws YPersistenceException {
         try {
-            String qry = String.format("from %s as tbl where tbl.%s and tbl.engine="+engineRole,
-                    className, whereClause);
+            String qry = String.format("from %s as tbl where tbl.%s and tbl.engine='%s'",
+                    className, whereClause, engineRole);
             Query query = createQuery(qry);
             return (query != null) ? query.list() : null;
         } catch (HibernateException he) {
@@ -457,8 +467,8 @@ public class YPersistenceManager {
      */
     public Object selectScalar(String className, String field, String value)
             throws YPersistenceException {
-        String qryStr = String.format("from %s as tbl where tbl.%s=%s and tbl.engine="+engineRole,
-                className, field, value);
+        String qryStr = String.format("from %s as tbl where tbl.%s=%s and tbl.engine='%s'",
+                className, field, value, engineRole);
         Iterator itr = createQuery(qryStr).iterate();
         if (itr.hasNext()) return itr.next();
         else return null;

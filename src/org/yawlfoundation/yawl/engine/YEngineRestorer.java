@@ -24,8 +24,10 @@ import org.hibernate.Query;
 import org.yawlfoundation.yawl.authentication.YClient;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.elements.*;
+import org.yawlfoundation.yawl.elements.data.external.HibernateEngine;
 import org.yawlfoundation.yawl.elements.state.YIdentifier;
 import org.yawlfoundation.yawl.elements.state.YInternalCondition;
+import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EngineBasedServer;
 import org.yawlfoundation.yawl.engine.time.YLaunchDelayer;
 import org.yawlfoundation.yawl.engine.time.YTimedObject;
 import org.yawlfoundation.yawl.engine.time.YTimer;
@@ -53,8 +55,6 @@ public class YEngineRestorer {
     private boolean _hasServices;
     private Set<YClient> _addedDefaultClients;
     private Logger _log;
-
-
     // CONSTRUCTORS //
 
     protected YEngineRestorer() {}
@@ -65,6 +65,7 @@ public class YEngineRestorer {
         _idLookupTable = new Hashtable<String, YIdentifier>();
         _taskLookupTable = new Hashtable<String, YTask>();
         _log = Logger.getLogger(this.getClass());
+
     }
 
 
@@ -75,7 +76,7 @@ public class YEngineRestorer {
      */
     protected void restoreYAWLServices() throws YPersistenceException {
         _log.debug("Restoring Services - Starts");
-        Query query = _pmgr.createQuery("from YAWLServiceReference");
+        Query query = _pmgr.createQuery(String.format("from YAWLServiceReference where engine='%s'", YPersistenceManager.getEngineRole()));
         Iterator it = query.iterate();
         _hasServices = it.hasNext();
         while (it.hasNext()) {
@@ -92,7 +93,7 @@ public class YEngineRestorer {
      */
     protected void restoreExternalClients() throws YPersistenceException {
         _log.debug("Restoring External Clients - Starts");
-        Query query = _pmgr.createQuery("from YExternalClient");
+        Query query = _pmgr.createQuery(String.format("from YExternalClient where engine='%s'", YPersistenceManager.getEngineRole()));
         Iterator it = query.iterate();
         if (it.hasNext()) {
             while (it.hasNext()) {
@@ -117,7 +118,7 @@ public class YEngineRestorer {
      */
     protected void restoreSpecifications() throws YPersistenceException {
         _log.debug("Restoring Specifications - Starts");
-        Query query = _pmgr.createQuery("from YSpecification");
+        Query query = _pmgr.createQuery(String.format("from YSpecification where engine='%s'", YPersistenceManager.getEngineRole()));
         for (Iterator it = query.iterate(); it.hasNext(); ) {
             loadSpecification((YSpecification) it.next());
         }
@@ -133,7 +134,7 @@ public class YEngineRestorer {
      */
     protected YCaseNbrStore restoreNextAvailableCaseNumber() throws YPersistenceException {
         YCaseNbrStore caseNbrStore = YCaseNbrStore.getInstance();
-        Query query = _pmgr.createQuery("from YCaseNbrStore");
+        Query query = _pmgr.createQuery(String.format("from YCaseNbrStore where engine='%s'", YPersistenceManager.getEngineRole()));
         if ((query != null) && (!query.list().isEmpty())) {
             caseNbrStore = (YCaseNbrStore) query.iterate().next();
             caseNbrStore.setPersisted(true);               // flag to update only
@@ -141,7 +142,8 @@ public class YEngineRestorer {
 
             // secondary attempt: eg. if there's no case number stored (as will be
             // the case if this is the first restart after a database rebuild)
-            query = _pmgr.createQuery("select max(engineInstanceID) from YLogNetInstance");
+            query = _pmgr.createQuery(String.format("select max(engineInstanceID) from YLogNetInstance where engine='%s'", YPersistenceManager.getEngineRole()));
+
             if ((query != null) && (!query.list().isEmpty())) {
                 String engineID = (String) query.iterate().next();
                 try {
@@ -163,7 +165,7 @@ public class YEngineRestorer {
 
     protected void restoreProcessInstances() throws YPersistenceException {
         _log.debug("Restoring process instances - Starts");
-        Query query = _pmgr.createQuery("from YNetRunner order by case_id");
+        Query query = _pmgr.createQuery(String.format("from YNetRunner where engine='%s' order by case_id", YPersistenceManager.getEngineRole()));
 
         _runners = new Vector<YNetRunner>();
         for (Iterator it = query.iterate(); it.hasNext(); ) {
@@ -182,7 +184,8 @@ public class YEngineRestorer {
         List<YWorkItem> toBeRemoved = new ArrayList<YWorkItem>();
 
         // get workitems from persistence
-        Query query = _pmgr.createQuery("from YWorkItem");
+
+        Query query = _pmgr.createQuery(String.format("from YWorkItem where engine='%s'", YPersistenceManager.getEngineRole()));
         for (Iterator it = query.iterate(); it.hasNext(); ) {
             YWorkItem witem = (YWorkItem) it.next();
             if (hasRestoredIdentifier(witem))
@@ -242,7 +245,7 @@ public class YEngineRestorer {
         _log.debug("Restoring work item timers - Starts");
         Set<YTimedObject> expiredTimers = new HashSet<YTimedObject>();
         Set<YWorkItemTimer> orphanedTimers = new HashSet<YWorkItemTimer>();
-        Query query = _pmgr.createQuery("from YWorkItemTimer");
+        Query query = _pmgr.createQuery(String.format("from YWorkItemTimer where engine='%s'", YPersistenceManager.getEngineRole()));
         for (Iterator it = query.iterate(); it.hasNext(); ) {
             YWorkItemTimer witemTimer = (YWorkItemTimer) it.next();
             witemTimer.setPersisting(true);
@@ -277,7 +280,7 @@ public class YEngineRestorer {
     protected Set<YTimedObject> restoreDelayedLaunches() throws YPersistenceException {
         _log.debug("Restoring delayed launch timers - Starts");
         Set<YTimedObject> expiredTimers = new HashSet<YTimedObject>();
-        Query query = _pmgr.createQuery("from YLaunchDelayer");
+        Query query = _pmgr.createQuery(String.format("from YLaunchDelayer where engine='%s'", YPersistenceManager.getEngineRole()));
         for (Iterator it = query.iterate(); it.hasNext(); ) {
             YLaunchDelayer delayer = (YLaunchDelayer) it.next();
             delayer.setPersisting(true);
@@ -646,7 +649,7 @@ public class YEngineRestorer {
         }
 
         try {
-            Query query = _pmgr.createQuery("from YIdentifier");
+            Query query = _pmgr.createQuery(String.format("from YIdentifier where engine='%s'", YPersistenceManager.getEngineRole()));
             for (Iterator it = query.iterate(); it.hasNext(); ) {
                 YIdentifier id = (YIdentifier) it.next();
                 String idString = id.toString();

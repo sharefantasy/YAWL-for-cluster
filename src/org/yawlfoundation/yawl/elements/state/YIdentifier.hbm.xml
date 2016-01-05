@@ -25,10 +25,13 @@
 
 	<class name="org.yawlfoundation.yawl.elements.state.YIdentifier" table="YIdentifiers">
 
-	    <id name="_idString" column="idString" type="string">
-    		<generator class="assigned"/>
-    	</id>
-   	
+      <id name="pk" column="pk">
+        <generator class="identity" />
+      </id>
+
+      <property name="_idString" column="idString" type="string" />
+      <property name="engine" column="engine" access="field" />
+
       <list name="_children">
     		<key column="parent"/>
     		<index column="ix"/>
@@ -40,7 +43,7 @@
 	      <index column="ix"/>
 	      <element column="loc_condition" type="string"/>
 	    </list>
-        <property name="engine" column="engine" access="field" />
+
 	</class>
 	
 </hibernate-mapping>

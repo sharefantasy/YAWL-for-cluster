@@ -35,6 +35,15 @@ public class CalendarLogEntry {
     private String phase;
     private String agent;
     private long calendarKey;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public CalendarLogEntry() { }
 

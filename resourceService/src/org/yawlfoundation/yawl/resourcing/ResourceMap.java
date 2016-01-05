@@ -30,6 +30,7 @@ import org.yawlfoundation.yawl.resourcing.resource.Participant;
 import org.yawlfoundation.yawl.resourcing.resource.SecondaryResources;
 import org.yawlfoundation.yawl.resourcing.util.TaggedStringList;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,7 @@ import java.util.Set;
  *  v0.1, 03/08/2007
  */
 
-public class ResourceMap {
+public class ResourceMap{
 
     private ResourceManager rm = ResourceManager.getInstance();
 
@@ -73,6 +74,15 @@ public class ResourceMap {
             HashMap<String, HashSet<Participant>>() ;
 
     private static final Logger _log = Logger.getLogger(ResourceMap.class) ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public ResourceMap() { }                                       // for persistence

@@ -206,7 +206,7 @@
 
     <context-param>
         <param-name>GenerateRandomOrgData</param-name>
-        <param-value>5</param-value>
+        <param-value>-1</param-value>
         <description>
             Set the param-value to a +ve integer up to 100 to randomly generate that
             number of participants and associated org data. This feature can be used to
@@ -338,6 +338,15 @@
     <!-- SERVLETS -->
 
     <servlet>
+        <servlet-name>engineConnector</servlet-name>
+        <description>
+            Gateway to adjust engine cluster info
+        </description>
+        <servlet-class>org.yawlfoundation.yawl.resourcing.cluster.EngineIcConnector</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
         <servlet-name>InterfaceB_Servlet</servlet-name>
         <description>
             Listens to notification of work items from the engine.
@@ -398,6 +407,10 @@
     </servlet>
 
 
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>engineConnector</servlet-name>-->
+        <!--<url-pattern>/ic/*</url-pattern>-->
+    <!--</servlet-mapping>-->
     <servlet-mapping>
         <servlet-name>InterfaceB_Servlet</servlet-name>
         <url-pattern>/ib</url-pattern>

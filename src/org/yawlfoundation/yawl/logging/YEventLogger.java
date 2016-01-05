@@ -623,7 +623,8 @@ public class YEventLogger {
         String def = item.getDataTypeDefinition();
         long dataTypeID = _keyCache.getDataTypeID(name, def);
         if (dataTypeID == -1) {
-            List list = pmgr.createQuery("from YLogDataType where dataTypeName=:name")
+            List list = pmgr.createQuery(String.format("from YLogDataType where dataTypeName=:name and engine='%s'",
+                    YPersistenceManager.getEngineRole()))
                             .setString("name", name).list();
             if (! list.isEmpty()) {
                 for (Object o : list) {

@@ -35,6 +35,15 @@ public class ResourceEvent extends BaseEvent implements Cloneable {
     private String _taskID;
     private String _itemID;
     private String _resourceID;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public ResourceEvent() {}                                    // for reflection

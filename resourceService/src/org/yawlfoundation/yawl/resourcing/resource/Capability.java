@@ -32,6 +32,15 @@ import org.yawlfoundation.yawl.util.StringUtil;
 public class Capability extends AbstractResourceAttribute implements Comparable {
 
     private String _capability ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
 
     public Capability() { super() ;}

@@ -49,6 +49,15 @@ public class UserPrivileges implements Serializable {
     private boolean carteblanche ;                // if true, overrides all privileges
 
     private static final int PRIV_COUNT = 8;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public UserPrivileges() {}                             // for Hibernate persistence
 

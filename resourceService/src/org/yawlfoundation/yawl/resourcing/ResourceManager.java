@@ -64,10 +64,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.datatype.Duration;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.List;
@@ -81,7 +78,7 @@ import java.util.List;
  * @date 03/08/2007
  */
 
-public class ResourceManager extends InterfaceBWebsideController {
+public class ResourceManager extends InterfaceBWebsideController  implements Serializable {
 
     // a cache of misc. runtime items
     private RuntimeCache _cache = new RuntimeCache();

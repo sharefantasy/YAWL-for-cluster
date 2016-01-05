@@ -77,6 +77,11 @@ public class EngineGatewayImpl implements EngineGateway {
         return SUCCESS;
     }
 
+    @Override
+    public String getCurrentSpeed() {
+        return null;
+    }
+
     /**
      *  Constructor
      *  @param persist true if a reference to a persisting engine is required

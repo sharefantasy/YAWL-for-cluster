@@ -33,8 +33,6 @@ public class Manager {
     private Manager(boolean persist, Map<String, String> params){
         _pm = new PersistenceManager(persist);
         activeEngineRepo = new ConcurrentHashMap<>();
-        MAX_WORKER =  StringUtil.strToInt(params.get("MAX_WORKER"), 1);
-//        MIN_BACKUP =  StringUtil.strToInt(params.get("MIN_BACKUP"), 1);
     }
     public static Manager getInstance(){
         if (_manager == null){
@@ -135,15 +133,16 @@ public class Manager {
         String role = null;
         if (size <= MAX_WORKER){
             role = UUID.randomUUID().toString();
-            engine.setStatus(EngineStatus.WORKER);
-            activeEngineRepo.get(id).setStatus(EngineStatus.BACKUP);
             engine.setEngineRole(role);
+            engine.setStatus(EngineStatus.WORKER);
+            activeEngineRepo.replace(id, engine);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
             size++;
         }
         else {
             engine.setStatus(EngineStatus.BACKUP);
             engine.setEngineRole(null);
+            activeEngineRepo.replace(id, engine);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
         }
         _logger.info("worker_num = " + size);
@@ -181,6 +180,7 @@ public class Manager {
                     final boolean[] flag = {true};
                     activeEngineRepo.values().stream()
                             .filter(e -> (new Date()).getTime() - e.getLastHeartbeatTime().getTime() > 5000)
+                            .parallel()
                             .forEach(e -> {
                                 _logger.warn(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
                                 flag[0] = false;

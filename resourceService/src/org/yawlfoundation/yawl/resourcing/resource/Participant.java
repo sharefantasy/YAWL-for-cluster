@@ -55,6 +55,15 @@ public class Participant extends AbstractResource implements Cloneable {
     private QueueSet _qSet ;
 
     private boolean _persisting ;
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     /** CONSTRUCTORS **/
 

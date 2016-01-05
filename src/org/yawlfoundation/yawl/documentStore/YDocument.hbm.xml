@@ -31,7 +31,7 @@
 		
     	<property name="caseId" column="caseId"/>
         <property name="document" column="yDoc" type="binary"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
 	</class>
 	

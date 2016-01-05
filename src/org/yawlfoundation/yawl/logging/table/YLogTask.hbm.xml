@@ -32,7 +32,7 @@
     	<property name="name"        type="string" column="taskName"/>
     	<property name="parentNetID" type="long"/>
         <property name="childNetID"  type="long"/>
-        <property name="engine" column="engine" access="field"/>
+        <property name="engine" column="engine" access="field" type="string"/>
 
 	</class>
 

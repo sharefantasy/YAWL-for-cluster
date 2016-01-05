@@ -28,6 +28,15 @@ public class SpecLog {
 
     private YSpecificationID specID;
     private long logID;                               // PK
+    private String engine;
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
 
     public SpecLog() { }
 

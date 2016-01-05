@@ -227,4 +227,6 @@ public interface EngineGateway extends Remote {
     String getHibernateStatistics(String sessionHandle);
 
     String restore(String sessionHandle) throws YPersistenceException;
+
+    String getCurrentSpeed();
 }

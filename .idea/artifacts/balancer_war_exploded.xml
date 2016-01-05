@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="balancer:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/balancer_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="balancer/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="balancer" />
+          <element id="module-output" name="yawl-3.0.1" />
+          <element id="module-output" name="resourceService" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.26-bin" />
+          <element id="library" level="project" name="jaranalyzer-1.2" />
+          <element id="library" level="project" name="lib1" />
+          <element id="library" level="project" name="commons-codec-1.9" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
