@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/balancer/balancer.iml" filepath="$PROJECT_DIR$/balancer/balancer.iml" />
       <module fileurl="file://$PROJECT_DIR$/cluster_client/cluster_client.iml" filepath="$PROJECT_DIR$/cluster_client/cluster_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/engineLoad/engineLoad.iml" filepath="$PROJECT_DIR$/test/engineLoad/engineLoad.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService/resourceService.iml" filepath="$PROJECT_DIR$/resourceService/resourceService.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" filepath="$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" />
       <module fileurl="file://$PROJECT_DIR$/yawl-3.0.1.iml" filepath="$PROJECT_DIR$/yawl-3.0.1.iml" />

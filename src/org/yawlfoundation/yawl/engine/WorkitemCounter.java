@@ -34,7 +34,7 @@ public class WorkitemCounter {
         }
         return instance;
     }
-    public void increase(){
+    public synchronized void  increase(){
         currentCounter += 1;
     }
 

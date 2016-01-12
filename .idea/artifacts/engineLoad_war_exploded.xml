@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="engineLoad:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/engineLoad_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="engineLoad" />
+          <element id="module-output" name="yawl-3.0.1" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib1" />
+          <element id="library" level="project" name="jaranalyzer-1.2" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.26-bin" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="engineLoad/web/Web" />
+      <element id="javaee-facet-resources" facet="yawl-3.0.1/web/Web" />
+    </root>
+  </artifact>
+</component>

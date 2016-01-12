@@ -108,7 +108,6 @@ public class YEngine implements InterfaceADesign,
     private YBuildProperties _buildProps;
     private String _engineClassesRootFilePath;
     private boolean _allowGenericAdminID;
-    private WorkitemCounter workitemCounter = WorkitemCounter.getInstace();
     /********************************************************************************/
 
     /**
@@ -1358,7 +1357,6 @@ public class YEngine implements InterfaceADesign,
     public YWorkItem startWorkItem(String itemID, YClient client)
             throws YStateException, YDataStateException, YQueryException,
                    YPersistenceException, YEngineStateException {
-        workitemCounter.increase();
         YWorkItem item = getWorkItem(itemID);
         if (item != null) {
             return startWorkItem(item, client);

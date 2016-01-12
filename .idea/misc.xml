@@ -57,6 +57,7 @@
     <file type="web" url="file://$PROJECT_DIR$/build/yawlSMSInvoker/web.xml" />
     <file type="web" url="file://$PROJECT_DIR$/build/yawlWSInvoker/web.xml" />
     <file type="web" url="file://$PROJECT_DIR$/src/org/yawlfoundation/yawl/digitalSignature" />
+    <file type="web" url="file://$PROJECT_DIR$/YawlTest/out/artifacts/YawlTest_war_exploded/WEB-INF/web.xml" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />

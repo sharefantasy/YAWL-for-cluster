@@ -91,7 +91,7 @@ public class YNetRunner {
     private Map<String, String> _timerStates;
     private ExecutionStatus _executionStatus;
     private Set<YAnnouncement> _announcements;
-
+    private WorkitemCounter workitemCounter = WorkitemCounter.getInstace();
     // used to persist observers
     private String _caseObserverStr = null ;
 
@@ -739,7 +739,7 @@ public class YNetRunner {
             throws YPersistenceException, YDataStateException, YQueryException {
         _logger.debug("--> createEnabledWorkItem: Case=" + caseIDForNet.get_idString() +
                       " Task=" + atomicTask.getID());
-
+        workitemCounter.increase();
         boolean allowDynamicCreation = atomicTask.getMultiInstanceAttributes() != null &&
                     YMultiInstanceAttributes.CREATION_MODE_DYNAMIC.equals(
                             atomicTask.getMultiInstanceAttributes().getCreationMode());
