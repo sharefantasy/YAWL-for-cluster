@@ -22,7 +22,7 @@
 
     <servlet>
         <servlet-name>cluster</servlet-name>
-        <servlet-class>cluster.ManagementServer</servlet-class>
+        <servlet-class>cluster.gateway.ManagementServer</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -30,4 +30,8 @@
         <servlet-name>cluster</servlet-name>
         <url-pattern>/service/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>IbServer</servlet-name>
+        <servlet-class>org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EnvironmentBasedServer</servlet-class>
+    </servlet>
 </web-app>

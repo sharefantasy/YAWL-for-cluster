@@ -2,19 +2,19 @@
         PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="cluster.data">
-    <class name="cluster.data.EngineInfo" table="engine_info">
+<hibernate-mapping package="cluster.entity">
+    <class name="Engine" table="engine_info">
         <id name="engineID" column="engine_id" type="java.lang.String">
                 <generator class="assigned"/>
         </id>
         <property name="password" column="password" type="java.lang.String"/>
         <property name="lastHeartbeatTime" column="last_heartbeat_time" type="java.util.Date" />
         <property name="lastLogineTime" column="last_login_time" type="java.util.Date"/>
-        <property name="engineRole" column="engine_role" access="field" />
+        <one-to-one name="engineRole" constrained="false" />
         <property name="status" column="status">
             <type name="org.hibernate.type.EnumType">
                 <param name="enumClass">
-                    cluster.data.EngineStatus
+                    cluster.entity.EngineStatus
                 </param>
             </type>
         </property>

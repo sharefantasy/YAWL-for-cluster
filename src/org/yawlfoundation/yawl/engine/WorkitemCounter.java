@@ -8,7 +8,7 @@ import java.util.TimerTask;
  * Created by fantasy on 2016/1/3.
  */
 public class WorkitemCounter {
-    private int currentCounter = 0;
+    private Integer currentCounter = 0;
     private double reportCounter = 0;
     private Date reportDate;
     private int period;
@@ -19,7 +19,7 @@ public class WorkitemCounter {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                synchronized ((Integer)currentCounter){
+                synchronized (currentCounter){
                     reportCounter = currentCounter / ( period / 1000); // task/min
                     currentCounter = 0;
                     reportDate = new Date();
@@ -34,7 +34,7 @@ public class WorkitemCounter {
         }
         return instance;
     }
-    public synchronized void increase(){
+    public void increase(){
         currentCounter += 1;
     }
 

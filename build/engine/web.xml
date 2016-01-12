@@ -62,6 +62,7 @@
             must be not blank if 'EnableClusterService' is set to 'true'
         </description>
     </context-param>
+
     <context-param>
         <param-name>SelfURI</param-name>
         <param-value>http://127.0.0.1:8080/yawl/ic/</param-value>

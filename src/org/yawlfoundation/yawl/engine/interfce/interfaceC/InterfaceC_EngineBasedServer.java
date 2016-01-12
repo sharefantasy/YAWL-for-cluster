@@ -3,6 +3,8 @@ package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 import org.apache.log4j.Logger;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
+import org.yawlfoundation.yawl.elements.YAWLServiceReference;
+import org.yawlfoundation.yawl.engine.WorkitemCounter;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
 import org.yawlfoundation.yawl.engine.interfce.EngineGateway;
@@ -82,14 +84,8 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             String engineRole = context.getInitParameter("EngineRole");
             String rsURL = context.getInitParameter("DefaultWorklist").replaceFirst("/ib#resource","/ic");
             YPersistenceManager.setEngineRole(engineRole);
-            setClusterClient();
 
             _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, identifier, selfURI, rsURL);
-//            if (_client.setRSEngineRole(engineRole).equals("success")){
-//                _logger.info("set rs engineRole to: " + engineRole);
-//            }else{
-//                _logger.error("set rs role failed");
-//            }
 
             boolean reg = "success".equals(_client.register());
             boolean connect = "success".equals(_client.connect());
@@ -101,7 +97,6 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 if (!engineRole.equals("failed")){
                     resetEngineRole(engineRole);
                 }
-
                 _client.heartbeat();
             }
 
@@ -144,19 +139,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
         outputWriter.close();
         //todo find out how to provide a meaningful 500 message in the format of  a fault message.
     }
-    private void setClusterClient(){
-        YEngine e = YEngine.getInstance();
-        if (e.getExternalClient("cluster") == null){
-            try {
-                e.addExternalClient(new YExternalClient("cluster", "cluster", "generic cluster client"));
-            } catch (YPersistenceException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
+
     private void resetEngineRole(String role) throws YPersistenceException {
         YPersistenceManager.setEngineRole(role);
-        setClusterClient();
         YEngine.getInstance().restore();
     }
     private String processPostQuery(HttpServletRequest request) {
@@ -164,6 +149,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
         String sessionHandle = request.getParameter("sessionHandle");
         String action = request.getParameter("action");
         debug(request, "Post");
+        request.getHeader("REMOTE_ADDR");
         try {
             if (action != null) {
 
@@ -209,11 +195,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
 
                     msg.append(_engine.checkConnectionForAdmin(sessionHandle));
                 }
-                else if ("getCurrentSpeed".equals(action)) {
 
-                    msg.append(_engine.checkConnectionForAdmin(sessionHandle));
-                    
-                }
             }
 
         } catch (YPersistenceException | RemoteException e) {

@@ -4,6 +4,7 @@ import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.engine.ObserverGateway;
+import org.yawlfoundation.yawl.engine.WorkitemCounter;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.interfce.Interface_Client;
 import org.yawlfoundation.yawl.util.PasswordEncryptor;
@@ -11,6 +12,7 @@ import org.yawlfoundation.yawl.util.PasswordEncryptor;
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -30,6 +32,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
     private String password;
     private String selfURI;
     private String rsURL;
+    private WorkitemCounter workitemCounter = WorkitemCounter.getInstace();
 
     public InterfaceC_EngineBasedClient(String clusterURI, String engine_id, String password, String selfURI, String rsURL){
         this.clusterURI = clusterURI;
@@ -91,6 +94,9 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
                 Map<String, String> params = prepareParamMap("heartbeat", null);
                 params.put("engineID", engineID);
                 params.put("password", PasswordEncryptor.encrypt(password, null));
+                String reportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(workitemCounter.getReportDate());
+                params.put("time", reportDate);
+                params.put("speed", String.valueOf(workitemCounter.getReportCounter()));
                 try {
                     executePost(clusterURI, params);
                 } catch (IOException e) {
@@ -108,4 +114,6 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
     public void clusterShutdown(){
         timer.cancel();
     }
+
+
 }

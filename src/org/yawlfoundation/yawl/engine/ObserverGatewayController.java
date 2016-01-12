@@ -153,7 +153,7 @@ public class ObserverGatewayController {
 
 
     /**
-     * Notify a case completion to all registered gateways.
+     * Notify a case start to all registered gateways.
      * @param services a set of the current engine-registered services
      * @param specID the specification id for thestarted case
      * @param caseID the completing case identifier

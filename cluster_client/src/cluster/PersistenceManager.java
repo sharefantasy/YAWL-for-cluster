@@ -1,19 +1,8 @@
 package cluster;
 
-import cluster.data.EngineInfo;
+import cluster.entity.Engine;
+import cluster.entity.EngineRole;
 import org.apache.log4j.Logger;
-import org.yawlfoundation.yawl.authentication.YExternalClient;
-import org.yawlfoundation.yawl.elements.YAWLServiceReference;
-import org.yawlfoundation.yawl.elements.YSpecification;
-import org.yawlfoundation.yawl.elements.state.YIdentifier;
-import org.yawlfoundation.yawl.engine.YCaseNbrStore;
-import org.yawlfoundation.yawl.engine.YNetData;
-import org.yawlfoundation.yawl.engine.YNetRunner;
-import org.yawlfoundation.yawl.engine.YWorkItem;
-import org.yawlfoundation.yawl.engine.time.YLaunchDelayer;
-import org.yawlfoundation.yawl.engine.time.YWorkItemTimer;
-import org.yawlfoundation.yawl.exceptions.Problem;
-import org.yawlfoundation.yawl.logging.table.*;
 import org.yawlfoundation.yawl.util.HibernateEngine;
 
 import java.util.Arrays;
@@ -31,7 +20,7 @@ public class PersistenceManager extends HibernateEngine {
 //            YLogSpecification.class, YLogNet.class, YLogTask.class, YLogNetInstance.class,
 //            YLogTaskInstance.class, YLogEvent.class, YLogDataItemInstance.class,
 //            YLogDataType.class, YLogService.class, YAuditEvent.class,
-            EngineInfo.class
+            Engine.class, EngineRole.class
     };
     private static Logger _logger = Logger.getLogger(PersistenceManager.class);
     private static PersistenceManager _pm ;

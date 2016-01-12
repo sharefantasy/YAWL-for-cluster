@@ -1,40 +1,40 @@
-package cluster.data;
+package cluster.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by fantasy on 2015/8/22.
  */
 
-public class EngineInfo {
+public class Engine {
+    //engine private identity
     private String engineID;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     private String password;
-    private String engineRole;
+
+    //HA related
+    private EngineRole engineRole;
     private Date lastHeartbeatTime;
     private Date lastLogineTime;
     private EngineStatus status;
-    public EngineInfo(){}
-    public EngineInfo(String engineID, String password){
+
+
+
+
+    public Engine(){}
+    public Engine(String engineID, String password){
         this.engineID = engineID;
         this.password = password;
         this.status = EngineStatus.INACTIVE;
     }
-
     public String getEngineID() {
         return engineID;
     }
     public void setEngineID(String engineID) {
         this.engineID = engineID;
     }
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public String getPassword() {
         return password;
     }
@@ -45,22 +45,19 @@ public class EngineInfo {
     public void setLastHeartbeatTime(Date lastHeartbeatTime) {
         this.lastHeartbeatTime = lastHeartbeatTime;
     }
-
-
     public EngineStatus getStatus() {
         return status;
     }
     public void setStatus(EngineStatus status) {
         this.status = status;
     }
-
-    public String getEngineRole() {
+    public EngineRole getEngineRole() {
         return engineRole;
     }
-    public void setEngineRole(String engineRole) {
+    public void setEngineRole(EngineRole engineRole) {
         this.engineRole = engineRole;
+        engineRole.setEngine(this);
     }
-
 
     public Date getLastLogineTime() {
         return lastLogineTime;
@@ -69,11 +66,15 @@ public class EngineInfo {
         this.lastLogineTime = lastLogineTime;
     }
 
-    public void roleTaking(EngineInfo changer){
+    public void roleTaking(Engine changer){
         engineRole = changer.engineRole;
-        engineRole = null;
+        changer.setEngineRole(EngineRole.IDLE);
     }
     public void clearLost(){
         lastHeartbeatTime = new Date();
+    }
+
+    public void addSpeed(Date newDate, double newSpeed){
+        engineRole.updateSpeed(newDate, newSpeed);
     }
 }

@@ -1,4 +1,4 @@
-package cluster.data;
+package cluster.entity;
 
 /**
  * Created by fantasy on 2015/8/28.

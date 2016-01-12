@@ -1,18 +1,16 @@
 package cluster;
 
-import cluster.data.EngineInfo;
-import cluster.data.EngineStatus;
+import cluster.entity.Engine;
+import cluster.entity.EngineRole;
+import cluster.entity.EngineStatus;
 import cluster.event.exceptions.GeneralException;
 import org.apache.log4j.Logger;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.util.HibernateEngine;
-import org.yawlfoundation.yawl.util.StringUtil;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Stream;
 
 /**
  * Created by fantasy on 2015/8/22.
@@ -20,7 +18,7 @@ import java.util.stream.Stream;
 public class Manager {
     private static Manager _manager;
     private static final Logger _logger = Logger.getLogger(Manager.class);
-    private ConcurrentHashMap<String, EngineInfo> activeEngineRepo;
+    private ConcurrentHashMap<String, Engine> activeEngineRepo;
     private HeartbeatChecker checker = new HeartbeatChecker();
     private PersistenceManager _pm;
     private InterfaceC_EnvironmentBasedClient _client;
@@ -42,7 +40,7 @@ public class Manager {
     }
 
     public void login(String id, String password) throws GeneralException, IOException {
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         if (engine != null){
             if (engine.getPassword().equals(password)){
                 engine.clearLost();
@@ -63,12 +61,12 @@ public class Manager {
                     .getPassword().equals(password)){
                 _logger.info(id + " disconnect");
                 activeEngineRepo.remove(id);
-                EngineInfo engine = activeEngineRepo.get(id);
+                Engine engine = activeEngineRepo.get(id);
                 engine.setStatus(EngineStatus.INACTIVE);
                 _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
             }
             else {
-                EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+                Engine engine = (Engine)_pm.get(Engine.class, id);
                 if (engine == null)
                     throw new GeneralException(id + " is not registered");
                 else
@@ -80,16 +78,16 @@ public class Manager {
     }
 
     public void register(String id, String password) throws GeneralException {
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         if (engine != null)
             throw new GeneralException(id + "is already registered");
-        engine = new EngineInfo(id, password);
+        engine = new Engine(id, password);
         _pm.exec(engine, HibernateEngine.DB_INSERT, true);
         _logger.info(engine.getEngineID() + " registered");
     }
 
     public void unregister(String id, String password) throws GeneralException {
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         if (engine == null)
             throw new GeneralException(id + "is not registered");
         if (activeEngineRepo.containsKey(engine.getEngineID())
@@ -101,7 +99,7 @@ public class Manager {
     }
 
     public boolean isLogin(String id, String password) throws GeneralException {
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         if (engine == null)
             throw new GeneralException(id + " is not registered");
         if (!engine.getPassword().equals(password))
@@ -110,29 +108,31 @@ public class Manager {
         
     }
 
-    public String heartbeat(String id, String password) throws GeneralException {
+    public String heartbeat(String id, String password, Date time, double speed) throws GeneralException {
         if (isLogin(id, password)){
-            EngineInfo engine = activeEngineRepo.get(id);
+            Engine engine = activeEngineRepo.get(id);
             engine.clearLost();
+            engine.addSpeed(time, speed);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
-            _logger.info(String.format("%s as %s heartbeat", id, engine.getEngineRole()));
+            _logger.info(String.format("{%s} %s as %s heartbeat, speed %f",
+                    time.toString(), id, engine.getEngineRole(), speed));
         }else
             throw new GeneralException(id + " doesn't not login");
         return "success";
     }
-    public void setEngineRole(String id, String role){
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+    public void setEngineRole(String id, EngineRole role){
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         if (engine != null){
             engine.setEngineRole(role);
         }
     }
-    public String distribute(String id){
-        EngineInfo engine = (EngineInfo)_pm.get(EngineInfo.class, id);
+    public EngineRole distribute(String id){
+        Engine engine = (Engine)_pm.get(Engine.class, id);
         long size = activeEngineRepo.values().stream()
                 .filter(i -> i.getStatus() == EngineStatus.WORKER).count();
-        String role = null;
+        EngineRole role = null;
         if (size <= MAX_WORKER){
-            role = UUID.randomUUID().toString();
+            role = new EngineRole();
             engine.setEngineRole(role);
             engine.setStatus(EngineStatus.WORKER);
             activeEngineRepo.replace(id, engine);
@@ -140,23 +140,24 @@ public class Manager {
             size++;
         }
         else {
+            role = EngineRole.IDLE;
             engine.setStatus(EngineStatus.BACKUP);
-            engine.setEngineRole(null);
+            engine.setEngineRole(EngineRole.IDLE);
             activeEngineRepo.replace(id, engine);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
         }
         _logger.info("worker_num = " + size);
         return role;
     }
-    private String takeBackup(EngineInfo engine) throws GeneralException, IOException {
-        EngineInfo backup;
+    private String takeBackup(Engine engine) throws GeneralException, IOException {
+        Engine backup;
         try{
             backup = activeEngineRepo.values().stream()
                     .filter(e -> e.getStatus() == EngineStatus.BACKUP)
                     .findFirst().get();
             backup.roleTaking(engine);
             backup.setStatus(EngineStatus.WORKER);
-            _client.setEngineRole(backup.getEngineID(), backup.getEngineRole());
+            _client.setEngineRole(backup.getEngineID(), backup.getEngineRole().getRole());
             _pm.exec(backup,HibernateEngine.DB_UPDATE, true);
             return backup.getEngineID();
         }catch (NullPointerException e){
@@ -168,7 +169,7 @@ public class Manager {
     }
     public void releaseAllEngine(){
         activeEngineRepo.clear();
-        List<EngineInfo> list = (List<EngineInfo>)_pm.getObjectsForClass("EngineInfo");
+        List<Engine> list = (List<Engine>)_pm.getObjectsForClass("Engine");
         list.stream().forEach(i -> i.setStatus(EngineStatus.INACTIVE));
     }
     private class HeartbeatChecker{

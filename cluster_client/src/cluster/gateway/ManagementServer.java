@@ -1,22 +1,21 @@
-package cluster;
+package cluster.gateway;
 
-import cluster.data.EngineInfo;
+import cluster.Manager;
+import cluster.entity.Engine;
+import cluster.entity.EngineRole;
+import cluster.entity.ServiceProvider;
 import cluster.event.exceptions.GeneralException;
 import org.apache.log4j.Logger;
-import org.omg.IOP.ServiceContext;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_Controller;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EnvironmentBasedServer;
-import org.yawlfoundation.yawl.util.StringUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Date;
 
 /**
  * Created by fantasy on 2015/8/21.
@@ -101,10 +100,10 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
     }
 
     @Override
-    public String heartbeat(String engineID, String identifier) throws RemoteException {
+    public String heartbeat(String engineID, String identifier, Date time, double speed) throws RemoteException {
         try {
             if (_manager.isLogin(engineID, identifier)){
-                _manager.heartbeat(engineID, identifier);
+                _manager.heartbeat(engineID, identifier, time, speed);
             }
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -118,9 +117,9 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
     public String getEngineRole(String engineID, String password) throws RemoteException {
         try {
             if(_manager.isLogin(engineID, password)){
-                String role = _manager.distribute(engineID);
+                EngineRole role = _manager.distribute(engineID);
                 _manager.setEngineRole(engineID, role);
-                return role;
+                return role.toString();
             }else{
                 return "failed";
             }

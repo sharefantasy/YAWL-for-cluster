@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 
 /**
@@ -72,7 +75,9 @@ public class InterfaceC_EnvironmentBasedServer extends HttpServlet {
                     msg.append(controller.unregister(engineID, password));
                 }
                 else if ("heartbeat".equals(action)){
-                    msg.append(controller.heartbeat(engineID, password));
+                    Date time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(request.getParameter("time"));
+                    double speed = Double.parseDouble(request.getParameter("speed"));
+                    msg.append(controller.heartbeat(engineID, password, time, speed));
                 }
                 else if ("getEngineRole".equals(action)){
                     msg.append(controller.getEngineRole(engineID, password));
