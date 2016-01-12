@@ -15,7 +15,7 @@ Lab: Worflow lab, SYSU
 　　　　Checks if the engines are still available.  
 　　2. Workitem scheduling  
 　　　　Switch active workitems to an available engine when the old engine is down.  
-　　3. Load balance
+　　3. Load balance 
 　　　　Monitor the distribution of engines on hosts, adjust in reference of allocating speed and historical allocating speed.  
 　　4. OpenStack adapter
 
