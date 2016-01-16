@@ -19,7 +19,7 @@
     <!--cluster related parameters-->
     <context-param>
         <param-name>EnableClusterService</param-name>
-        <param-value>true</param-value>
+        <param-value>false</param-value>
         <description>
             Set this value to 'true' to enable interface C,
             which connects to a given cluster cluster.server.
@@ -181,7 +181,7 @@
 
     <!--<context-param>-->
         <!--<param-name>ObserverGateway</param-name>-->
-        <!--<param-value></param-value>-->
+        <!--<param-value>org.yawlfoundation.yawl.plugin.ObCounter</param-value>-->
         <!--<description>-->
             <!--The class name of an ObserverGateway implementation. Multiple-->
             <!--implementations can be separated with semi-colons ';'-->

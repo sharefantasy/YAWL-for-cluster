@@ -21,7 +21,7 @@
 
     <context-param>
         <param-name>InterfaceBWebSideController</param-name>
-        <param-value>org.yawltest.TestForYawl</param-value>
+        <param-value>org.engineLoad.TestForYawl</param-value>
     </context-param>
 
 

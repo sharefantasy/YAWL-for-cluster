@@ -7,7 +7,17 @@ import java.util.*;
  */
 public class Tenant {
     private int id;
+
+    public List<EngineRole> getEngineList() {
+        return engineList;
+    }
+
     private List<EngineRole> engineList;
+
+    public double getSLOspeed() {
+        return SLOspeed;
+    }
+
     private double SLOspeed;
     private double currentSpeed;
     private Date recordTime;

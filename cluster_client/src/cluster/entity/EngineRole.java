@@ -1,11 +1,11 @@
 package cluster.entity;
 
+import javafx.collections.transformation.SortedList;
+
 import java.util.*;
 
-/**
- * Created by fantasy on 2015/9/2.
- */
 public class EngineRole{
+
     public static final EngineRole IDLE = new EngineRole("idle");
     private Engine engine;
     private String role;
@@ -13,7 +13,7 @@ public class EngineRole{
     //quantifier
     private Date recordTime = new Date();
     private double currentSpeed;
-    private Map<Date, Double> historySpeed = new HashMap<>();
+    private Queue<SpeedRrd> historySpeed = new ArrayDeque<>();
 
     //scheduler related
     private Host host;
@@ -45,12 +45,14 @@ public class EngineRole{
     public String toString(){return role;}
 
     public void updateSpeed(Date newDate, double newSpeed){
-        historySpeed.put(recordTime, currentSpeed);
+        historySpeed.add(new SpeedRrd(recordTime, currentSpeed));
         recordTime = newDate;
         currentSpeed = newSpeed;
+        if (historySpeed.size() > 1000)
+            historySpeed.remove();
     }
 
-    public Map<Date, Double> getHistorySpeed() {
+    public Queue<SpeedRrd> getHistorySpeed() {
         return historySpeed;
     }
 

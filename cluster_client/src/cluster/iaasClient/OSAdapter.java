@@ -5,7 +5,9 @@ import cluster.entity.Engine;
 import cluster.entity.EngineRole;
 import cluster.entity.Host;
 import cluster.event.exceptions.MigrationException;
+import org.apache.log4j.Logger;
 import org.openstack4j.api.OSClient;
+import org.openstack4j.api.exceptions.ConnectionException;
 import org.openstack4j.model.compute.actions.LiveMigrateOptions;
 import org.openstack4j.openstack.OSFactory;
 
@@ -16,7 +18,9 @@ import java.util.Map;
 /**
  * Created by fantasy on 2016/1/4.
  */
-public class OSAdapter implements Adapter {
+public class OSAdapter extends BaseAdapter{
+    private static final Logger _logger = Logger.getLogger(OSAdapter.class);
+    private ArrayList<envObserver> obs = new ArrayList<>();
     private SchedulerStatus status;
     private OSClient os;
     private static OSAdapter instance;
@@ -52,22 +56,31 @@ public class OSAdapter implements Adapter {
 
     }
 
-    @Override
     public Engine HostUsage(String hostID) {
 
         return null;// TODO: 2016/1/10 collect IaaS level information
     }
 
-    @Override
     public Map<Host, EngineRole> loadEngineHostMap() {
 
         // TODO: 2016/1/11 update host map in period, but may better in other way
         return null;
     }
 
-    @Override
     public List<Host> getHosts() {
 
         return null;
+    }
+
+    @Override
+    public boolean isStarted() {
+        try{
+            os.supportsCompute();
+            return true;
+        }
+        catch (ConnectionException e){
+            return false;
+        }
+
     }
 }

@@ -1,10 +1,12 @@
 package cluster.ditribute.strategy;
+import cluster.entity.EngineRole;
+import cluster.entity.Host;
+import cluster.entity.Tenant;
 
-import cluster.entity.Engine;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by fantasy on 2016/1/6.
  */
-public class Distribution {
-    Engine[][] solution;
-}
+public class Distribution extends HashMap<Host, HashMap<Tenant, ArrayList<EngineRole>>>{}

@@ -1,5 +1,7 @@
 package cluster.entity;
 
+import cluster.event.exceptions.GeneralException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +47,27 @@ public class Host {
             currentSpeed+=e.getCurrentSpeed();
         }
         recordTime = new Date();
+    }
+    public void addEngine(EngineRole e) throws GeneralException{
+        if (e != null) {
+            if (!engineList.contains(e)){
+                engineList.add(e);
+            }
+            else {
+                throw new GeneralException("duplicated engine");
+            }
+        }
+
+    }
+    public void removeEngine(EngineRole e) throws GeneralException{
+        if (e != null) {
+            if (engineList.contains(e)){
+                engineList.remove(e);
+            }
+            else {
+                throw new GeneralException("invalid engine");
+            }
+        }
     }
     public List<EngineRole> getEngineList() {
         return engineList;

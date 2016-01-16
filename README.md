@@ -1,7 +1,6 @@
 # YAWL for cluster
 
 Author: Fan Kai Nang(范啟能)  
-Lab: Worflow lab, SYSU  
 
 ## Idea
 　　'YAWL for cluster' is an experimental project on making YAWL, an traditional workflow engine, into a distributed engine with minimal modifications.  

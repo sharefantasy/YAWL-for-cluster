@@ -1,8 +1,11 @@
 package cluster.ditribute.strategy;
 import cluster.entity.EngineRole;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface Scheduler {
-    EngineRole[][] schedule(EngineRole[][] oldSolution);
+    ArrayList<EngineRole>[][] schedule(ArrayList<EngineRole>[][] oldSolution);
     String getProgressMessage();
     SchedulerStatus getProgress();
 }
