@@ -25,7 +25,6 @@ public class TestForYawl extends InterfaceBWebsideController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("engine load: "+String.valueOf(distributeCount-lastDistributeCount));
                 _logger.info("engine load: "+String.valueOf(distributeCount-lastDistributeCount));
                 lastDistributeCount=distributeCount;
 

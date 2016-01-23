@@ -113,6 +113,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
     }
     public void clusterShutdown(){
         timer.cancel();
+        workitemCounter.shutdown();
     }
 
 

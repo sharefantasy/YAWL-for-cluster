@@ -8,12 +8,15 @@ import cluster.event.exceptions.MigrationException;
 import org.apache.log4j.Logger;
 import org.openstack4j.api.OSClient;
 import org.openstack4j.api.exceptions.ConnectionException;
+import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.actions.LiveMigrateOptions;
 import org.openstack4j.openstack.OSFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created by fantasy on 2016/1/4.
@@ -71,7 +74,11 @@ public class OSAdapter extends BaseAdapter{
 
         return null;
     }
-
+    public List<Server> getVMbyHost(Host host){
+        List<Server> servers = (List<Server>) os.compute().servers().listAll(true);
+        servers = servers.stream().filter(server -> server.getHost().equals(host.getName())).collect(Collectors.toList());
+        return servers;
+    }
     @Override
     public boolean isStarted() {
         try{

@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cluster.entity">
+    <class name="Tenant" table="tenant">
+        <id name="id" column="id" type="java.lang.Integer">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name" type="java.lang.String"/>
+        <set name="engineList" cascade="save-update">
+            <key column="role_t" not-null="true" />
+            <one-to-many class="EngineRole" />
+        </set>
+    </class>
+</hibernate-mapping>

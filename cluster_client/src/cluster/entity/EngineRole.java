@@ -6,8 +6,12 @@ import java.util.*;
 
 public class EngineRole{
 
-    public static final EngineRole IDLE = new EngineRole("idle");
     private Engine engine;
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     private String role;
     private String containerName;
     //quantifier

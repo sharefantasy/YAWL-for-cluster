@@ -5,7 +5,7 @@
     <metaData>
       <creator>fantasy</creator>
       <description>No description provided</description>
-      <version>0.13</version>
+      <version>0.18</version>
       <persistent>false</persistent>
       <identifier>UID_806c5e53-8c36-43d1-9833-eb224aac0ebb</identifier>
     </metaData>
@@ -28,7 +28,7 @@
           <name>count</name>
           <flowsInto>
             <nextElementRef id="OutputCondition" />
-            <predicate ordering="0">number(/Net/count/text())&gt;10000</predicate>
+            <predicate ordering="0">false()</predicate>
           </flowsInto>
           <flowsInto>
             <nextElementRef id="count" />
@@ -89,7 +89,7 @@
         <type>unsignedLong</type>
         <namespace>http://www.w3.org/2001/XMLSchema</namespace>
       </outputParam>
-      <yawlService id="http://localhost:8082/YawlTest/ib" />
+      <yawlService id="http://192.168.0.69:8082/YawlTest/ib" />
       <externalInteraction>manual</externalInteraction>
     </decomposition>
   </specification>

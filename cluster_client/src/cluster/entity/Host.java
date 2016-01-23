@@ -2,10 +2,7 @@ package cluster.entity;
 
 import cluster.event.exceptions.GeneralException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by fantasy on 2016/1/5.
@@ -20,7 +17,36 @@ public class Host {
 
     private String name;
 
+    public void setEngineList(List<EngineRole> engineList) {
+        this.engineList = engineList;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private List<EngineRole> engineList;
+    private Set<HostCapability> capabilitySet = new HashSet<>();
+    public double getCapability(int engineNumber){
+        Optional<HostCapability> c1 = (capabilitySet.stream().filter((c)->c.geteNum() == engineNumber).findFirst());
+        if(c1.isPresent()){
+            return c1.get().getCapability();
+        }
+        capabilitySet.add(new HostCapability(this,engineNumber));
+        return 0;
+    }
+    public void setCapability(int engineNumber, double capability){
+        Optional<HostCapability> c1 = (capabilitySet.stream().filter((c)->c.geteNum() == engineNumber).findFirst());
+        if(c1.isPresent()){
+            c1.get().setCapability(capability);
+        }
+        capabilitySet.add(new HostCapability(this,engineNumber));
+    }
+
+    public void setCapacitySpeed(double capacitySpeed) {
+        this.capacitySpeed = capacitySpeed;
+    }
+
     private double capacitySpeed;
     private double currentSpeed;
     private Date recordTime;
@@ -32,9 +58,9 @@ public class Host {
         historySpeed = new HashMap<>();
         engineList = new ArrayList<>();
     }
-    public Host(String name, double sloSpeed, List<EngineRole> engines){
+    public Host(String name, double capacitySpeed, List<EngineRole> engines){
         this.name = name;
-        this.capacitySpeed = sloSpeed;
+        this.capacitySpeed = capacitySpeed;
         this.historySpeed = new HashMap<>();
         this.engineList = engines;
     }
@@ -82,5 +108,13 @@ public class Host {
 
     public boolean equals(Host host){
         return this.name.equals(host.name);
+    }
+
+    public Set<HostCapability> getCapabilitySet() {
+        return capabilitySet;
+    }
+
+    public void setCapabilitySet(Set<HostCapability> capabilitySet) {
+        this.capabilitySet = capabilitySet;
     }
 }

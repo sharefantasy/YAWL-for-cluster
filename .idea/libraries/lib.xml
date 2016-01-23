@@ -101,7 +101,6 @@
       <root url="jar://$PROJECT_DIR$/build/3rdParty/lib/commons-io-2.0.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/3rdParty/lib/bcmail-jdk15-139.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/3rdParty/lib/commons-beanutils.jar!/" />
-      <root url="jar://$PROJECT_DIR$/ant.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

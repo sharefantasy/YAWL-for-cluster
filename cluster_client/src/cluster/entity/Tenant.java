@@ -7,9 +7,14 @@ import java.util.*;
  */
 public class Tenant {
     private int id;
-
+    private String name;
+    public Tenant(){}
     public List<EngineRole> getEngineList() {
         return engineList;
+    }
+
+    public void setEngineList(List<EngineRole> engineList) {
+        this.engineList = engineList;
     }
 
     private List<EngineRole> engineList;
@@ -65,5 +70,21 @@ public class Tenant {
 
     public HashMap<Date, Double> getHistorySpeed() {
         return historySpeed;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

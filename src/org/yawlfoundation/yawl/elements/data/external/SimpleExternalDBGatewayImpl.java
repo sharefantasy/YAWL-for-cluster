@@ -80,7 +80,7 @@ public class SimpleExternalDBGatewayImpl extends AbstractExternalDBGateway {
     public void updateFromCaseData(YSpecificationID specID, String caseID,
                                    List<YParameter> outputParams,
                                    Element updatingData) {
-        System.out.println(caseID);        
+//        System.out.println(caseID);
     }
 
 

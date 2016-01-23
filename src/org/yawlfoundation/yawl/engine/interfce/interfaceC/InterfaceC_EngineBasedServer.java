@@ -91,7 +91,6 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             boolean connect = "success".equals(_client.connect());
             if (reg || connect){
                 engineRole = _client.getEngineRole();
-                System.out.println("role " + engineRole);
                 _logger.info("role " + engineRole);
 
                 if (!engineRole.equals("failed")){

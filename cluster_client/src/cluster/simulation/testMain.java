@@ -1,9 +1,6 @@
 package cluster.simulation;
 
-import cluster.entity.EngineRole;
-import cluster.entity.Host;
-import cluster.entity.ServiceProvider;
-import cluster.entity.Tenant;
+import cluster.entity.*;
 import cluster.iaasClient.OSAdapter;
 
 import java.util.*;
@@ -60,11 +57,11 @@ public class testMain {
         }
 
 //        ServiceProvider sp = new ServiceProvider(lh,lt,le, OSAdapter.getInstance());
-        EngineDataGenerator dg = new EngineDataGenerator(le, 200);
-        ServiceProvider sp = new ServiceProvider(lh,lt,le, dg);
-        sp.setStatisticInterval(200);
-        dg.addObserver(sp);
-        dg.startGenerating(30 * 1000);
-
+//        EngineDataGenerator dg = new EngineDataGenerator(le, 200);
+//        ServiceProvider sp = new ServiceProvider(lh,lt,le, dg);
+//        sp.setStatisticInterval(200);
+//        dg.addObserver(sp);
+//        dg.startGenerating(30 * 1000);
+//        TimeScaler.getInstance().destroy();
     }
 }

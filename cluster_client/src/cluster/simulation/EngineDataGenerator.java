@@ -1,12 +1,8 @@
 package cluster.simulation;
 
-import cluster.entity.Engine;
-import cluster.entity.EngineRole;
-import cluster.entity.EngineStatus;
-import cluster.entity.Host;
+import cluster.entity.*;
 import cluster.event.exceptions.GeneralException;
 import cluster.event.exceptions.MigrationException;
-import cluster.iaasClient.Adapter;
 import cluster.iaasClient.BaseAdapter;
 import cluster.simulation.model.SpeedModel;
 import cluster.simulation.model.UniformModel;
@@ -23,7 +19,7 @@ import java.util.stream.Collectors;
 public class EngineDataGenerator extends BaseAdapter{
     private List<EngineSimulator> engineList;
     private int interval;
-    private ScheduledExecutorService _executor;
+    private ScheduledExecutorService _executor = TimeScaler.getInstance().getExecutor();
     private static final Logger _logger = Logger.getLogger(EngineDataGenerator.class);
     private boolean isStart = false;
     // TODO: 2016/1/14 need distribution
@@ -94,7 +90,7 @@ public class EngineDataGenerator extends BaseAdapter{
         public EngineSimulator(EngineRole r){
             model = new UniformModel();
             setEngineRole(r);
-            setStatus(EngineStatus.WORKER);
+            setStatus(EngineStatus.SERVING);
         }
         public synchronized void migrate(Host h){
             try {

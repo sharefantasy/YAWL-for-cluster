@@ -15,6 +15,9 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -22,14 +25,14 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/perf4j-master/perf4j-master/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/events" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/listener" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="yawl-3.0.1" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib1" level="project" />
     <orderEntry type="library" name="openstack4j-2.0.9-withdeps" level="project" />
+    <orderEntry type="module" module-name="yawl-3.0.1" />
   </component>
 </module>

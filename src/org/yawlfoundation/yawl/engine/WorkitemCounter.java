@@ -24,9 +24,13 @@ public class WorkitemCounter {
                     currentCounter = 0;
                     reportDate = new Date();
                 }
-                System.out.println("count: " + reportCounter);
             }
         }, 0, period);
+    }
+    public void shutdown(){
+        timer.purge();
+        timer.cancel();
+        timer = null;
     }
     public static WorkitemCounter getInstace(){
         if (instance == null){
@@ -35,7 +39,10 @@ public class WorkitemCounter {
         return instance;
     }
     public synchronized void  increase(){
-        currentCounter += 1;
+        if (timer != null){
+            currentCounter += 1;
+        }
+
     }
 
     public int getPeriod() {

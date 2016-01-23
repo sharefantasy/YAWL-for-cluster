@@ -2,6 +2,8 @@ package cluster;
 
 import cluster.entity.Engine;
 import cluster.entity.EngineRole;
+import cluster.entity.Host;
+import cluster.entity.Tenant;
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.util.HibernateEngine;
 
@@ -14,13 +16,8 @@ import java.util.HashSet;
 public class PersistenceManager extends HibernateEngine {
 
     private static Class[] persistclasses = {
-//            YSpecification.class, YNetRunner.class, YWorkItem.class, YIdentifier.class,
-//            YNetData.class, YAWLServiceReference.class, YExternalClient.class,
-//            YWorkItemTimer.class, YLaunchDelayer.class, YCaseNbrStore.class, Problem.class,
-//            YLogSpecification.class, YLogNet.class, YLogTask.class, YLogNetInstance.class,
-//            YLogTaskInstance.class, YLogEvent.class, YLogDataItemInstance.class,
-//            YLogDataType.class, YLogService.class, YAuditEvent.class,
-            Engine.class, EngineRole.class
+              Engine.class,
+              EngineRole.class, Host.class, Tenant.class
     };
     private static Logger _logger = Logger.getLogger(PersistenceManager.class);
     private static PersistenceManager _pm ;

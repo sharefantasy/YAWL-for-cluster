@@ -5,8 +5,9 @@ package cluster.entity;
  */
 public enum EngineStatus{
     INACTIVE,
-    WORKER,
-    BACKUP,
+    SERVING,
+    IDLE,
+    TESTING,
     UNHEALTHY,
     LOST
 }

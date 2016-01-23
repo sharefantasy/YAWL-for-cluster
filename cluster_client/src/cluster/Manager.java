@@ -11,6 +11,7 @@ import org.yawlfoundation.yawl.util.HibernateEngine;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Created by fantasy on 2015/8/22.
@@ -129,22 +130,22 @@ public class Manager {
     public EngineRole distribute(String id){
         Engine engine = (Engine)_pm.get(Engine.class, id);
         long size = activeEngineRepo.values().stream()
-                .filter(i -> i.getStatus() == EngineStatus.WORKER).count();
+                .filter(i -> i.getStatus() == EngineStatus.SERVING).count();
+        List roles = _pm.getObjectsForClassWhere("EngineRole", "engine = null");
         EngineRole role = null;
-        if (size <= MAX_WORKER){
-            role = new EngineRole();
+        if (roles.size() == 0){
+            engine.setStatus(EngineStatus.IDLE);
+            activeEngineRepo.replace(id, engine);
+            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
+        }
+        else {
+            role = (EngineRole) roles.get(0);
             engine.setEngineRole(role);
-            engine.setStatus(EngineStatus.WORKER);
+            engine.setStatus(EngineStatus.SERVING);
             activeEngineRepo.replace(id, engine);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
             size++;
-        }
-        else {
-            role = EngineRole.IDLE;
-            engine.setStatus(EngineStatus.BACKUP);
-            engine.setEngineRole(EngineRole.IDLE);
-            activeEngineRepo.replace(id, engine);
-            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
+            _logger.info("engine " + engine.getEngineID() + " is attached to " + role.getTenant().getId());
         }
         _logger.info("worker_num = " + size);
         return role;
@@ -153,10 +154,10 @@ public class Manager {
         Engine backup;
         try{
             backup = activeEngineRepo.values().stream()
-                    .filter(e -> e.getStatus() == EngineStatus.BACKUP)
+                    .filter(e -> e.getStatus() == EngineStatus.IDLE)
                     .findFirst().get();
             backup.roleTaking(engine);
-            backup.setStatus(EngineStatus.WORKER);
+            backup.setStatus(EngineStatus.SERVING);
             _client.setEngineRole(backup.getEngineID(), backup.getEngineRole().getRole());
             _pm.exec(backup,HibernateEngine.DB_UPDATE, true);
             return backup.getEngineID();
@@ -202,6 +203,13 @@ public class Manager {
         }
 
     }
-
+    public List<Engine> getEngines(){
+        return (List<Engine>) activeEngineRepo.values();
+    }
+    public List<EngineRole> getActiveEngineRoles(){
+        return activeEngineRepo.values().stream()
+                .map(Engine::getEngineRole)
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
 }

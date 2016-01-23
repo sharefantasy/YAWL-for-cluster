@@ -11,10 +11,9 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib2" />
           <element id="library" level="project" name="lib" />
-          <element id="library" level="project" name="lib1" />
           <element id="library" level="project" name="jaranalyzer-1.2" />
-          <element id="library" level="project" name="mysql-connector-java-5.1.26-bin" />
           <element id="library" level="project" name="commons-codec-1.9" />
+          <element id="library" level="project" name="YAWL_Standalone_3.0.1" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="yawl-3.0.1/web/Web" />

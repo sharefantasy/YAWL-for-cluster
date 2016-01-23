@@ -19,7 +19,7 @@
     <!--cluster related parameters-->
     <context-param>
         <param-name>EnableClusterService</param-name>
-        <param-value>false</param-value>
+        <param-value>true</param-value>
         <description>
             Set this value to 'true' to enable interface C,
             which connects to a given cluster cluster.server.

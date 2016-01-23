@@ -49,10 +49,11 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
                 throw new GeneralException("engine "+ engineID + " login failed, check engine configuration");
 
         } catch (GeneralException e) {
-            _logger.info(e.getMsg());
+            e.printStackTrace();
             return e.getMsg();
         } catch (IOException e) {
             _logger.error(engineID + " connection lost");
+            e.printStackTrace();
             return e.getMessage();
         }
         return "success";

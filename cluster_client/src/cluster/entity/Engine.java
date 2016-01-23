@@ -56,7 +56,7 @@ public class Engine {
     }
     public void setEngineRole(EngineRole engineRole) {
         this.engineRole = engineRole;
-        engineRole.setEngine(this);
+//        engineRole.setEngine(this);
     }
 
     public Date getLastLogineTime() {
@@ -68,7 +68,7 @@ public class Engine {
 
     public void roleTaking(Engine changer){
         engineRole = changer.engineRole;
-        changer.setEngineRole(EngineRole.IDLE);
+        changer.setEngineRole(null);
     }
     public void clearLost(){
         lastHeartbeatTime = new Date();
