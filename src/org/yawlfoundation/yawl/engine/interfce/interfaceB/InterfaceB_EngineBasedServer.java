@@ -18,7 +18,6 @@
 
 package org.yawlfoundation.yawl.engine.interfce.interfaceB;
 
-import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.elements.data.external.ExternalDBGatewayFactory;
 import org.yawlfoundation.yawl.elements.predicate.PredicateEvaluatorFactory;
 import org.yawlfoundation.yawl.engine.ObserverGateway;
@@ -29,7 +28,6 @@ import org.yawlfoundation.yawl.engine.interfce.ServletUtils;
 import org.yawlfoundation.yawl.engine.interfce.YHttpServlet;
 import org.yawlfoundation.yawl.exceptions.YAWLException;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
-import org.yawlfoundation.yawl.resourcing.util.PluginFactory;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 import javax.servlet.ServletContext;
@@ -43,9 +41,6 @@ import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.rmi.RemoteException;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
 

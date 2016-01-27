@@ -8,9 +8,9 @@
             <generator class="native"/>
         </id>
         <property name="name" column="name" type="java.lang.String"/>
-        <set name="engineList" cascade="save-update">
+        <bag name="engineList" cascade="all">
             <key column="role_t" not-null="true" />
             <one-to-many class="EngineRole" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

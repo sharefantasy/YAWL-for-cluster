@@ -86,15 +86,16 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             YPersistenceManager.setEngineRole(engineRole);
 
             _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, identifier, selfURI, rsURL);
-
             boolean reg = "success".equals(_client.register());
             boolean connect = "success".equals(_client.connect());
             if (reg || connect){
                 engineRole = _client.getEngineRole();
-                _logger.info("role " + engineRole);
+                if (!engineRole.equals("<response></response>")) {
+                    _logger.info("role " + engineRole);
+                    if (!engineRole.equals("failed")){
+                        resetEngineRole(engineRole);
+                    }
 
-                if (!engineRole.equals("failed")){
-                    resetEngineRole(engineRole);
                 }
                 _client.heartbeat();
             }
@@ -104,7 +105,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             throw new UnavailableException("Persistence failure");
         } catch (IOException e) {
             e.printStackTrace();
-            _logger.error("cluster management lost");
+            _logger.error("connection refused");
         }
 
         if (_engine != null) {

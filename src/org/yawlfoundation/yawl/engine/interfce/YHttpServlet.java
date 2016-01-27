@@ -2,7 +2,6 @@ package org.yawlfoundation.yawl.engine.interfce;
 
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.util.StringUtil;
-import org.yawlfoundation.yawl.worklet.support.WorkletGateway;
 
 import javax.servlet.http.HttpServlet;
 import java.sql.Driver;

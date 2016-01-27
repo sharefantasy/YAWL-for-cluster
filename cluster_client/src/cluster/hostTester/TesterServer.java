@@ -1,20 +1,20 @@
 package cluster.hostTester;
 
 import cluster.Manager;
+import cluster.PersistenceManager;
 import cluster.entity.*;
 import cluster.event.exceptions.GeneralException;
 import org.apache.log4j.Logger;
+import org.yawlfoundation.yawl.util.HibernateEngine;
 
+import javax.persistence.criteria.ListJoin;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +26,8 @@ public class TesterServer extends HttpServlet {
     public static final Logger _logger = Logger.getLogger(TesterServer.class);
     private ScheduledExecutorService _executor = TimeScaler.getInstance().getExecutor();
     private Timer timer;
+    private PersistenceManager _pm = new PersistenceManager(true);
+    private TesterServer instance;
     public void init(ServletConfig config) throws ServletException{}
     private void test(Host tester, List<EngineRole> engines, long endtime){
         int count = 0;
@@ -47,44 +49,71 @@ public class TesterServer extends HttpServlet {
                 for(EngineRole e: engines){
                     e.getEngine().setStatus(EngineStatus.INACTIVE);
                 }
+                _pm.exec(tester,HibernateEngine.DB_UPDATE, true);
             }
         }, endtime);
     }
+    private Tenant getTesterTenant(String testName, int engineNum){
+        List<Tenant> ts = _pm.getObjectsForClassWhere("Tenant", String.format("name='%s'", testName));
+        Tenant tenant;
+        if (ts.size() != 0) {
+            for (Tenant t: ts) {
+                _pm.exec(t, HibernateEngine.DB_DELETE,true);
+            }
+        }
+        tenant = new Tenant();
+        tenant.setName(testName);
+        tenant.setSLOspeed(0);
+        List<EngineRole> engineRoles = new ArrayList<>();
+        for (int i = 0; i < engineNum; i++) {
+            engineRoles.add(new EngineRole());
+        }
+        tenant.setEngineList(engineRoles);
+        _pm.exec(tenant, HibernateEngine.DB_INSERT, true);
+        return tenant;
+
+    }
     public void doGet(HttpServletRequest request, HttpServletResponse response){
-       if (!request.getParameter("yes").equals("y"))
+        String action = request.getParameter("action");
+        if (action.equals("test")){
+            Host totest = new Host("dd", 0);
+            Tenant t = getTesterTenant("hosttester2",2);
+            Manager manager = Manager.getInstance();
+            totest.setEngineList(t.getEngineList());
+            int i = 0;
+            for (Engine e: manager.getEngines()) {
+                e.setStatus(EngineStatus.TESTING);
+                e.setEngineRole(totest.getEngineList().get(i));
+                totest.getEngineList().get(i++).setEngine(e);
+            }
+            _pm.exec(totest,HibernateEngine.DB_INSERT,true);
+            instance = new TesterServer();
+            _logger.info("host name: "+totest.getName());
+            _logger.info("tenant name: "+t.getName());
+            instance.test(totest,totest.getEngineList(),10 * 60 * 1000);
             try {
-                response.getOutputStream().println("0");
-                return;
+                response.getOutputStream().println("starting");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-        TesterTenant tester = new TesterTenant();
-        tester.createEngine(1);
-        Host totest = new Host("dd", 0);
-
-        Manager manager = Manager.getInstance();
-        int i = 0;
-        for (Engine e: manager.getEngines()) {
-            e.setStatus(EngineStatus.TESTING);
-            e.setEngineRole(totest.getEngineList().get(i));
-            totest.getEngineList().get(i++).setEngine(e);
         }
-        TesterServer server = new TesterServer();
-        System.out.println("confirm? ");
-        _logger.info("host name: "+totest.getName());
-        _logger.info("host name: "+totest.getName());
-        Scanner scaner = new Scanner(System.in);
-        server.test(totest,totest.getEngineList(),10 * 60 * 1000);
-        try {
-            response.getOutputStream().println("starting");
-        } catch (IOException e) {
-            e.printStackTrace();
+        else if (action.equals("stop")){
+            if (instance != null){
+                instance._executor.shutdownNow();
+                instance.timer.cancel();
+            }
+            try {
+                response.getOutputStream().println("stop");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
     }
     public boolean isDone(){
         return _executor.isShutdown();
     }
-
+    protected void finalize(){
+        instance._executor.shutdownNow();
+        instance.timer.cancel();
+    }
 }

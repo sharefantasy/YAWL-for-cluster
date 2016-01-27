@@ -34,6 +34,7 @@
     <servlet>
         <servlet-class>cluster.hostTester.TesterServer</servlet-class>
         <servlet-name>testserver</servlet-name>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>testserver</servlet-name>

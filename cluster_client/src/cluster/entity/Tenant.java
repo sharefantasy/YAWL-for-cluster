@@ -6,6 +6,8 @@ import java.util.*;
  * Created by fantasy on 2016/1/6.
  */
 public class Tenant {
+
+
     private int id;
     private String name;
     public Tenant(){}
@@ -17,26 +19,28 @@ public class Tenant {
         this.engineList = engineList;
     }
 
-    private List<EngineRole> engineList;
+    private List<EngineRole> engineList = new ArrayList<>();
 
     public double getSLOspeed() {
         return SLOspeed;
     }
-
+    public void setSLOspeed(double SLOspeed) {
+        this.SLOspeed = SLOspeed;
+    }
     private double SLOspeed;
     private double currentSpeed;
     private Date recordTime;
     private Date createTime = new Date();
     private HashMap<Date, Double> historySpeed;
 
-    public Tenant(int id, double sloSpeed){
-        this.id = id;
+    public Tenant(String name, double sloSpeed){
+        this.name = name;
         this.SLOspeed = sloSpeed;
         historySpeed = new HashMap<>();
         engineList = new ArrayList<>();
     }
-    public Tenant(int id, double sloSpeed, List<EngineRole> engines){
-        this.id = id;
+    public Tenant(String name, double sloSpeed, List<EngineRole> engines){
+        this.name = name;
         this.SLOspeed = sloSpeed;
         this.historySpeed = new HashMap<>();
         this.engineList = engines;

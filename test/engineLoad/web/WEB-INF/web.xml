@@ -28,7 +28,7 @@
 
     <context-param>
         <param-name>InterfaceB_BackEnd</param-name>
-        <param-value>http://192.168.0.24:8080/yawl/ib</param-value>
+        <param-value>http://127.0.0.1:8080/yawl/ib</param-value>
     </context-param>
 
     <filter>

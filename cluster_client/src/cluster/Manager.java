@@ -23,8 +23,6 @@ public class Manager {
     private HeartbeatChecker checker = new HeartbeatChecker();
     private PersistenceManager _pm;
     private InterfaceC_EnvironmentBasedClient _client;
-    private int MAX_WORKER = 1;
-    private int MIN_BACKUP = 1;
     private Manager(boolean persist){
         _pm = new PersistenceManager(persist);
         activeEngineRepo = new ConcurrentHashMap<>();
@@ -83,6 +81,7 @@ public class Manager {
         if (engine != null)
             throw new GeneralException(id + "is already registered");
         engine = new Engine(id, password);
+        engine.clearLost();
         _pm.exec(engine, HibernateEngine.DB_INSERT, true);
         _logger.info(engine.getEngineID() + " registered");
     }
@@ -136,6 +135,7 @@ public class Manager {
         if (roles.size() == 0){
             engine.setStatus(EngineStatus.IDLE);
             activeEngineRepo.replace(id, engine);
+
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
         }
         else {
@@ -144,13 +144,12 @@ public class Manager {
             engine.setStatus(EngineStatus.SERVING);
             activeEngineRepo.replace(id, engine);
             _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
-            size++;
             _logger.info("engine " + engine.getEngineID() + " is attached to " + role.getTenant().getId());
         }
         _logger.info("worker_num = " + size);
         return role;
     }
-    private String takeBackup(Engine engine) throws GeneralException, IOException {
+    private String takeBackup(Engine engine) throws GeneralException, IOException,NoSuchElementException {
         Engine backup;
         try{
             backup = activeEngineRepo.values().stream()
@@ -179,32 +178,38 @@ public class Manager {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    final boolean[] flag = {true};
-                    activeEngineRepo.values().stream()
-                            .filter(e -> (new Date()).getTime() - e.getLastHeartbeatTime().getTime() > 5000)
-                            .parallel()
-                            .forEach(e -> {
-                                _logger.warn(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
-                                flag[0] = false;
-                                try {
-                                    _logger.info(String.format("%s take up %s", takeBackup(e), e.getEngineRole()));
-                                    e.setStatus(EngineStatus.UNHEALTHY);
-                                    activeEngineRepo.remove(e.getEngineID());
-                                } catch (GeneralException e1) {
-                                    _logger.error(e1.getMsg());
-                                } catch (IOException e1) {
-                                    _logger.error(e1.getMessage());
-                                }
-                            });
-                    if (flag[0])
+                    boolean flag = true;
+                    for(Engine e : activeEngineRepo.values()){
+                        if (e.getLastHeartbeatTime() == null) continue;
+                        if ((new Date()).getTime() - e.getLastHeartbeatTime().getTime() > 5000){
+                            _logger.warn(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
+                            flag = false;
+                            try {
+                                if (e.getEngineRole()== null) continue;
+                                _logger.info(String.format("%s take up %s", takeBackup(e), e.getEngineRole()));
+                                e.setStatus(EngineStatus.UNHEALTHY);
+                                activeEngineRepo.remove(e.getEngineID());
+                            } catch (GeneralException e1) {
+                                _logger.error(e1.getMsg());
+                            } catch (IOException e1) {
+                                _logger.error(e1.getMessage());
+                            }
+                        }
+                    }
+                    if (flag)
                         _logger.info("heartbeat all clear");
                 }
-            },10000,10000);
+            },10000,10000); // FIXME: 2016/1/24 magic number heartbeat rate
         }
+        public void finalize() throws Throwable {
 
+            timer.cancel();
+            _logger.info("stop recording heartbeat...");
+            super.finalize();
+        }
     }
     public List<Engine> getEngines(){
-        return (List<Engine>) activeEngineRepo.values();
+        return activeEngineRepo.values().stream().collect(Collectors.toList());
     }
     public List<EngineRole> getActiveEngineRoles(){
         return activeEngineRepo.values().stream()

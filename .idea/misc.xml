@@ -42,22 +42,7 @@
     <entry_points version="2.0" />
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/build/costService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/digitalSignature/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/documentStore/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/mailSender/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/mailService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/monitorService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/procletService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/resourceService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/schedulingService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/testService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/twitterService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/workletService/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/yawlSMSInvoker/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/build/yawlWSInvoker/web.xml" />
-    <file type="web" url="file://$PROJECT_DIR$/src/org/yawlfoundation/yawl/digitalSignature" />
-    <file type="web" url="file://$PROJECT_DIR$/YawlTest/out/artifacts/YawlTest_war_exploded/WEB-INF/web.xml" />
+    <type id="web" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />

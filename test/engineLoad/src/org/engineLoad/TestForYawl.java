@@ -131,6 +131,8 @@ public class TestForYawl extends InterfaceBWebsideController {
         }
         return caseID;
     }
-
+    protected void finalize(){
+        timer.cancel();
+    }
 
 }

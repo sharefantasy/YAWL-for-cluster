@@ -24,7 +24,7 @@ public class testMain {
         }
         List<Tenant> lt = new ArrayList<>();
         for (int i = 0; i < tenantNum; i++){
-            Tenant t = new Tenant(i, new Random().nextDouble() % 200 + 60);
+            Tenant t = new Tenant("Tenant_"+UUID.randomUUID().toString(), new Random().nextDouble() % 200 + 60);
             lt.add(t);
         }
         double avgS = 14;

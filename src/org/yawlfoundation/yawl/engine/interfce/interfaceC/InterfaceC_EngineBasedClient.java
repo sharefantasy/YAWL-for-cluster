@@ -3,6 +3,7 @@ package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
+import org.yawlfoundation.yawl.elements.YAWLServiceReference;
 import org.yawlfoundation.yawl.engine.ObserverGateway;
 import org.yawlfoundation.yawl.engine.WorkitemCounter;
 import org.yawlfoundation.yawl.engine.YEngine;
@@ -47,6 +48,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
         params.put("engineID", engineID);
         params.put("password", PasswordEncryptor.encrypt(password, null));
         params.put("url", selfURI);
+
         YExternalClient cluster= _engine.getExternalClient("cluster");
         String session = _engine.getSessionCache().connect("cluster", cluster.getPassword(), 10000);
         params.put("sessionHandle", session);
@@ -67,11 +69,16 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
         return executePost(clusterURI, params);
     }
 
-    public String register() throws IOException {
+    public String register()  {
         Map<String, String> params = prepareParamMap("register", null);
         params.put("engineID", engineID);
         params.put("password", PasswordEncryptor.encrypt(password, null));
-        return executePost(clusterURI, params);
+        try {
+            return executePost(clusterURI, params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 
@@ -103,7 +110,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
                     e.printStackTrace();
                 }
             }
-        },5000,5000);
+        },5000,2000);
    }
     public String setRSEngineRole(String engineRole) throws IOException {
         Map<String, String> params = prepareParamMap("setEngine", null);

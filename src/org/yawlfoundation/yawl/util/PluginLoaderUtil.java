@@ -1,14 +1,9 @@
 package org.yawlfoundation.yawl.util;
 
-import org.yawlfoundation.yawl.elements.data.YParameter;
-import org.yawlfoundation.yawl.resourcing.allocators.AbstractAllocator;
-import org.yawlfoundation.yawl.resourcing.codelets.AbstractCodelet;
-import org.yawlfoundation.yawl.resourcing.constraints.AbstractConstraint;
-import org.yawlfoundation.yawl.resourcing.datastore.orgdata.DataSource;
-import org.yawlfoundation.yawl.resourcing.filters.AbstractFilter;
-import org.yawlfoundation.yawl.resourcing.jsf.dynform.dynattributes.AbstractDynAttribute;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Michael Adams
