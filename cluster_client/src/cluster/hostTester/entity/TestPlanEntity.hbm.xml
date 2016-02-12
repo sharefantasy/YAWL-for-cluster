@@ -1,0 +1,16 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cluster.hostTester.entity">
+    <class name="TestPlanEntity" table="testplan">
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="host" column="host" class="cluster.entity.Host" access="property"/>
+        <many-to-one name="testTenant" column="test_tenant" class="cluster.entity.Tenant" access="property"/>
+        <property name="startTime" column="start_time" type="java.util.Date" access="property"/>
+        <property name="endTime" column="end_time" type="java.util.Date" access="property"/>
+        <property name="engineNumber" column="engine_number" type="java.lang.Integer" access="property"/>
+    </class>
+</hibernate-mapping>

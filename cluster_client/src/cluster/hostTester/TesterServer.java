@@ -39,6 +39,7 @@ public class TesterServer extends HttpServlet {
             avgSpeed = avgSpeed / engines.size();
             double speed = avgSpeed * 0.8 + tester.getCapability(engines.size()) * 0.2;
             tester.setCapability(engines.size(), speed);
+            _pm.exec(tester, HibernateEngine.DB_UPDATE, true);
             _logger.info("current speed: " +  speed);
         }, 0, 5, TimeUnit.SECONDS);
         timer.schedule(new TimerTask() {
@@ -53,31 +54,13 @@ public class TesterServer extends HttpServlet {
             }
         }, endtime);
     }
-    private Tenant getTesterTenant(String testName, int engineNum){
-        List<Tenant> ts = _pm.getObjectsForClassWhere("Tenant", String.format("name='%s'", testName));
-        Tenant tenant;
-        if (ts.size() != 0) {
-            for (Tenant t: ts) {
-                _pm.exec(t, HibernateEngine.DB_DELETE,true);
-            }
-        }
-        tenant = new Tenant();
-        tenant.setName(testName);
-        tenant.setSLOspeed(0);
-        List<EngineRole> engineRoles = new ArrayList<>();
-        for (int i = 0; i < engineNum; i++) {
-            engineRoles.add(new EngineRole());
-        }
-        tenant.setEngineList(engineRoles);
-        _pm.exec(tenant, HibernateEngine.DB_INSERT, true);
-        return tenant;
 
-    }
     public void doGet(HttpServletRequest request, HttpServletResponse response){
         String action = request.getParameter("action");
         if (action.equals("test")){
             Host totest = new Host("dd", 0);
-            Tenant t = getTesterTenant("hosttester2",2);
+            Tenant t = null;
+//            getTesterTenant("hosttester2",2);
             Manager manager = Manager.getInstance();
             totest.setEngineList(t.getEngineList());
             int i = 0;

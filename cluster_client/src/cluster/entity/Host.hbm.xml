@@ -4,9 +4,10 @@
 
 <hibernate-mapping package="cluster.entity">
     <class name="Host" table="host">
-        <id name="name" column="name" type="java.lang.String">
-            <generator class="assigned"/>
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
         </id>
+        <property name="name" type="java.lang.String"/>
         <bag name="engineList" cascade="save-update">
             <key column="role_h" not-null="true" />
             <one-to-many class="EngineRole" />

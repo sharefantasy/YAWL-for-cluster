@@ -7,12 +7,14 @@ import cluster.iaasClient.Adapter;
 import cluster.iaasClient.OSAdapter;
 import cluster.iaasClient.envObserver;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
+@Component
 public class ServiceProvider implements envObserver {
     private static final Logger _logger = Logger.getLogger(ServiceProvider.class);
 
@@ -24,6 +26,8 @@ public class ServiceProvider implements envObserver {
     private List<Host> hostList;
     private List<Tenant> tenantList;
     private List<EngineRole> engineRoleList;
+
+    @Autowired
     private OSAdapter adapter;
     private Scheduler scheduler = new RRScheduler(this);
     private ScheduledExecutorService _executor = TimeScaler.getInstance().getExecutor();
@@ -34,11 +38,10 @@ public class ServiceProvider implements envObserver {
         hostList = adapter.getHosts();
     }
 
-    public ServiceProvider(List<Host> hosts, List<Tenant> tenants, List<EngineRole> engines, OSAdapter ad) {
+    public ServiceProvider(List<Host> hosts, List<Tenant> tenants, List<EngineRole> engines) {
         this.hostList = hosts;
         this.tenantList = tenants;
         this.engineRoleList = engines;
-        this.adapter = ad;
     }
 
     public void startService(){

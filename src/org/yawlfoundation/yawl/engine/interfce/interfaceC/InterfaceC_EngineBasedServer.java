@@ -37,6 +37,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
     private InterfaceC_EngineBasedClient _client;
     private boolean enableCluster;
     private Logger _logger = Logger.getLogger(InterfaceC_EngineBasedServer.class);
+    private String engineID;
+    private String identifier;
+
     public void init(ServletConfig config) throws ServletException {
         int maxWaitSeconds = 5;
         try {
@@ -77,9 +80,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             if (maxWait >= 0) maxWaitSeconds = maxWait;
 
 
-            String engineID = context.getInitParameter("EngineID");
+            engineID = context.getInitParameter("EngineID");
             String clusterManagementURL = context.getInitParameter("ClusterManagementURL");
-            String identifier = context.getInitParameter("Identifier");
+            identifier = context.getInitParameter("Identifier");
             String selfURI = context.getInitParameter("SelfURI");
             String engineRole = context.getInitParameter("EngineRole");
             String rsURL = context.getInitParameter("DefaultWorklist").replaceFirst("/ib#resource","/ic");
@@ -185,11 +188,12 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                     System.out.println("check session result: " + _engine.checkConnection(sessionHandle));
                 }
                 else if ("connect".equals(action)) {
-
-                    String userID = request.getParameter("userID");
-                    String password = request.getParameter("password");
+                    String role = request.getParameter("engineRole");
+                    engineID = request.getParameter("engineID");
+                    identifier = request.getParameter("identifier");
+                    resetEngineRole(role);
                     int interval = request.getSession().getMaxInactiveInterval();
-                    msg.append(_engine.connect(userID, password, interval));
+                    msg.append(_engine.connect("cluster", "cluster", interval));
                 }
                 else if ("checkConnection".equals(action)) {
 

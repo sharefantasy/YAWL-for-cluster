@@ -11,22 +11,47 @@ import java.util.*;
 
 // FIXME: 2016/1/11 this constructor is not suitable for message collection usage. Need a better edition
 public class Host {
-    public String getName() {
-        return name;
+
+    private long id;
+    private String name;
+    private List<EngineRole> engineList;
+
+    private Set<HostCapability> capabilitySet;
+    private double capacitySpeed;
+    private double currentSpeed;
+    private Date recordTime;
+    private HashMap<Date, Double> historySpeed;
+
+    public Host() {
     }
 
-    private String name;
+    public Host(String name, double capacitySpeed) {
+        this.name = name;
+        this.capacitySpeed = capacitySpeed;
+        historySpeed = new HashMap<>();
+        engineList = new ArrayList<>();
+        capabilitySet = new HashSet<>();
+    }
 
+    public Host(String name, double capacitySpeed, List<EngineRole> engines) {
+        this.name = name;
+        this.capacitySpeed = capacitySpeed;
+        this.historySpeed = new HashMap<>();
+        this.engineList = engines;
+        capabilitySet = new HashSet<>();
+    }
     public void setEngineList(List<EngineRole> engineList) {
         this.engineList = engineList;
     }
 
+    public String getName() {
+        return name;
+    }
     public void setName(String name) {
         this.name = name;
     }
 
-    private List<EngineRole> engineList;
-    private Set<HostCapability> capabilitySet = new HashSet<>();
+
     public double getCapability(int engineNumber){
         Optional<HostCapability> c1 = (capabilitySet.stream().filter((c)->c.geteNum() == engineNumber).findFirst());
         if(c1.isPresent()){
@@ -47,23 +72,6 @@ public class Host {
         this.capacitySpeed = capacitySpeed;
     }
 
-    private double capacitySpeed;
-    private double currentSpeed;
-    private Date recordTime;
-    private HashMap<Date, Double> historySpeed;
-
-    public Host(String name, double capacitySpeed){
-        this.name = name;
-        this.capacitySpeed = capacitySpeed;
-        historySpeed = new HashMap<>();
-        engineList = new ArrayList<>();
-    }
-    public Host(String name, double capacitySpeed, List<EngineRole> engines){
-        this.name = name;
-        this.capacitySpeed = capacitySpeed;
-        this.historySpeed = new HashMap<>();
-        this.engineList = engines;
-    }
 
     //timely updated by speedchecker
     public void updateSpeed() {
@@ -117,4 +125,22 @@ public class Host {
     public void setCapabilitySet(Set<HostCapability> capabilitySet) {
         this.capabilitySet = capabilitySet;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Host{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+
+
 }

@@ -8,10 +8,6 @@ public class EngineRole{
 
     private Engine engine;
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     private String role;
     private String containerName;
     //quantifier
@@ -29,6 +25,10 @@ public class EngineRole{
     public EngineRole(String role){
         this.role = role;
 
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
     public boolean equals(EngineRole e){
         return role.equals(e.role);

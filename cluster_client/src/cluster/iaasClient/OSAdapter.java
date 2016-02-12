@@ -11,6 +11,7 @@ import org.openstack4j.api.exceptions.ConnectionException;
 import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.actions.LiveMigrateOptions;
 import org.openstack4j.openstack.OSFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Created by fantasy on 2016/1/4.
  */
+@Service("openstackAdapter")
 public class OSAdapter extends BaseAdapter{
     private static final Logger _logger = Logger.getLogger(OSAdapter.class);
     private ArrayList<envObserver> obs = new ArrayList<>();
@@ -51,7 +53,7 @@ public class OSAdapter extends BaseAdapter{
 
         os.compute().migrations().list().get(0).getDestNode();
         os.compute().servers()
-                .liveMigrate(engine.getContainerName(),
+                .liveMigrate(engine.getHost().getName(),
                         LiveMigrateOptions
                                 .create()
                                 .blockMigration(false)
@@ -71,8 +73,14 @@ public class OSAdapter extends BaseAdapter{
     }
 
     public List<Host> getHosts() {
+        List<String> oshost = os.compute().hostAggregates().get("server").getHosts();
+        List<Host> hosts = new ArrayList<>();
+        for (String h : oshost) {
+            Host host = new Host();
+            host.setName(h);
+        }
 
-        return null;
+        return hosts;
     }
     public List<Server> getVMbyHost(Host host){
         List<Server> servers = (List<Server>) os.compute().servers().listAll(true);

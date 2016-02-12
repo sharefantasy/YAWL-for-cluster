@@ -10,6 +10,7 @@ public class Engine {
     //engine private identity
     private String engineID;
     private String password;
+    private String address;
 
     //HA related
     private EngineRole engineRole;
@@ -76,5 +77,13 @@ public class Engine {
 
     public void addSpeed(Date newDate, double newSpeed){
         engineRole.updateSpeed(newDate, newSpeed);
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
