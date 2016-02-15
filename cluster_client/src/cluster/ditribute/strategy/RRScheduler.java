@@ -2,12 +2,15 @@ package cluster.ditribute.strategy;
 
 import cluster.entity.EngineRole;
 import cluster.entity.ServiceProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
 /**
  * Created by fantasy on 2016/1/6.
  */
+@Component("RRScheduler")
 public class RRScheduler implements Scheduler {
     private SchedulerStatus status = SchedulerStatus.NO_TASK;
     private ServiceProvider provider;
