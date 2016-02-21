@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cluster.general.entity">
+    <class name="Engine" table="engine">
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+        <property name="engineID" column="engine_id" type="java.lang.String"/>
+        <property name="password" column="password" type="java.lang.String"/>
+        <property name="address" column="address" type="java.lang.String"/>
+        <property name="ip" column="ip" type="java.lang.String"/>
+        <property name="lastHeartbeatTime" column="last_heartbeat_time" type="java.util.Date"/>
+        <property name="LastLoginTime" column="last_login_time" type="java.util.Date"/>
+        <many-to-one name="engineRole" column="engine_role" unique="true" cascade="save-update"/>
+        <property name="status" column="status">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">
+                    cluster.general.entity.EngineStatus
+                </param>
+            </type>
+        </property>
+
+    </class>
+</hibernate-mapping>

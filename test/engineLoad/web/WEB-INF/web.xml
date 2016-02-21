@@ -57,4 +57,17 @@
         <url-pattern>/ib</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>dummyic</servlet-name>
+        <servlet-class>org.engineLoad.DummyInterfaceC_EngineBasedServer</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dummyic</servlet-name>
+        <url-pattern>/ic</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>EnableClusterService</param-name>
+        <param-value>true</param-value>
+    </context-param>
 </web-app>

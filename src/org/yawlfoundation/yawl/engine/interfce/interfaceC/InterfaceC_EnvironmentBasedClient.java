@@ -1,7 +1,5 @@
 package org.yawlfoundation.yawl.engine.interfce.interfaceC;
 
-import com.mchange.v1.identicator.IdHashMap;
-import org.apache.commons.collections.map.HashedMap;
 import org.yawlfoundation.yawl.engine.interfce.Interface_Client;
 import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
@@ -65,6 +63,25 @@ public class InterfaceC_EnvironmentBasedClient extends Interface_Client{
             return executePost(urls.get(engineId), params);
         }
         return "no such engine";
+    }
+
+    public String inviteEngine(String engineAddress, String engineID, String password, String engineRole) throws IOException {
+        if (!urls.containsKey(engineID)) {
+            Map<String, String> params = prepareParamMap("invite", null);
+            params.put("engineID", engineID);
+            params.put("engineRole", engineRole);
+            params.put("password", password);
+            String result = executePost(String.format("http://%s/yawl/ic/", engineAddress), params);
+            if (result.startsWith("success:")) {
+                urls.put(engineID, engineAddress);
+                sessionHandles.put(engineID, result.substring(8));
+                return "success";
+            } else {
+                return "invite failed";
+            }
+        } else {
+            return "already invited";
+        }
     }
 
     public String clusterShutdown() throws IOException {

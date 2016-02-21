@@ -129,7 +129,7 @@
         <param-value>5</param-value>
         <description>
             The maximum number of seconds the engine will spend trying to deliver an
-            'EngineInitialisationCompleted' cluster.event to each registered service before
+            'EngineInitialisationCompleted' cluster.util.event to each registered service before
             giving up. The specified value should cover the period between the moment the
             engine has fully initialised and the moment the host cluster.server is ready to accept
             http connections.
@@ -269,7 +269,7 @@
     <servlet>
         <servlet-name>InterfaceEGateway</servlet-name>
         <description>
-            Provides an external API to the Engine's process cluster.event logs
+            Provides an external API to the Engine's process cluster.util.event logs
         </description>
         <servlet-class>
             org.yawlfoundation.yawl.engine.interfce.interfaceE.YLogGateway

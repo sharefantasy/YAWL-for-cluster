@@ -14,34 +14,34 @@
     <%@include file="header.jsp" %>
 </head>
 <body>
+<%@include file="nav.jsp" %>
 <div class="container">
     <div class="row">
-        <form:form method="post" modelAttribute="newhost" cssClass="form-horizontal">
-            <form:input path="name"/>
+        <form:form method="post" modelAttribute="newHost" cssClass="form-horizontal">
+            <label for="name">物理机名称</label><form:input path="name"/><br>
             <input type="submit" value="提交">
         </form:form>
     </div>
-    <a href="<c:url value="/page/host/"/>" class="btn btn-info">物理机</a>
-    <a href="<c:url value="/page/testplan"/>" class="btn btn-info">测试计划</a>
-    <a href="<c:url value="/page/tenant"/>" class="btn btn-info">测试计划</a>
-</div>
-<table>
-    <thead>
-    <tr>
-        <td>id</td>
-        <td>物理机名</td>
-        <td>速度</td>
-        <td>删除</td>
-    </tr>
-    </thead>
-    <c:forEach items="${hosts}" var="host">
+    <table class="table table-bordered table-cell">
+        <thead>
         <tr>
-            <td><a href="/page/host/${host.id}/">${host.id}</a></td>
-            <td>${host.name}</td>
-            <td>${host.currentSpeed}</td>
-            <td><a href="/page/host/delete/${host.id}/">删除</a></td>
+            <td>id</td>
+            <td>物理机名</td>
+            <td>速度</td>
+            <td>删除</td>
         </tr>
-    </c:forEach>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach items="${hosts}" var="host">
+            <tr class="table-row-cell">
+                <td><a href="/page/host/${host.id}/">${host.id}</a></td>
+                <td>${host.name}</td>
+                <td>${host.currentSpeed}</td>
+                <td><a href="/page/host/delete/${host.id}/">删除</a></td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

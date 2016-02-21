@@ -7,8 +7,8 @@
         <id name="id" column="id" type="java.lang.Long">
             <generator class="native"/>
         </id>
-        <many-to-one name="host" column="host" class="cluster.entity.Host" access="property"/>
-        <many-to-one name="testTenant" column="test_tenant" class="cluster.entity.Tenant" access="property"/>
+        <many-to-one name="host" column="host" class="cluster.general.entity.Host" access="property"/>
+        <many-to-one name="testTenant" column="test_tenant" class="cluster.general.entity.Tenant" access="property"/>
         <property name="startTime" column="start_time" type="java.util.Date" access="property"/>
         <property name="endTime" column="end_time" type="java.util.Date" access="property"/>
         <property name="engineNumber" column="engine_number" type="java.lang.Integer" access="property"/>

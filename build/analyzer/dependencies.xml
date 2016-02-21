@@ -137,9 +137,9 @@
 
                 <UnresolvedDependencies>
                     <Package>com.ibm.bsf</Package>
-                    <Package>com.ibm.network.mail.pop3.cluster.event</Package>
+                    <Package>com.ibm.network.mail.pop3.cluster.util.event</Package>
                     <Package>com.ibm.network.mail.base</Package>
-                    <Package>com.ibm.network.mail.smtp.cluster.event</Package>
+                    <Package>com.ibm.network.mail.smtp.cluster.util.event</Package>
                     <Package>com.ibm.network.mail.pop3.protocol</Package>
                     <Package>com.ibm.network.mail.smtp.protocol</Package>
                     <Package>sun.net.www.protocol.http</Package>
@@ -1728,7 +1728,7 @@
                     <Package>net.sf.ehcache.transaction.manager</Package>
                     <Package>net.sf.ehcache.bootstrap</Package>
                     <Package>net.sf.ehcache.exceptionhandler</Package>
-                    <Package>net.sf.ehcache.cluster.event</Package>
+                    <Package>net.sf.ehcache.cluster.util.event</Package>
                     <Package>net.sf.ehcache.util</Package>
                     <Package>net.sf.ehcache.util.lang</Package>
                     <Package>net.sf.ehcache.util.counter.sampled</Package>
@@ -1984,10 +1984,10 @@
                     <Package>org.hibernate.internal.util.compare</Package>
                     <Package>org.hibernate.internal.util.config</Package>
                     <Package>org.hibernate.internal.util.beans</Package>
-                    <Package>org.hibernate.cluster.event.internal</Package>
-                    <Package>org.hibernate.cluster.event.spi</Package>
-                    <Package>org.hibernate.cluster.event.service.internal</Package>
-                    <Package>org.hibernate.cluster.event.service.spi</Package>
+                    <Package>org.hibernate.cluster.util.event.internal</Package>
+                    <Package>org.hibernate.cluster.util.event.spi</Package>
+                    <Package>org.hibernate.cluster.util.event.service.internal</Package>
+                    <Package>org.hibernate.cluster.util.event.service.spi</Package>
                     <Package>org.hibernate.engine</Package>
                     <Package>org.hibernate.engine.internal</Package>
                     <Package>org.hibernate.engine.jdbc</Package>
@@ -2352,7 +2352,7 @@
                 </Cycles>
 
                 <UnresolvedDependencies>
-                    <Package>com.sun.jdi.cluster.event</Package>
+                    <Package>com.sun.jdi.cluster.util.event</Package>
                     <Package>com.sun.jdi.connect</Package>
                     <Package>com.sun.jdi</Package>
                     <Package>com.sun.jdi.request</Package>
@@ -2674,7 +2674,7 @@
                     <Package>javax.faces.context</Package>
                     <Package>javax.faces.convert</Package>
                     <Package>javax.faces.el</Package>
-                    <Package>javax.faces.cluster.event</Package>
+                    <Package>javax.faces.cluster.util.event</Package>
                     <Package>javax.faces.lifecycle</Package>
                     <Package>javax.faces.model</Package>
                     <Package>javax.faces.render</Package>
@@ -3047,7 +3047,7 @@
 
                 <Packages>
                     <Package>edu.uci.ics.jung.graph</Package>
-                    <Package>edu.uci.ics.jung.graph.cluster.event</Package>
+                    <Package>edu.uci.ics.jung.graph.cluster.util.event</Package>
                     <Package>edu.uci.ics.jung.graph.util</Package>
                 </Packages>
 
@@ -3452,7 +3452,7 @@
 
                 <Packages>
                     <Package>javax.mail</Package>
-                    <Package>javax.mail.cluster.event</Package>
+                    <Package>javax.mail.cluster.util.event</Package>
                     <Package>javax.mail.search</Package>
                     <Package>javax.mail.internet</Package>
                     <Package>com.sun.mail.util</Package>
@@ -3500,7 +3500,7 @@
                     <Package>com.sun.mail.handlers</Package>
                     <Package>com.sun.mail.util</Package>
                     <Package>javax.mail</Package>
-                    <Package>javax.mail.cluster.event</Package>
+                    <Package>javax.mail.cluster.util.event</Package>
                     <Package>javax.mail.search</Package>
                     <Package>javax.mail.internet</Package>
                     <Package>javax.mail.util</Package>
@@ -4355,7 +4355,7 @@
                     <Package>net.sf.saxon</Package>
                     <Package>net.sf.saxon.charcode</Package>
                     <Package>net.sf.saxon.codenorm</Package>
-                    <Package>net.sf.saxon.cluster.event</Package>
+                    <Package>net.sf.saxon.cluster.util.event</Package>
                     <Package>net.sf.saxon.evpull</Package>
                     <Package>net.sf.saxon.expr</Package>
                     <Package>net.sf.saxon.exslt</Package>
@@ -5061,12 +5061,12 @@
                     <Package>com.sun.rave.web.ui.component</Package>
                     <Package>com.sun.rave.web.ui.component.util</Package>
                     <Package>com.sun.rave.web.ui.component.util.descriptors</Package>
-                    <Package>com.sun.rave.web.ui.component.util.cluster.event</Package>
+                    <Package>com.sun.rave.web.ui.component.util.cluster.util.event</Package>
                     <Package>com.sun.rave.web.ui.component.util.factories</Package>
                     <Package>com.sun.rave.web.ui.component.util.handlers</Package>
                     <Package>com.sun.rave.web.ui.converter</Package>
                     <Package>com.sun.rave.web.ui.el</Package>
-                    <Package>com.sun.rave.web.ui.cluster.event</Package>
+                    <Package>com.sun.rave.web.ui.cluster.util.event</Package>
                     <Package>com.sun.rave.web.ui.faces</Package>
                     <Package>com.sun.rave.web.ui.model</Package>
                     <Package>com.sun.rave.web.ui.model.list</Package>
@@ -5509,7 +5509,7 @@
                     <Package>oracle.xdb</Package>
                     <Package>oracle.xdb.bean</Package>
                     <Package>oracle.xdb.dom</Package>
-                    <Package>oracle.xdb.cluster.event</Package>
+                    <Package>oracle.xdb.cluster.util.event</Package>
                     <Package>oracle.xdb.servlet</Package>
                     <Package>oracle.xdb.spi</Package>
                 </Packages>

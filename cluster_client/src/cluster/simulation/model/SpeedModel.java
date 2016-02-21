@@ -1,6 +1,6 @@
 package cluster.simulation.model;
 
-import cluster.entity.Host;
+import cluster.general.entity.Host;
 
 /**
  * Created by fantasy on 2016/1/14.

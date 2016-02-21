@@ -1,7 +1,7 @@
 package cluster.hostTester.controller;
 
-import cluster.entity.Host;
-import cluster.gateway.service.HostService;
+import cluster.general.entity.Host;
+import cluster.general.service.HostService;
 import cluster.hostTester.entity.TestPlanEntity;
 import cluster.hostTester.service.TestPlanService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,23 +1,19 @@
 package cluster.hostTester.service;
 
-import cluster.PersistenceManager;
-import cluster.entity.EngineRole;
-import cluster.entity.EngineStatus;
-import cluster.entity.Host;
-import cluster.entity.Tenant;
-import cluster.gateway.service.HostService;
-import cluster.gateway.service.TenantService;
+import cluster.util.PersistenceManager;
+import cluster.general.entity.EngineRole;
+import cluster.general.entity.EngineStatus;
+import cluster.general.entity.Host;
+import cluster.general.service.HostService;
+import cluster.general.service.TenantService;
 import cluster.hostTester.entity.TestPlanEntity;
 import org.apache.log4j.Logger;
-import org.bouncycastle.util.test.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.util.HibernateEngine;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by fantasy on 2016/2/7.

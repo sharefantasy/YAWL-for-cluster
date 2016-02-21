@@ -1,0 +1,13 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cluster.general.entity.data">
+    <class name="cluster.general.entity.data.HostSpeedRcd" table="speedRecord">
+        <id name="id" type="java.lang.Long" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="speed" type="java.lang.Double" access="property" column="speed"/>
+        <property name="time" type="java.util.Date" access="property" column="time"/>
+        <many-to-one name="host" class="cluster.general.entity.Host"/>
+    </class>
+</hibernate-mapping>

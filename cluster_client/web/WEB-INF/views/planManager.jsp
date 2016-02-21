@@ -14,19 +14,19 @@
     <%@include file="header.jsp" %>
 </head>
 <body>
+<%@include file="nav.jsp" %>
 <div>
     <div class="container">
         <div class="row">
             <form:form method="post" modelAttribute="testplan" cssClass="form-horizontal">
-                <form:select path="host" items="${hosts}"/>
-                <form:input path="engineNumber" type="text"/>
-                <form:input path="endTime" type="dates"/>
+                <label for="host">被测物理机：</label><form:select path="host" items="${hosts}"/><br>
+                <label for="engineNumber">引擎数：</label><form:input path="engineNumber" type="text"/><br>
+                <form:input path="endTime" type="dates"/><br>
                 <input type="submit" value="提交计划">
             </form:form>
         </div>
-        <a href="<c:url value="/page/host/"/>" class="btn btn-info">转到物理机</a>
     </div>
-    <table>
+    <table class="table table-bordered">
         <thead>
         <tr>
             <td>id</td>

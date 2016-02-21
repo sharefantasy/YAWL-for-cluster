@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.elements.YAWLServiceReference;
+import org.yawlfoundation.yawl.elements.YExternalNetElement;
 import org.yawlfoundation.yawl.engine.WorkitemCounter;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YPersistenceManager;
@@ -12,6 +13,7 @@ import org.yawlfoundation.yawl.engine.interfce.EngineGatewayImpl;
 import org.yawlfoundation.yawl.engine.interfce.ServletUtils;
 import org.yawlfoundation.yawl.engine.interfce.YHttpServlet;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
+import org.yawlfoundation.yawl.util.SaxonErrorListener;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 import javax.servlet.ServletConfig;
@@ -38,7 +40,11 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
     private boolean enableCluster;
     private Logger _logger = Logger.getLogger(InterfaceC_EngineBasedServer.class);
     private String engineID;
-    private String identifier;
+    private String password;
+    private String selfURI;
+    private static final String CLUSTER_NAME = "cluster";
+    private static final String CLUSTER_PASSWORD = "cluster";
+    private static final String CLUSTER_DOC = "cluster service";
 
     public void init(ServletConfig config) throws ServletException {
         int maxWaitSeconds = 5;
@@ -82,23 +88,22 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
 
             engineID = context.getInitParameter("EngineID");
             String clusterManagementURL = context.getInitParameter("ClusterManagementURL");
-            identifier = context.getInitParameter("Identifier");
-            String selfURI = context.getInitParameter("SelfURI");
+            password = context.getInitParameter("password");
+            selfURI = context.getInitParameter("SelfURI");
             String engineRole = context.getInitParameter("EngineRole");
             String rsURL = context.getInitParameter("DefaultWorklist").replaceFirst("/ib#resource","/ic");
             YPersistenceManager.setEngineRole(engineRole);
-
-            _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, identifier, selfURI, rsURL);
-            boolean reg = "success".equals(_client.register());
-            boolean connect = "success".equals(_client.connect());
-            if (reg || connect){
+            if (engineID == null || password == null || clusterManagementURL == null) {
+                return;
+            }
+            _client = new InterfaceC_EngineBasedClient(clusterManagementURL, engineID, password, selfURI, rsURL);
+            if ("success".equalsIgnoreCase(_client.connect())) {
                 engineRole = _client.getEngineRole();
                 if (!engineRole.equals("<response></response>")) {
                     _logger.info("role " + engineRole);
                     if (!engineRole.equals("failed")){
                         resetEngineRole(engineRole);
                     }
-
                 }
                 _client.heartbeat();
             }
@@ -107,8 +112,8 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
             _logger.fatal("Failure to initialise runtime (persistence failure)", e);
             throw new UnavailableException("Persistence failure");
         } catch (IOException e) {
-            e.printStackTrace();
-            _logger.error("connection refused");
+
+            _logger.error("cluster connection refused");
         }
 
         if (_engine != null) {
@@ -152,10 +157,9 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
         String sessionHandle = request.getParameter("sessionHandle");
         String action = request.getParameter("action");
         debug(request, "Post");
-        request.getHeader("REMOTE_ADDR");
+        String clusterAddress = String.format("http://%s/cluster/service/", request.getRemoteAddr());
         try {
             if (action != null) {
-
                 if (action.equalsIgnoreCase("restore")) {
                     Date date = new Date();
                     _engine.restore(sessionHandle);
@@ -190,7 +194,7 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 else if ("connect".equals(action)) {
                     String role = request.getParameter("engineRole");
                     engineID = request.getParameter("engineID");
-                    identifier = request.getParameter("identifier");
+                    password = request.getParameter("password");
                     resetEngineRole(role);
                     int interval = request.getSession().getMaxInactiveInterval();
                     msg.append(_engine.connect("cluster", "cluster", interval));
@@ -198,6 +202,26 @@ public class InterfaceC_EngineBasedServer extends YHttpServlet {
                 else if ("checkConnection".equals(action)) {
 
                     msg.append(_engine.checkConnectionForAdmin(sessionHandle));
+                } else if ("invite".equalsIgnoreCase(action)) {
+                    engineID = request.getParameter("engineID");
+                    password = request.getParameter("password");
+                    String role = request.getParameter("engineRole");
+                    if (role != null) {
+                        if (!role.equals("null")) {
+                            resetEngineRole(role);
+                        }
+                    }
+                    if (YEngine.getInstance().getRegisteredYawlService(clusterAddress) == null) {
+                        YAWLServiceReference y = new YAWLServiceReference(clusterAddress, null, CLUSTER_NAME, CLUSTER_DOC);
+                        YEngine.getInstance().addYawlService(y);
+                    }
+                    if (YEngine.getInstance().getExternalClient(CLUSTER_NAME) == null) {
+                        YExternalClient c = new YExternalClient(CLUSTER_NAME, CLUSTER_PASSWORD, CLUSTER_DOC);
+                        YEngine.getInstance().addExternalClient(c);
+                    }
+                    String session = YEngine.getInstance().getSessionCache().connect(CLUSTER_NAME, CLUSTER_PASSWORD, -1);
+                    _client = new InterfaceC_EngineBasedClient(clusterAddress, engineID, "YAWLCLUSTER", selfURI, null);
+                    msg.append("success:").append(session);
                 }
 
             }

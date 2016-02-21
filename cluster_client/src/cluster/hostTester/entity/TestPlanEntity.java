@@ -1,10 +1,9 @@
 package cluster.hostTester.entity;
 
-import cluster.entity.Host;
-import cluster.entity.Tenant;
+import cluster.general.entity.Host;
+import cluster.general.entity.Tenant;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 

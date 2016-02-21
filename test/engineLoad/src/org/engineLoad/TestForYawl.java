@@ -12,22 +12,17 @@ import java.util.TimerTask;
 public class TestForYawl extends InterfaceBWebsideController {
     private String _handle = null;
 
-
     private static final Logger _logger = Logger.getLogger(TestForYawl.class);
 
-
-    static Timer timer = null;
-    static int lastDistributeCount=0;
-    static int distributeCount=0;
+    static WorkitemCounter workitemCounter = WorkitemCounter.getInstace();
+    static Timer timer;
     static {
         timer = new Timer();
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                _logger.info("engine load: "+String.valueOf(distributeCount-lastDistributeCount));
-                lastDistributeCount=distributeCount;
-
+                _logger.info("engine load: " + workitemCounter.getReportCounter());
             }
         };
         timer.schedule(task,0, 1000);
@@ -41,7 +36,7 @@ public class TestForYawl extends InterfaceBWebsideController {
             if(!this.connected()) {
                 this._handle = this.connect(this.engineLogonName, this.engineLogonPassword);
             }
-            distributeCount++;
+            workitemCounter.increase();
             wir = this.checkOut(wir.getID(), this._handle);
 
             String ioe = this.updateStatus(wir);
@@ -131,8 +126,11 @@ public class TestForYawl extends InterfaceBWebsideController {
         }
         return caseID;
     }
-    protected void finalize(){
+
+    @Override
+    protected void finalize() throws Throwable {
         timer.cancel();
+        super.finalize();
     }
 
 }

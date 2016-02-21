@@ -14,35 +14,28 @@
     <%@include file="header.jsp" %>
 </head>
 <body>
+<%@include file="nav.jsp" %>
 <div class="container">
-    <nav class="nav nav-tabs">
-        <ul>
-            <li><a href="<c:url value="/page/host/"/>" class="btn btn-info">物理机</a></li>
-            <li><a href="<c:url value="/page/testplan"/>" class="btn btn-info">测试计划</a></li>
-            <li><a href="<c:url value="/page/tenant"/>" class="btn btn-info">租户</a></li>
-        </ul>
-    </nav>
-
-</div>
-<div class="container">
-    <form:form modelAttribute="newTenant" method="post">
-        <form:input path="id"
+    <form:form modelAttribute="newTenant" method="post" cssClass="form-horizontal col-lg-6">
+        <label>租户名： </label><form:input path="name"/><br>
+        <label>SLO速度：</label><form:input path="SLOspeed"/><br>
+        <input type="submit" value="确认"><br>
     </form:form>
     <table class="table table-row-cell">
         <thead>
         <tr>
             <td>id</td>
-            <td>物理机名</td>
-            <td>速度</td>
+            <td>租户名</td>
+            <td>SLO速度</td>
             <td>删除</td>
         </tr>
         </thead>
         <c:forEach items="${tenants}" var="tenant">
             <tr>
-                <td><a href="/page/host/${host.id}/">${host.id}</a></td>
-                <td>${host.name}</td>
-                <td>${host.currentSpeed}</td>
-                <td><a href="/page/host/delete/${host.id}/">删除</a></td>
+                <td><a href="/page/tenant/${tenant.id}/">${tenant.id}</a></td>
+                <td>${tenant.name}</td>
+                <td>${tenant.SLOspeed}</td>
+                <td><a href="/page/tenant/delete/${tenant.id}/">删除</a></td>
             </tr>
         </c:forEach>
     </table>

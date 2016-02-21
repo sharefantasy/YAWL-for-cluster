@@ -36,19 +36,21 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/perf4j-master/perf4j-master/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/web/WEB-INF" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/src/cluster/ditribute/strategy/deprecate" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/events" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/listener" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/hostTester/config" />
+      <excludeFolder url="file://$MODULE_DIR$/src/cluster/workflowService/schedule/deprecate" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="openstack4j-2.0.9-withdeps" level="project" />
-    <orderEntry type="module" module-name="yawl-3.0.1" />
-    <orderEntry type="library" name="javax.json.processing-1.0" level="project" />
     <orderEntry type="library" name="javax.json.processing-1.0" level="project" />
     <orderEntry type="library" name="Spring-4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Spring MVC-4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
+    <orderEntry type="module" module-name="yawl-3.0.1" />
   </component>
 </module>

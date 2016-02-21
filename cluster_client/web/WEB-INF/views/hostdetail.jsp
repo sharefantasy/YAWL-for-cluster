@@ -14,7 +14,7 @@
     <%@include file="header.jsp" %>
 </head>
 <body>
-
+<%@include file="nav.jsp" %>
 <ul>
     <li>${host.id}</li>
     <li>${host.name}</li>

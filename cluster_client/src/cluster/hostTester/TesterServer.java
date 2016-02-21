@@ -1,13 +1,11 @@
 package cluster.hostTester;
 
-import cluster.Manager;
-import cluster.PersistenceManager;
-import cluster.entity.*;
-import cluster.event.exceptions.GeneralException;
+import cluster.general.service.EngineService;
+import cluster.util.PersistenceManager;
+import cluster.general.entity.*;
 import org.apache.log4j.Logger;
 import org.yawlfoundation.yawl.util.HibernateEngine;
 
-import javax.persistence.criteria.ListJoin;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TesterServer extends HttpServlet {
     public static final Logger _logger = Logger.getLogger(TesterServer.class);
-    private ScheduledExecutorService _executor = TimeScaler.getInstance().getExecutor();
+    private ScheduledExecutorService _executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private Timer timer;
     private PersistenceManager _pm = new PersistenceManager(true);
     private TesterServer instance;
@@ -58,13 +57,14 @@ public class TesterServer extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response){
         String action = request.getParameter("action");
         if (action.equals("test")){
-            Host totest = new Host("dd", 0);
+            Host totest = new Host();
+            totest.setName("dd");
             Tenant t = null;
 //            getTesterTenant("hosttester2",2);
-            Manager manager = Manager.getInstance();
+            EngineService engineService = EngineService.getInstance();
             totest.setEngineList(t.getEngineList());
             int i = 0;
-            for (Engine e: manager.getEngines()) {
+            for (Engine e : engineService.getEngines()) {
                 e.setStatus(EngineStatus.TESTING);
                 e.setEngineRole(totest.getEngineList().get(i));
                 totest.getEngineList().get(i++).setEngine(e);

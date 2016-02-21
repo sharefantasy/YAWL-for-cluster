@@ -50,7 +50,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
         params.put("url", selfURI);
 
         YExternalClient cluster= _engine.getExternalClient("cluster");
-        String session = _engine.getSessionCache().connect("cluster", cluster.getPassword(), 10000);
+        String session = _engine.getSessionCache().connect("cluster", cluster.getPassword(), -1);
         params.put("sessionHandle", session);
         String res = executePost(clusterURI, params);
         if (res.equals("success")){
@@ -111,7 +111,7 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
                 }
             }
         },5000,2000);
-   }
+    }
     public String setRSEngineRole(String engineRole) throws IOException {
         Map<String, String> params = prepareParamMap("setEngine", null);
         params.put("engineID", engineRole);
@@ -122,6 +122,4 @@ public class InterfaceC_EngineBasedClient extends Interface_Client {
         timer.cancel();
         workitemCounter.shutdown();
     }
-
-
 }

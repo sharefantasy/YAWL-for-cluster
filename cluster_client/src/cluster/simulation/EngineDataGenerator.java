@@ -1,12 +1,18 @@
 package cluster.simulation;
 
-import cluster.entity.*;
-import cluster.event.exceptions.GeneralException;
-import cluster.event.exceptions.MigrationException;
-import cluster.iaasClient.BaseAdapter;
+import cluster.general.entity.*;
+import cluster.general.service.EngineRoleService;
+import cluster.general.service.HostService;
+import cluster.util.exceptions.GeneralException;
+import cluster.util.exceptions.MigrationException;
+import cluster.util.iaasClient.BaseAdapter;
 import cluster.simulation.model.SpeedModel;
 import cluster.simulation.model.UniformModel;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,13 +22,29 @@ import java.util.stream.Collectors;
 /**
  * Created by fantasy on 2016/1/14.
  */
-public class EngineDataGenerator extends BaseAdapter{
+
+@Component
+public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
     private List<EngineSimulator> engineList;
     private int interval;
-    private ScheduledExecutorService _executor = TimeScaler.getInstance().getExecutor();
+    private ScheduledExecutorService _executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private static final Logger _logger = Logger.getLogger(EngineDataGenerator.class);
     private boolean isStart = false;
-    // TODO: 2016/1/14 need distribution
+    @Autowired
+    private EngineRoleService engineRoleService;
+    @Autowired
+    private HostService hostService;
+
+    // TODO: 2016/1/14 need probability distribution
+    public EngineDataGenerator() {
+    }
+
+    public void init(List<EngineRole> roleList, int interval) {
+        this.interval = interval;
+        _executor = Executors.newScheduledThreadPool(roleList.size());
+        engineList = new ArrayList<>(roleList.size());
+        engineList.addAll(roleList.stream().map(EngineSimulator::new).collect(Collectors.toList()));
+    }
     public EngineDataGenerator(List<EngineRole> roleList, int interval){
         this.interval = interval;
         _executor = Executors.newScheduledThreadPool(roleList.size());
@@ -84,6 +106,18 @@ public class EngineDataGenerator extends BaseAdapter{
         return isStart;
     }
 
+    @Override
+    public List<EngineRole> bindServers(List<EngineRole> roles) {
+        roles.stream().forEach(engineRole -> engineRole.setContainerName(engineRole.getRole()));
+        return roles;
+    }
+
+
+    @Override
+    public void destroy() throws Exception {
+
+    }
+
 
     class EngineSimulator extends Engine implements Runnable  {
         private SpeedModel model;
@@ -95,9 +129,9 @@ public class EngineDataGenerator extends BaseAdapter{
         public synchronized void migrate(Host h){
             try {
                 EngineRole e = getEngineRole();
-                e.getHost().removeEngine(e);
+                hostService.removeEngine(e.getHost(), e);
                 e.setHost(h);
-                h.addEngine(e);
+                hostService.addEngine(e.getHost(), e);
                 model.updateEnvironment(h);
 
             } catch (GeneralException e) {
@@ -106,7 +140,8 @@ public class EngineDataGenerator extends BaseAdapter{
         }
         @Override
         public void run() {
-            getEngineRole().updateSpeed(new Date(), model.nextSpeed());
+            engineRoleService.updateSpeed(getEngineRole(),
+                    new Date(), model.nextSpeed());
         }
     }
 }
