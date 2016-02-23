@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="engineLoad:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/engineLoad_war</output-path>
+    <root id="archive" name="engineLoad_war.war">
+      <element id="artifact" artifact-name="engineLoad:war exploded" />
+    </root>
+  </artifact>
+</component>

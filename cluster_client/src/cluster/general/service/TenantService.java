@@ -20,7 +20,6 @@ import static java.lang.Math.ceil;
  * Created by fantasy on 2016/2/6.
  */
 @Service("tenantService")
-@Transactional
 public class TenantService {
 
     @Autowired
@@ -50,8 +49,20 @@ public class TenantService {
         t.setName(tenantName);
         t.setSLOspeed(SLOspeed);
         t.setCreateTime(new Date());
-        t.setEngineList(roleService.generateRoleToTenant(t, determineRoleNumber(SLOspeed)));
         _pm.exec(t, HibernateEngine.DB_INSERT, true);
+        t.setEngineList(roleService.generateRoleToTenant(t, determineRoleNumber(SLOspeed)));
+        _pm.exec(t, HibernateEngine.DB_UPDATE, true);
+        return t;
+    }
+
+    public Tenant createTenant(String tenantName, double SLOspeed, int roleNum) {
+        Tenant t = new Tenant();
+        t.setName(tenantName);
+        t.setSLOspeed(SLOspeed);
+        t.setCreateTime(new Date());
+        _pm.exec(t, HibernateEngine.DB_INSERT, true);
+        t.setEngineList(roleService.generateRoleToTenant(t, roleNum));
+        _pm.exec(t, HibernateEngine.DB_UPDATE, true);
         return t;
     }
 
@@ -71,10 +82,13 @@ public class TenantService {
                 _pm.exec(t, HibernateEngine.DB_DELETE, true);
             }
         }
-        tenant = new Tenant();
-        tenant.setName(testName);
-        tenant.setSLOspeed(0);
-        tenant.setEngineList(roleService.generateRoleToTenant(tenant, engineNum));
+        tenant = createTenant(testName, averageSpeed * engineNum, engineNum);
+//        tenant = new Tenant();
+//        tenant.setName(testName);
+//        tenant.setSLOspeed(0);
+//        _pm.exec(tenant, HibernateEngine.DB_INSERT, true);
+//        tenant.setEngineList(roleService.generateRoleToTenant(tenant, engineNum));
+//        _pm.exec(tenant, HibernateEngine.DB_UPDATE, true);
         return tenant;
     }
 
@@ -102,9 +116,8 @@ public class TenantService {
         tenant.getSpeedRcds().add(speedRcd);
         tenant.setCurrentSpeed(speed);
         tenant.setRecordTime(time);
-        _pm.exec(speedRcd, HibernateEngine.DB_INSERT);
-        _pm.exec(tenant, HibernateEngine.DB_UPDATE);
-        _pm.commit();
+        _pm.exec(speedRcd, HibernateEngine.DB_INSERT, true);
+        _pm.exec(tenant, HibernateEngine.DB_UPDATE, true);
         return tenant;
     }
 }

@@ -8,13 +8,13 @@ import cluster.util.exceptions.MigrationException;
 import org.apache.log4j.Logger;
 import org.openstack4j.api.OSClient;
 import org.openstack4j.api.exceptions.ConnectionException;
+import org.openstack4j.model.common.Identifier;
+import org.openstack4j.model.compute.HostAggregate;
 import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.actions.LiveMigrateOptions;
 import org.openstack4j.openstack.OSFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +29,7 @@ public class OSAdapter extends BaseAdapter{
     private static OSAdapter instance;
 
     public OSAdapter() {
-        String OS_AUTH_URL = "http://192.168.0.4:5000/v2.0/";
+        String OS_AUTH_URL = "http://192.168.0.15:5000/v2.0/";
         String OS_AUTH_NAME = "admin";
         String OS_AUTH_PASSWORD = "password";
         String OS_AUTH_PROJECT = "demo";
@@ -47,7 +47,6 @@ public class OSAdapter extends BaseAdapter{
     @Override
     public void Migrate(EngineRole engine, Host dest) throws MigrationException {
         // TODO: 2016/1/11 VM migration needs further configurations. Check OS confuguration files to implement this method
-
         os.compute().migrations().list().get(0).getDestNode();
         os.compute().servers()
                 .liveMigrate(engine.getHost().getName(),
@@ -55,35 +54,49 @@ public class OSAdapter extends BaseAdapter{
                                 .create()
                                 .blockMigration(false)
                                 .host(dest.getName()));
-
     }
 
     public Engine HostUsage(String hostID) {
-
-        return null;// TODO: 2016/1/10 collect IaaS level information
+        return null;// TODO: 2016/1/10 collect IaaS level information.requires ceilometer
     }
 
-    public Map<Host, EngineRole> loadEngineHostMap() {
+    //pre:hosts are are already sync with platform, not null
+    public List<Engine> bindEngineAndHost(List<Engine> engines, List<Host> hosts) {
+        engines = updateEngines(engines);
+        HashMap<String, String> hostmap = new HashMap<>();
+        List<Server> servers = (List<Server>) os.compute().servers().list();
+        servers.forEach(server -> hostmap.put(server.getId(), server.getHostId()));
+        engines.stream()
+                .filter(e -> e.getEngineRole() != null)
+                .forEach(e -> hosts.stream()
+                        .filter(h -> h.getName().equals(hostmap.get(e.getEngineRole().getContainerName())))
+                        .forEach(h -> e.getEngineRole().setHost(h)));
+        return engines;
+    }
 
-        // TODO: 2016/1/11 update host map in period, but may better in other way
-        return null;
+    @SuppressWarnings("unchecked")
+    private List<Engine> updateEngines(List<Engine> engines) {
+        List<Server> servers = ((List<Server>) os.compute().servers().list());
+        servers.stream()
+                .forEach(s -> engines.stream()
+                        .filter(e -> e.getIp().equals(s.getAccessIPv4())
+                                && (e.getEngineRole() != null))
+                        .forEach(e -> e.getEngineRole().setContainerName(s.getId())));
+        return engines;
     }
 
     public List<Host> getHosts() {
-        List<String> oshost = os.compute().hostAggregates().get("server").getHosts();
+        List<String> oshost = os.compute().hostAggregates().get("1").getHosts();
+
         List<Host> hosts = new ArrayList<>();
         for (String h : oshost) {
             Host host = new Host();
             host.setName(h);
+            hosts.add(host);
         }
-
         return hosts;
     }
-    public List<Server> getVMbyHost(Host host){
-        List<Server> servers = (List<Server>) os.compute().servers().listAll(true);
-        servers = servers.stream().filter(server -> server.getHost().equals(host.getName())).collect(Collectors.toList());
-        return servers;
-    }
+
     @Override
     public boolean isStarted() {
         try{
@@ -94,18 +107,5 @@ public class OSAdapter extends BaseAdapter{
             return false;
         }
 
-    }
-
-    @Override
-    public List<EngineRole> bindServers(List<EngineRole> roles) {
-        List<Server> servers = (List<Server>) os.compute().servers().list();
-        for (Server s : servers) {
-            EngineRole r = roles.stream()
-                    .filter(engineRole -> engineRole.getEngine().getIp().equals(s.getAccessIPv4()))
-                    .findFirst().get();
-            r.setContainerName(s.getName());
-        }
-
-        return roles;
     }
 }

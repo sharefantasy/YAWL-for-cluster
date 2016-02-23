@@ -8,11 +8,12 @@
             <generator class="native"/>
         </id>
         <property name="name" type="java.lang.String"/>
+        <property name="ip" type="java.lang.String"/>
         <bag name="engineList" cascade="save-update" inverse="true">
             <key column="host" not-null="true"/>
             <one-to-many class="EngineRole"/>
         </bag>
-        <set name="capabilitySet" inverse="true">
+        <set name="capabilitySet" cascade="delete" inverse="true">
             <key column="host" not-null="true"/>
             <one-to-many class="cluster.general.entity.data.HostCapability"/>
         </set>

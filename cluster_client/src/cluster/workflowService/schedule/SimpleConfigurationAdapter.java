@@ -118,7 +118,7 @@ public class SimpleConfigurationAdapter {
                     .toArray();
             for (int j = 0; j < hosts.size(); j++) {
                 if (diff[i][j] < 0) {
-                    instructions.put(roles.poll(), hostA[j]);
+                    instructions.put(roles.remove(), hostA[j]);
                 }
             }
         }

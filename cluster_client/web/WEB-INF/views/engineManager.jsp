@@ -16,9 +16,10 @@
 <%@ include file="nav.jsp" %>
 <div class="container">
     <form:form modelAttribute="newEngine" method="post" cssClass="form-horizontal">
-        <label for="engineID">引擎ID: </label><form:input path="engineID"/>
-        <label for="address">引擎连接地址：</label><form:input path="address"/>
-        <label for="ip">引擎ip地址：</label><form:input path="ip"/>
+        <label for="engineID">引擎ID: </label><form:input path="engineID"/><br>
+        <label for="address">引擎连接地址：</label><form:input path="address"/><br>
+        <label for="ip">引擎ip地址：</label><form:input path="ip"/><br>
+
         <input type="submit" value="接入引擎">
     </form:form>
     <table class="table table-row-cell">
@@ -26,24 +27,24 @@
         <tr>
             <td>id</td>
             <td>引擎ID</td>
+            <td>密码</td>
             <td>地址</td>
             <td>角色</td>
             <td>上次心跳时间</td>
-            <td>上次登录时间</td>
             <td>状态</td>
             <td>删除</td>
         </tr>
         </thead>
         <c:forEach items="${engines}" var="engine">
             <tr>
-                <td><a href="/page/engine/${engine.id}/">${engine.id}</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/engine/${engine.id}/">${engine.id}</a></td>
                 <td>${engine.engineID}</td>
+                <td>${engine.password}</td>
                 <td>${engine.address}</td>
                 <td>${engine.engineRole}</td>
                 <td>${engine.lastHeartbeatTime}</td>
-                <td>${engine.lastLoginTime}</td>
                 <td>${engine.status}</td>
-                <td><a href="/page/engine/delete/${engine.id}/">删除</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/engine/delete/${engine.id}/">删除</a></td>
             </tr>
         </c:forEach>
     </table>

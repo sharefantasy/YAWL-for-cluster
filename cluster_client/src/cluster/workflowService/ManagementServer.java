@@ -31,7 +31,7 @@ public class ManagementServer extends InterfaceC_EnvironmentBasedServer implemen
         _logger.info("cluster service started");
         String engineServiceName = context.getInitParameter("EngineServiceName");
         String engineServicePassword = context.getInitParameter("EngineServicePassword");
-        _client = new InterfaceC_EnvironmentBasedClient(engineServiceName, engineServicePassword);
+        _client = InterfaceC_EnvironmentBasedClient.getInsance();
         _engineService.set_client(_client);
     }
 

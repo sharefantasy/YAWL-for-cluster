@@ -5,6 +5,7 @@ import cluster.general.service.EngineRoleService;
 import cluster.general.service.HostService;
 import cluster.util.exceptions.GeneralException;
 import cluster.util.exceptions.MigrationException;
+import cluster.util.iaasClient.Adapter;
 import cluster.util.iaasClient.BaseAdapter;
 import cluster.simulation.model.SpeedModel;
 import cluster.simulation.model.UniformModel;
@@ -23,8 +24,7 @@ import java.util.stream.Collectors;
  * Created by fantasy on 2016/1/14.
  */
 
-@Component
-public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
+public class EngineDataGenerator implements Adapter, DisposableBean {
     private List<EngineSimulator> engineList;
     private int interval;
     private ScheduledExecutorService _executor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
@@ -59,7 +59,6 @@ public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
         _executor.shutdown();
         _logger.info("Engine data simulation stop......");
         isStart = false;
-        notifyShutdown();
     }
 
     public void startGenerating(long endTime){
@@ -79,7 +78,6 @@ public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
             _executor.scheduleAtFixedRate(e,0, interval, TimeUnit.MICROSECONDS);
         }
         isStart = true;
-        notifyStart();
     }
 
     public int getInterval() {
@@ -96,6 +94,7 @@ public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
         ((EngineSimulator)vm.getEngine()).migrate(dest);
     }
 
+
     @Override
     public List<Host> getHosts() {
         return null;
@@ -107,15 +106,13 @@ public class EngineDataGenerator extends BaseAdapter implements DisposableBean {
     }
 
     @Override
-    public List<EngineRole> bindServers(List<EngineRole> roles) {
-        roles.stream().forEach(engineRole -> engineRole.setContainerName(engineRole.getRole()));
-        return roles;
+    public List<Engine> bindEngineAndHost(List<Engine> engines, List<Host> hosts) {
+        return null;
     }
-
 
     @Override
     public void destroy() throws Exception {
-
+        _executor.shutdownNow();
     }
 
 

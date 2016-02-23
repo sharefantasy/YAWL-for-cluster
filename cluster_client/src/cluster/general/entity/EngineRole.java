@@ -93,6 +93,6 @@ public class EngineRole{
     }
 
     public String toString() {
-        return role;
+        return String.format("%d@%s", tenant.getId(), role);
     }
 }

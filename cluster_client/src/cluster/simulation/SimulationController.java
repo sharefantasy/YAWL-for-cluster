@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**
  * Created by fantasy on 2016/2/18.
  */
-@Controller
 @RequestMapping("/simulation")
 public class SimulationController {
     private int tenantNum = 40;
     private static final Logger _logger = Logger.getLogger(SimulationController.class);
 
     @Autowired
-    @Qualifier("engineDataGenerator")
     private EngineDataGenerator dg;
 
     @RequestMapping("/")

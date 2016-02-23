@@ -14,7 +14,8 @@ public class WorkitemCounter {
     private int period;
     private static WorkitemCounter instance;
     static Timer timer = new Timer();
-    private WorkitemCounter(int period){
+
+    private WorkitemCounter(final int period) {
         this.period = period;
         timer.schedule(new TimerTask() {
             @Override

@@ -32,6 +32,12 @@ public class HostController {
         return "hostManager";
     }
 
+    @RequestMapping(value = {"/", "/create"}, method = RequestMethod.POST)
+    public String create(Host newHost, ModelMap modelMap) {
+        Host host = hostService.createHost(newHost.getName(), newHost.getIp());
+        return "redirect:/page/host/";
+    }
+
     @RequestMapping(value = "/{hid}/", method = RequestMethod.GET)
     public String hostDetail(@PathVariable long hid, ModelMap model) {
         Host host = hostService.getHostById(hid);
@@ -42,6 +48,7 @@ public class HostController {
     @RequestMapping(value = "/reload/")
     public String reloadHosts() {
         hostService.reloadHosts();
+        hostService.loadFromPlatform();
         return "redirect:/page/host/";
     }
 

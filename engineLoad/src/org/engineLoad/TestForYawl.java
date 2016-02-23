@@ -119,7 +119,6 @@ public class TestForYawl extends InterfaceBWebsideController {
     }
 
     private String launchCase(YSpecificationID specID,String caseData)throws IOException{
-
         String caseID=_interfaceBClient.launchCase(specID,caseData,null,_handle);
         if(!successful(caseID)){
             return "heheda!";
@@ -129,7 +128,9 @@ public class TestForYawl extends InterfaceBWebsideController {
 
     @Override
     protected void finalize() throws Throwable {
+        timer.purge();
         timer.cancel();
+        timer = null;
         super.finalize();
     }
 

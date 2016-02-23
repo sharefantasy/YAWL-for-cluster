@@ -24,11 +24,11 @@ public class TenantController {
     @Autowired
     private TenantService tenantService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String manager(ModelMap model) {
         List<Tenant> tenants = tenantService.findAllTenant();
         model.addAttribute("tenants", tenants);
-        model.addAttribute("newTenant", new Tenant());
+        model.addAttribute("newTenant", new TenantInfo());
         return "tenantManager";
     }
 
@@ -40,8 +40,8 @@ public class TenantController {
     }
 
     @RequestMapping(value = {"/", "/create/"}, method = RequestMethod.POST)
-    public String create(Tenant newTenant, ModelMap model) {
-        Tenant t = tenantService.createTenant(newTenant.getName(), newTenant.getSLOspeed());
+    public String create(TenantInfo newTenant, ModelMap model) {
+        Tenant t = tenantService.createTenant(newTenant.getName(), newTenant.getSLOspeed(), newTenant.getRoleNum());
         return String.format("redirect:/page/tenant/%d/", t.getId());
     }
 
@@ -49,5 +49,35 @@ public class TenantController {
     public String update(Tenant tenant, ModelMap model) {
         tenantService.save(tenant);
         return String.format("redirect:/page/tenant/%d/", tenant.getId());
+    }
+}
+
+class TenantInfo {
+    private String name;
+    private double SLOspeed;
+    private int roleNum;
+
+    public double getSLOspeed() {
+        return SLOspeed;
+    }
+
+    public void setSLOspeed(double SLOspeed) {
+        this.SLOspeed = SLOspeed;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRoleNum() {
+        return roleNum;
+    }
+
+    public void setRoleNum(int roleNum) {
+        this.roleNum = roleNum;
     }
 }

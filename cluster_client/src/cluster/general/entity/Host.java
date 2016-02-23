@@ -11,11 +11,11 @@ import java.util.*;
  */
 
 
-// FIXME: 2016/1/11 this constructor is not suitable for message collection usage. Need a better edition
 public class Host {
 
     private long id;
     private String name;
+    private String ip;
     private List<EngineRole> engineList;
     private Set<HostCapability> capabilitySet;
     private Set<HostSpeedRcd> speedRcds;
@@ -109,5 +109,13 @@ public class Host {
 
     public void setSpeedRcds(Set<HostSpeedRcd> speedRcds) {
         this.speedRcds = speedRcds;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 }

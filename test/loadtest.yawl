@@ -5,7 +5,7 @@
     <metaData>
       <creator>fantasy</creator>
       <description>No description provided</description>
-      <version>0.18</version>
+      <version>0.19</version>
       <persistent>false</persistent>
       <identifier>UID_806c5e53-8c36-43d1-9833-eb224aac0ebb</identifier>
     </metaData>
@@ -89,7 +89,9 @@
         <type>unsignedLong</type>
         <namespace>http://www.w3.org/2001/XMLSchema</namespace>
       </outputParam>
-      <yawlService id="http://192.168.0.69:8082/YawlTest/ib" />
+      <yawlService id="http://localhost:8080/engineLoad/ib">
+        <documentation>test</documentation>
+      </yawlService>
       <externalInteraction>manual</externalInteraction>
     </decomposition>
   </specification>
@@ -98,9 +100,9 @@
     <specification id="loadtest">
       <size w="65" h="32"/>
       <net id="Net">
-        <bounds x="0" y="0" w="1664" h="671"/>
-        <frame x="0" y="0" w="1667" h="674"/>
-        <viewport x="0" y="0" w="1667" h="674"/>
+        <bounds x="0" y="0" w="1664" h="848"/>
+        <frame x="0" y="0" w="1667" h="851"/>
+        <viewport x="0" y="0" w="1667" h="851"/>
         <vertex id="OutputCondition">
           <attributes>
             <bounds x="280" y="432" w="32" h="32"/>
@@ -164,4 +166,5 @@
       </net>
     </specification>
   </layout>
-</specificationSet>
+
+</specificationSet>

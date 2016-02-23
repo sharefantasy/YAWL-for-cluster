@@ -17,6 +17,10 @@
         <param-value>test</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>DefaultWorklist</param-name>
+        <param-value>http://localhost:8080/resourceService/ib#resource</param-value>
+    </context-param>
 
 
     <context-param>
@@ -44,7 +48,6 @@
     <filter-mapping>
         <filter-name>CharsetFilter</filter-name>
         <url-pattern>/*</url-pattern>
-
     </filter-mapping>
     <servlet>
         <servlet-name>testForYawl</servlet-name>
@@ -61,10 +64,12 @@
     <servlet>
         <servlet-name>dummyic</servlet-name>
         <servlet-class>org.engineLoad.DummyInterfaceC_EngineBasedServer</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>dummyic</servlet-name>
         <url-pattern>/ic</url-pattern>
+
     </servlet-mapping>
     <context-param>
         <param-name>EnableClusterService</param-name>

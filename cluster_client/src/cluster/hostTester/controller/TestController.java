@@ -26,47 +26,35 @@ public class TestController {
     @Autowired
     private HostService hostService;
 
-    @RequestMapping(value = "/create_test_plan", method = RequestMethod.GET)
-    public String createTestPlan(ModelMap modelMap) {
-        List<Host> hosts = hostService.getAllHosts();
-
-        modelMap.addAttribute("testplan", new TestPlanEntity());
-        modelMap.addAttribute("hostlist", hosts);
-        return "testplan";
-    }
-
-    @RequestMapping(value = "/create_test_plan", method = RequestMethod.POST)
-    public String confirmPlan(TestPlanEntity testPlan, ModelMap modelMap) {
-        testPlanService.createTestPlan(testPlan);
-
-        modelMap.addAttribute("testplan", testPlan);
-        return String.format("redirect:/page/testplan/get_test_plan/%d/", testPlan.getId());
-    }
-
-    @RequestMapping(value = "/get_test_plan/{pid}/", method = RequestMethod.GET)
-    public String getTestPlan(@PathVariable long pid, ModelMap modelMap) {
-        TestPlanEntity entity = testPlanService.getTestPlanByID(pid);
-
-        modelMap.addAttribute("entity", entity);
-        return "plandetail";
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String showPlanManager(ModelMap modelMap) {
-
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String manager(ModelMap modelMap) {
         List<TestPlanEntity> plans = testPlanService.getAllTestPlan();
         List hosts = hostService.getAllHosts();
-
         modelMap.addAttribute("plans", plans);
         modelMap.addAttribute("testplan", new TestPlanEntity());
         modelMap.addAttribute("hosts", hosts);
         return "planManager";
     }
 
+    @RequestMapping(value = {"/", "/create"}, method = RequestMethod.POST)
+    public String create(TestPlanEntity testPlan) {
+        testPlanService.createTestPlan(testPlan.getHost(), testPlan.getEngineNumber(), testPlan.getEndTime());
+        return "redirect:/page/testplan/";
+    }
+
+    @RequestMapping(value = "/testplan/{pid}/", method = RequestMethod.GET)
+    public String get(@PathVariable long pid, ModelMap modelMap) {
+        TestPlanEntity entity = testPlanService.getTestPlanByID(pid);
+        modelMap.addAttribute("entity", entity);
+        return "plandetail";
+    }
+
+
+
     @RequestMapping(value = "/start/{tpid}/")
     public String startTestplan(@PathVariable long tpid, ModelMap model) {
         TestPlanEntity tp = testPlanService.getTestPlanByID(tpid);
-        testPlanService.startTest(tp);
+        testPlanService.startTest(tp, false);
         return String.format("redirect:/page/testplan/%d/", tpid);
     }
 
@@ -83,4 +71,10 @@ public class TestController {
         return "redirect:/page/testplan/";
     }
 
+    @RequestMapping(value = "/startTestShortcut/{tpid}", method = RequestMethod.GET)
+    public String bypass(@PathVariable long tpid, ModelMap modelMap) {
+        TestPlanEntity tp = testPlanService.getTestPlanByID(tpid);
+        testPlanService.startTest(tp, true);
+        return "redirect:/page/testplan/";
+    }
 }

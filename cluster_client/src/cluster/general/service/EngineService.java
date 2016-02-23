@@ -4,6 +4,7 @@ import cluster.general.entity.Engine;
 import cluster.general.entity.EngineRole;
 import cluster.general.entity.EngineStatus;
 import cluster.util.PersistenceManager;
+import cluster.util.event.EventCenter;
 import cluster.util.exceptions.GeneralException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yawlfoundation.yawl.engine.interfce.interfaceC.InterfaceC_EnvironmentBasedClient;
 import org.yawlfoundation.yawl.util.HibernateEngine;
+import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +25,6 @@ import java.util.stream.Collectors;
  * Created by fantasy on 2015/8/22.
  */
 @Service("EngineService")
-@Transactional
 public class EngineService implements DisposableBean {
     private static EngineService _engineService;
     private static final Logger _logger = Logger.getLogger(EngineService.class);
@@ -36,11 +39,13 @@ public class EngineService implements DisposableBean {
     @Autowired
     private EngineRoleService engineRoleService;
 
+    @Autowired
+    private EventCenter _ec;
+
     public EngineService() {
         _engineService = this;
         startHeartBeat();
     }
-
 
     @Deprecated
     public static EngineService getInstance() {
@@ -54,7 +59,7 @@ public class EngineService implements DisposableBean {
 
 
     public Engine getEngineByEngineID(String id) throws GeneralException {
-        List<Engine> engines = _pm.getObjectsForClassWhere("Engine", "engineID = " + id);
+        List<Engine> engines = _pm.getObjectsForClassWhere("Engine", String.format("engineID = '%s'", id));
         Engine engine;
         if (engines != null) {
             engine = engines.get(0);
@@ -81,7 +86,7 @@ public class EngineService implements DisposableBean {
                 engine.setStatus(EngineStatus.IDLE);
                 save(engine);
                 _logger.info(engine.getEngineID() + " login");
-                // TODO: raise login_event(this, engine)
+                _ec.trigger("engine_login", engine);
             } else {
                 throw new GeneralException("wrong password.");
             }
@@ -89,13 +94,12 @@ public class EngineService implements DisposableBean {
             throw new GeneralException(id + " password is not correct");
     }
 
-    private void save(Engine engine) {
+    public void save(Engine engine) {
         if (_pm.get(Engine.class, engine.getId()) != null) {
-            _pm.exec(engine, HibernateEngine.DB_UPDATE);
+            _pm.exec(engine, HibernateEngine.DB_UPDATE, true);
         } else {
-            _pm.exec(engine, HibernateEngine.DB_INSERT);
+            _pm.exec(engine, HibernateEngine.DB_INSERT, true);
         }
-        _pm.commit();
     }
 
     public void logout(String id, String password) throws GeneralException {
@@ -136,15 +140,23 @@ public class EngineService implements DisposableBean {
     }
 
     private boolean checkPassword(String password, Engine engine) {
-        return password.equals(engine.getPassword());
+        try {
+            return password.equals(PasswordEncryptor.encrypt(engine.getPassword()));
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean isLogin(String id, String password) throws GeneralException {
         Engine engine = getEngineByEngineID(id);
-        if (checkPassword(password, engine))
+        if (!checkPassword(password, engine))
             throw new GeneralException(id + " password is not correct");
         EngineStatus status = engine.getStatus();
-        return status != EngineStatus.LOST
+        return status != null
+                && status != EngineStatus.LOST
                 && status != EngineStatus.UNHEALTHY
                 && status != EngineStatus.INACTIVE;
     }
@@ -169,6 +181,54 @@ public class EngineService implements DisposableBean {
         }
     }
 
+
+    public boolean setRemoteEngineRole(Engine engine, EngineRole role) {
+        if (engine == null) {
+            return false;
+        }
+        _pm.beginTransaction();
+        if (role != null) {
+            Engine switchedEngine = role.getEngine();
+            if (switchedEngine != null) {
+                if (switchedEngine.getStatus() == EngineStatus.TESTING) {
+                    _logger.error("try to switch testing engine: " + switchedEngine.getId());
+                    _pm.commit();
+                    return false;
+                }
+                switchedEngine.setEngineRole(null);
+                if (switchedEngine.getStatus() == EngineStatus.SERVING) {
+                    try {
+                        _client.setEngineRole(switchedEngine.getEngineID(), null);
+                        switchedEngine.setStatus(EngineStatus.IDLE);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        _logger.info("reset engine role failed at engine: " + switchedEngine.getId());
+                        _pm.commit();
+                        return false;
+                    }
+                }
+            }
+        }
+        try {
+            _client.setEngineRole(engine.getEngineID(), role == null ? null : role.getRole());
+        } catch (IOException e) {
+            e.printStackTrace();
+            _logger.error(String.format("Set %s role failed", engine.getEngineID()));
+            _pm.rollback();
+            return false;
+        }
+        EngineRole switchedRole = engine.getEngineRole();
+        if (switchedRole != null) {
+            switchedRole.setEngine(null);
+        }
+        engine.setEngineRole(role);
+        if (role != null)
+            role.setEngine(engine);
+        save(engine);
+        _pm.commit();
+        return true;
+    }
+
     public boolean inviteEngine(String engineAddress, String engineID, EngineRole engineRole, String ip) {
         String role = engineRole != null ? engineRole.getRole() : null;
         String password = UUID.randomUUID().toString();
@@ -186,6 +246,7 @@ public class EngineService implements DisposableBean {
             engine.setPassword(password);
             engine.setEngineRole(engineRole);
             engine.setIp(ip);
+            engine.setStatus(EngineStatus.IDLE);
             save(engine);
         }
         return true;
@@ -265,11 +326,11 @@ public class EngineService implements DisposableBean {
                 for (Engine e : getActiveEngines()) {
                     if (e.getLastHeartbeatTime() == null) continue;
                     if ((new Date()).getTime() - e.getLastHeartbeatTime().getTime() > 5000) {
-                        _logger.warn(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
+                        _logger.error(String.format("lost %s at %s", e.getEngineID(), (new Date()).toString()));
                         flag = false;
                         try {
                             if (e.getEngineRole() == null) continue;
-                            _logger.info(String.format("%s take up %s", takeBackup(e), e.getEngineRole()));
+                            _logger.debug(String.format("%s take up %s", takeBackup(e), e.getEngineRole()));
                             e.setStatus(EngineStatus.UNHEALTHY);
                             save(e);
                         } catch (GeneralException e1) {
@@ -280,13 +341,13 @@ public class EngineService implements DisposableBean {
                     }
                 }
                 if (flag)
-                    _logger.info("heartbeat all clear");
+                    _logger.debug("heartbeat all clear");
             }
         };
 
         public void finalize() throws Throwable {
             timer.cancel();
-            _logger.info("stop recording heartbeat...");
+            _logger.debug("stop recording heartbeat...");
             super.finalize();
         }
 
@@ -299,13 +360,8 @@ public class EngineService implements DisposableBean {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Engine> getEngines() {
-        return (List<Engine>) _pm.getObjectsForClass("Engine");
-    }
-
     public List<Engine> getActiveEngines() {
-        return getEngines().stream()
+        return getAllEngines().stream()
                 .filter(e -> e.getStatus() == EngineStatus.SERVING)
                 .collect(Collectors.toCollection(ArrayList::new));
     }

@@ -1,5 +1,6 @@
 package cluster.general.service;
 
+import cluster.general.entity.Engine;
 import cluster.general.entity.data.EngineRoleSpeedRcd;
 import cluster.util.PersistenceManager;
 import cluster.general.entity.EngineRole;
@@ -18,7 +19,6 @@ import java.util.UUID;
  * Created by fantasy on 2016/2/6.
  */
 @Service("engineRoleService")
-@Transactional
 public class EngineRoleService {
 
     @Autowired
@@ -35,7 +35,7 @@ public class EngineRoleService {
             engineRole.setRole(UUID.randomUUID().toString());
             engineRole.setTenant(tenant);
             engineRoleList.add(engineRole);
-            _pm.exec(engineRole, HibernateEngine.DB_INSERT);
+            _pm.exec(engineRole, HibernateEngine.DB_INSERT, true);
         }
         return engineRoleList;
     }
@@ -49,9 +49,12 @@ public class EngineRoleService {
         role.getSpeedRcds().add(speedRcd);
         role.setCurrentSpeed(speed);
         role.setCurrentRcdTime(time);
-        _pm.exec(speedRcd, HibernateEngine.DB_INSERT);
-        _pm.exec(role, HibernateEngine.DB_UPDATE);
-        _pm.commit();
+        _pm.exec(speedRcd, HibernateEngine.DB_INSERT, true);
+        _pm.exec(role, HibernateEngine.DB_UPDATE, true);
         return role;
+    }
+
+    public List<EngineRole> getUnallocateRoles() {
+        return (List<EngineRole>) _pm.getObjectsForClassWhere("EngineRole", "engine=null");
     }
 }

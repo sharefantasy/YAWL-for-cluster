@@ -1,4 +1,4 @@
-package cluster.hostTester;
+package cluster.hostTester.deprecate;
 
 import cluster.general.service.EngineService;
 import cluster.util.PersistenceManager;
@@ -64,7 +64,7 @@ public class TesterServer extends HttpServlet {
             EngineService engineService = EngineService.getInstance();
             totest.setEngineList(t.getEngineList());
             int i = 0;
-            for (Engine e : engineService.getEngines()) {
+            for (Engine e : engineService.getAllEngines()) {
                 e.setStatus(EngineStatus.TESTING);
                 e.setEngineRole(totest.getEngineList().get(i));
                 totest.getEngineList().get(i++).setEngine(e);

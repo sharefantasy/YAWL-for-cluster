@@ -11,18 +11,28 @@ import java.util.Map;
  * Created by fantasy on 2015/8/5.
  */
 public class InterfaceC_EnvironmentBasedClient extends Interface_Client{
+    private static InterfaceC_EnvironmentBasedClient _client;
     public Map<String, String> urls;
     public Map<String ,String> sessionHandles = new HashMap<>();
     private String engineServiceName;
     private String engineServicePassword;
-    public InterfaceC_EnvironmentBasedClient(String engineServiceName, String engineServicePassword){
+    private String selfAddress;
+
+    public InterfaceC_EnvironmentBasedClient(String engineServiceName, String engineServicePassword, String selfAddress) {
         urls = new HashMap<>();
         this.engineServiceName = engineServiceName;
         this.engineServicePassword = engineServicePassword;
+        this.selfAddress = selfAddress;
+        _client = this;
+    }
+
+    public static InterfaceC_EnvironmentBasedClient getInsance() {
+        return _client;
     }
     public InterfaceC_EnvironmentBasedClient(Map<String, String> urls){
         this.urls = urls;
     }
+
 
 
     public String connect(String engineId, String url, String sessionHandle) throws IOException {
@@ -71,7 +81,8 @@ public class InterfaceC_EnvironmentBasedClient extends Interface_Client{
             params.put("engineID", engineID);
             params.put("engineRole", engineRole);
             params.put("password", password);
-            String result = executePost(String.format("http://%s/yawl/ic/", engineAddress), params);
+            params.put("clusterAddress", selfAddress);
+            String result = executePost(engineAddress, params);
             if (result.startsWith("success:")) {
                 urls.put(engineID, engineAddress);
                 sessionHandles.put(engineID, result.substring(8));

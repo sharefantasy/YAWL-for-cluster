@@ -11,11 +11,11 @@ public class WorkitemCounter {
     private Integer currentCounter = 0;
     private double reportCounter = 0;
     private Date reportDate;
-    private int period;
+    private final int period;
     private static WorkitemCounter instance;
     static Timer timer = new Timer();
 
-    private WorkitemCounter(int period) {
+    private WorkitemCounter(final int period) {
         this.period = period;
         timer.schedule(new TimerTask() {
             @Override
@@ -33,6 +33,7 @@ public class WorkitemCounter {
         timer.purge();
         timer.cancel();
         timer = null;
+
     }
 
     public static WorkitemCounter getInstace() {

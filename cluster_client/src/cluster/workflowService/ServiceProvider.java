@@ -33,7 +33,6 @@ public class ServiceProvider implements DisposableBean {
     private List<EngineRole> engineRoleList;
 
     @Autowired
-    @Qualifier("engineDataGenerator")
     private Adapter adapter;
     @Autowired
     private HostService hostService;

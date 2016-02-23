@@ -18,26 +18,31 @@
 <div class="container">
     <div class="row">
         <form:form method="post" modelAttribute="newHost" cssClass="form-horizontal">
-            <label for="name">物理机名称</label><form:input path="name"/><br>
+            <label for="name">物理机名称: </label><form:input path="name"/><br>
+            <label for="ip">ip: </label><form:input path="ip"/><br>
             <input type="submit" value="提交">
         </form:form>
+        <a href="${pageContext.request.contextPath}/page/host/reload/">从系统加载host</a>
     </div>
+
     <table class="table table-bordered table-cell">
         <thead>
         <tr>
             <td>id</td>
             <td>物理机名</td>
-            <td>速度</td>
+            <td>ip</td>
+            <td>当前总速度</td>
             <td>删除</td>
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${hosts}" var="host">
             <tr class="table-row-cell">
-                <td><a href="/page/host/${host.id}/">${host.id}</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/host/${host.id}/">${host.id}</a></td>
                 <td>${host.name}</td>
+                <td>${host.ip}</td>
                 <td>${host.currentSpeed}</td>
-                <td><a href="/page/host/delete/${host.id}/">删除</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/host/delete/${host.id}/">删除</a></td>
             </tr>
         </c:forEach>
         </tbody>

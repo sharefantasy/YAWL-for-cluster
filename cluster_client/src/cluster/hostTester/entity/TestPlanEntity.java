@@ -10,15 +10,15 @@ import java.util.Date;
 /**
  * Created by fantasy on 2016/1/31.
  */
-public class TestPlanEntity implements Serializable {
+public class TestPlanEntity {
 
     private long id;
     private Host host;
     private int engineNumber;
-    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss")
+    //    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss")
     private Date startTime;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss")
+    //    @DateTimeFormat(pattern = "yyyy/MM/dd hh:mm:ss")
     private Date endTime;
 
     private Tenant testTenant;

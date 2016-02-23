@@ -41,6 +41,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/events" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/event/listener" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/hostTester/config" />
+      <excludeFolder url="file://$MODULE_DIR$/src/cluster/hostTester/deprecate" />
       <excludeFolder url="file://$MODULE_DIR$/src/cluster/workflowService/schedule/deprecate" />
     </content>
     <orderEntry type="inheritedJdk" />

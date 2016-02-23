@@ -1,5 +1,6 @@
 package cluster.util.iaasClient;
 
+import cluster.general.entity.Engine;
 import cluster.general.entity.EngineRole;
 import cluster.general.entity.Host;
 import cluster.util.exceptions.MigrationException;
@@ -16,9 +17,6 @@ public interface Adapter {
 //    Map<Host, EngineRole> loadEngineHostMap();
     List<Host> getHosts();
     boolean isStarted();
-    void addObserver(envObserver ob);
-    void notifyStart();
-    void notifyShutdown();
 
-    List<EngineRole> bindServers(List<EngineRole> roles);
+    List<Engine> bindEngineAndHost(List<Engine> engines, List<Host> hosts);
 }

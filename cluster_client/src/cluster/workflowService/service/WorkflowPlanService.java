@@ -56,11 +56,7 @@ public class WorkflowPlanService {
             public void run() {
                 _sp.startService();
                 plan.setWorking(true);
-                try {
-                    _ec.trigger("planStarted", plan);
-                } catch (GeneralException e) {
-                    _logger.warn(e.getMsg());
-                }
+                _ec.trigger("planStarted", plan);
             }
         }, new Date().getTime() - plan.getStartTime().getTime());
         stopper = new Timer();
@@ -69,11 +65,7 @@ public class WorkflowPlanService {
             public void run() {
                 _sp.shutdownService();
                 plan.setWorking(false);
-                try {
-                    _ec.trigger("planShutdown", plan);
-                } catch (GeneralException e) {
-                    _logger.warn(e.getMsg());
-                }
+                _ec.trigger("planShutdown", plan);
             }
         }, plan.getEndTime().getTime() - new Date().getTime());
     }
@@ -81,11 +73,10 @@ public class WorkflowPlanService {
     public void save(WorkflowPlan plan) {
         WorkflowPlan w = (WorkflowPlan) _pm.get(WorkflowPlan.class, plan.getId());
         if (w == null) {
-            _pm.exec(plan, HibernateEngine.DB_INSERT);
+            _pm.exec(plan, HibernateEngine.DB_INSERT, true);
         } else {
-            _pm.exec(plan, HibernateEngine.DB_UPDATE);
+            _pm.exec(plan, HibernateEngine.DB_UPDATE, true);
         }
-        _pm.commit();
     }
 
     public void shutdown(long wid) {

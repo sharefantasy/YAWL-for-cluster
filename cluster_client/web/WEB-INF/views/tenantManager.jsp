@@ -19,6 +19,7 @@
     <form:form modelAttribute="newTenant" method="post" cssClass="form-horizontal col-lg-6">
         <label>租户名： </label><form:input path="name"/><br>
         <label>SLO速度：</label><form:input path="SLOspeed"/><br>
+        <label>SLO速度：</label><form:input path="roleNum"/><br>
         <input type="submit" value="确认"><br>
     </form:form>
     <table class="table table-row-cell">
@@ -32,10 +33,10 @@
         </thead>
         <c:forEach items="${tenants}" var="tenant">
             <tr>
-                <td><a href="/page/tenant/${tenant.id}/">${tenant.id}</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/tenant/${tenant.id}/">${tenant.id}</a></td>
                 <td>${tenant.name}</td>
                 <td>${tenant.SLOspeed}</td>
-                <td><a href="/page/tenant/delete/${tenant.id}/">删除</a></td>
+                <td><a href="${pageContext.request.contextPath}/page/tenant/delete/${tenant.id}/">删除</a></td>
             </tr>
         </c:forEach>
     </table>
