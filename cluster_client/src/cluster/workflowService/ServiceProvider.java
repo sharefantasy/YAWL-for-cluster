@@ -20,9 +20,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class ServiceProvider implements DisposableBean {
     private static final Logger _logger = Logger.getLogger(ServiceProvider.class);
-    // FIXME: 2016/2/18 ids must start from 0 and continuous. should make it independent.
-
-
     public void setStatisticInterval(int statisticInterval) {
         this.statisticInterval = statisticInterval;
     }

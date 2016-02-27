@@ -4,8 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <import resource="dispatcher-config.xml"/>
-    <!--<import resource="openstack-config.xml"/>-->
-    <import resource="simulation-config.xml"/>
+    <import resource="openstack-config.xml"/>
+    <!--<import resource="simulation-config.xml"/>-->
     <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
 
 </beans>

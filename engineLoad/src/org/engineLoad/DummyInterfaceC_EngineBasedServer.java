@@ -76,7 +76,6 @@ public class DummyInterfaceC_EngineBasedServer extends YHttpServlet {
         outputWriter.write("<response>" + processPostQuery(request) + "</response>");
         outputWriter.flush();
         outputWriter.close();
-        //todo find out how to provide a meaningful 500 message in the format of  a fault message.
     }
 
     private String processPostQuery(HttpServletRequest request) {
