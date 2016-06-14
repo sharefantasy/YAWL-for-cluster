@@ -1,0 +1,139 @@
+{
+  "upload": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "unload": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "getAccounts": {
+    "RoutingRules": "any"
+  },
+  "getClientAccount": {
+    "RoutingRules": "any"
+  },
+  "getPassword": {
+    "RoutingRules": "any"
+  },
+  "createAccount": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "updateAccount": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "deleteAccount": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "newPassword": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "getYAWLServices": {
+    "RoutingRules": "any"
+  },
+  "newYAWLService": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "removeYAWLService": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "success": [
+        "combine",
+        "name_attribute_content"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "getAllRunningCases": {
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "AllRunningCases": [
+        "combine",
+        "name"
+      ],
+      "specificationID": [
+        "combine",
+        "name_attribute"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "getCasesForSpecification": {
+    "MergeRules": {},
+    "RoutingRules": "all"
+  }
+}

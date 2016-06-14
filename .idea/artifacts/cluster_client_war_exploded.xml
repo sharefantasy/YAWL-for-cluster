@@ -18,6 +18,7 @@
           <element id="library" level="project" name="Spring MVC-4.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
           <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
+          <element id="library" level="project" name="spring-integration-core-4.2.5.RELEASE" />
         </element>
       </element>
     </root>

@@ -53,5 +53,6 @@
     <orderEntry type="library" name="Spring MVC-4.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: taglibs:standard:1.1.2" level="project" />
     <orderEntry type="module" module-name="yawl-3.0.1" />
+    <orderEntry type="library" name="spring-integration-core-4.2.5.RELEASE" level="project" />
   </component>
 </module>

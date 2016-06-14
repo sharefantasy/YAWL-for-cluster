@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ScheduleModule/ScheduleModule.iml" filepath="$PROJECT_DIR$/ScheduleModule/ScheduleModule.iml" />
       <module fileurl="file://$PROJECT_DIR$/algorithmSimulation/algorithmSimulation.iml" filepath="$PROJECT_DIR$/algorithmSimulation/algorithmSimulation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/balancer/balancer.iml" filepath="$PROJECT_DIR$/balancer/balancer.iml" />
       <module fileurl="file://$PROJECT_DIR$/cluster_client/cluster_client.iml" filepath="$PROJECT_DIR$/cluster_client/cluster_client.iml" />
       <module fileurl="file://$PROJECT_DIR$/engineLoad/engineLoad.iml" filepath="$PROJECT_DIR$/engineLoad/engineLoad.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService/resourceService.iml" filepath="$PROJECT_DIR$/resourceService/resourceService.iml" />

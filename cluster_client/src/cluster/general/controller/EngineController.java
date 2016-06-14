@@ -1,9 +1,8 @@
 package cluster.general.controller;
 
-import cluster.general.entity.EngineRole;
+import cluster.general.entity.Engine;
 import cluster.general.service.EngineRoleService;
 import cluster.general.service.EngineService;
-import cluster.general.entity.Engine;
 import cluster.util.PersistenceManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

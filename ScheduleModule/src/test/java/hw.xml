@@ -1,0 +1,1361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  version="2.2"
+                  xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema2.2.xsd">
+    <specification uri="hw">
+        <metaData>
+            <title>import trade procedure</title>
+            <creator>FanTasY</creator>
+            <description>in china</description>
+            <version>0.5</version>
+            <persistent>false</persistent>
+            <identifier>UID_8c36d244-2282-4063-a13c-ef04dd36f5d8</identifier>
+        </metaData>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:simpleType name="insurance_status">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="insured"/>
+                    <xs:enumeration value="urging"/>
+                    <xs:enumeration value="cancel"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="bg_order_status">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="not_check"/>
+                    <xs:enumeration value="consistent"/>
+                    <xs:enumeration value="inconsistent"/>
+                    <xs:enumeration value="reject_all"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+        <decomposition id="main" isRootNet="true" xsi:type="NetFactsType">
+            <localVariable>
+                <index>2</index>
+                <name>application_form</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <localVariable>
+                <index>3</index>
+                <name>bg</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <localVariable>
+                <index>6</index>
+                <name>bg_consistence</name>
+                <type>bg_order_status</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue>not_check</initialValue>
+            </localVariable>
+            <localVariable>
+                <index>1</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <localVariable>
+                <index>4</index>
+                <name>is_insuranced</name>
+                <type>insurance_status</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue>insured</initialValue>
+            </localVariable>
+            <localVariable>
+                <index>0</index>
+                <name>need_insurance</name>
+                <type>boolean</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <localVariable>
+                <index>5</index>
+                <name>rejectPlan</name>
+                <type>boolean</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue>true</initialValue>
+            </localVariable>
+            <processControlElements>
+                <inputCondition id="InputCondition_1">
+                    <flowsInto>
+                        <nextElementRef id="sign_contract"/>
+                    </flowsInto>
+                </inputCondition>
+                <task id="sign_contract">
+                    <name>sign_contract</name>
+                    <flowsInto>
+                        <nextElementRef id="apply_bg"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <completedMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/sign_contract/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                        <mapping>
+                            <expression
+                                    query="&lt;need_insurance&gt;{/sign_contract/need_insurance/text()}&lt;/need_insurance&gt;"/>
+                            <mapsTo>need_insurance</mapsTo>
+                        </mapping>
+                    </completedMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-32cabff9-1d7e-47b5-9dd2-74322128ee35</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                        <privileges>
+                            <privilege>
+                                <name>canSuspend</name>
+                                <allowall>true</allowall>
+                            </privilege>
+                            <privilege>
+                                <name>canDeallocate</name>
+                                <allowall>true</allowall>
+                            </privilege>
+                        </privileges>
+                    </resourcing>
+                    <decomposesTo id="sign_contract"/>
+                </task>
+                <task id="apply_bg">
+                    <name>fill_in_bg_form</name>
+                    <flowsInto>
+                        <nextElementRef id="apply_bg_1"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/main/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <completedMappings>
+                        <mapping>
+                            <expression
+                                    query="&lt;application_form&gt;{/fill_in_bg_form/application_form/text()}&lt;/application_form&gt;"/>
+                            <mapsTo>application_form</mapsTo>
+                        </mapping>
+                    </completedMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-be598bca-7af5-4bad-b645-a83a99863056</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="fill_in_bg_form"/>
+                </task>
+                <task id="apply_bg_1">
+                    <name>apply_bg</name>
+                    <flowsInto>
+                        <nextElementRef id="wait_for_ship_order"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression
+                                    query="&lt;application_form&gt;{/main/application_form/text()}&lt;/application_form&gt;"/>
+                            <mapsTo>application_form</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-be598bca-7af5-4bad-b645-a83a99863056</role>
+                                </initialSet>
+                            </distributionSet>
+                            <familiarParticipant taskID="apply_bg"/>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="apply_bg"/>
+                </task>
+                <task id="wait_for_ship_order">
+                    <name>wait_for_ship_order</name>
+                    <flowsInto>
+                        <nextElementRef id="insure"/>
+                        <predicate ordering="0">boolean(/main/need_insurance/text())!=false</predicate>
+                    </flowsInto>
+                    <flowsInto>
+                        <nextElementRef id="check_insurance_doc"/>
+                        <isDefaultFlow/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="xor"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="wait_for_ship_order"/>
+                </task>
+                <task id="check_insurance_doc">
+                    <name>check_insurance_doc</name>
+                    <flowsInto>
+                        <nextElementRef id="insured"/>
+                        <isDefaultFlow/>
+                    </flowsInto>
+                    <flowsInto>
+                        <nextElementRef id="urge_for_insurance"/>
+                        <predicate ordering="0">/main/is_insuranced/text() = 'urging'</predicate>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="xor"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/main/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <completedMappings>
+                        <mapping>
+                            <expression
+                                    query="&lt;is_insuranced&gt;{/check_insurance_doc/isInsuranced/text()}&lt;/is_insuranced&gt;"/>
+                            <mapsTo>is_insuranced</mapsTo>
+                        </mapping>
+                    </completedMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="check_insurance_doc"/>
+                </task>
+                <task id="insure">
+                    <name>insure</name>
+                    <flowsInto>
+                        <nextElementRef id="insured"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/main/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="insure"/>
+                </task>
+                <condition id="insured">
+                    <name>insured</name>
+                    <flowsInto>
+                        <nextElementRef id="order_bg_not_consistent"/>
+                    </flowsInto>
+                </condition>
+                <task id="urge_for_insurance">
+                    <name>urge_for_insurance</name>
+                    <flowsInto>
+                        <nextElementRef id="insured"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="urge_for_insurance"/>
+                </task>
+                <task id="order_bg_not_consistent">
+                    <name>order_bg_inconsistent</name>
+                    <flowsInto>
+                        <nextElementRef id="reject"/>
+                        <predicate ordering="0">/main/bg_consistence/text()='reject_all'</predicate>
+                    </flowsInto>
+                    <flowsInto>
+                        <nextElementRef id="goods_arrival"/>
+                        <isDefaultFlow/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="xor"/>
+                    <completedMappings>
+                        <mapping>
+                            <expression
+                                    query="&lt;bg_consistence&gt;{/order_bg_inconsistent/bg_status/text()}&lt;/bg_consistence&gt;"/>
+                            <mapsTo>bg_consistence</mapsTo>
+                        </mapping>
+                    </completedMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="order_bg_inconsistent"/>
+                </task>
+                <task id="reject">
+                    <name>reject</name>
+                    <flowsInto>
+                        <nextElementRef id="OutputCondition_1"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <removesTokens id="deliver_to_storage"/>
+                    <removesTokens id="goods_arrival"/>
+                    <removesTokens id="inspectation"/>
+                    <removesTokens id="order_bg_not_consistent"/>
+                    <removesTokens id="payment"/>
+                    <removesTokens id="tax"/>
+                    <removesTokensFromFlow>
+                        <flowSource id="tax"/>
+                        <flowDestination id="deliver_to_storage"/>
+                    </removesTokensFromFlow>
+                    <removesTokensFromFlow>
+                        <flowSource id="payment"/>
+                        <flowDestination id="tax"/>
+                    </removesTokensFromFlow>
+                    <removesTokensFromFlow>
+                        <flowSource id="inspectation"/>
+                        <flowDestination id="tax"/>
+                    </removesTokensFromFlow>
+                    <removesTokensFromFlow>
+                        <flowSource id="goods_arrival"/>
+                        <flowDestination id="payment"/>
+                    </removesTokensFromFlow>
+                    <removesTokensFromFlow>
+                        <flowSource id="goods_arrival"/>
+                        <flowDestination id="inspectation"/>
+                    </removesTokensFromFlow>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet/>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="reject"/>
+                </task>
+                <task id="goods_arrival">
+                    <name>goods_arrival</name>
+                    <flowsInto>
+                        <nextElementRef id="payment"/>
+                        <predicate>/main/bg_consistence/text()='inconsistent'</predicate>
+                    </flowsInto>
+                    <flowsInto>
+                        <nextElementRef id="inspectation"/>
+                        <predicate>true()</predicate>
+                        <isDefaultFlow/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="or"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-2b008743-5786-40d8-acd9-2859f7a8b1cb</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="goods_arrival"/>
+                </task>
+                <task id="inspectation">
+                    <name>inspectation</name>
+                    <flowsInto>
+                        <nextElementRef id="tax"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-d0725c36-ccf5-4e4c-9218-63be84fc1faf</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="inspectation"/>
+                </task>
+                <task id="payment">
+                    <name>payment</name>
+                    <flowsInto>
+                        <nextElementRef id="tax"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/main/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <decomposesTo id="payment"/>
+                </task>
+                <task id="tax">
+                    <name>tax</name>
+                    <flowsInto>
+                        <nextElementRef id="deliver_to_storage"/>
+                    </flowsInto>
+                    <join code="or"/>
+                    <split code="and"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-967f6f96-e4fe-43b0-ae58-ab285b96ae66</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="tax"/>
+                </task>
+                <task id="deliver_to_storage">
+                    <name>deliver_to_storage</name>
+                    <flowsInto>
+                        <nextElementRef id="OutputCondition_1"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-2b008743-5786-40d8-acd9-2859f7a8b1cb</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="deliver_to_storage"/>
+                </task>
+                <outputCondition id="OutputCondition_1"/>
+            </processControlElements>
+        </decomposition>
+        <decomposition id="sign_contract" xsi:type="WebServiceGatewayFactsType">
+            <outputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </outputParam>
+            <outputParam>
+                <index>1</index>
+                <name>need_insurance</name>
+                <type>boolean</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </outputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="reject" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="payment" xsi:type="NetFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <localVariable>
+                <index>1</index>
+                <name>contact</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <localVariable>
+                <index>2</index>
+                <name>isCash</name>
+                <type>boolean</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <initialValue/>
+            </localVariable>
+            <processControlElements>
+                <inputCondition id="InputCondition">
+                    <flowsInto>
+                        <nextElementRef id="choose_method"/>
+                    </flowsInto>
+                </inputCondition>
+                <task id="choose_method">
+                    <name>choose_method</name>
+                    <flowsInto>
+                        <nextElementRef id="bank_guarantee"/>
+                        <isDefaultFlow/>
+                    </flowsInto>
+                    <flowsInto>
+                        <nextElementRef id="cash"/>
+                        <predicate ordering="0">boolean(/payment/isCash/text())!=false</predicate>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="xor"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/payment/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <completedMappings>
+                        <mapping>
+                            <expression query="&lt;isCash&gt;{/choose_method/isCash/text()}&lt;/isCash&gt;"/>
+                            <mapsTo>isCash</mapsTo>
+                        </mapping>
+                    </completedMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-967f6f96-e4fe-43b0-ae58-ab285b96ae66</role>
+                                </initialSet>
+                            </distributionSet>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="choose_method"/>
+                </task>
+                <task id="bank_guarantee">
+                    <name>bank_guarantee</name>
+                    <flowsInto>
+                        <nextElementRef id="OutputCondition"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/payment/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-967f6f96-e4fe-43b0-ae58-ab285b96ae66</role>
+                                </initialSet>
+                            </distributionSet>
+                            <familiarParticipant taskID="choose_method"/>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="bank_guarantee"/>
+                </task>
+                <task id="cash">
+                    <name>cash</name>
+                    <flowsInto>
+                        <nextElementRef id="OutputCondition"/>
+                    </flowsInto>
+                    <join code="xor"/>
+                    <split code="and"/>
+                    <startingMappings>
+                        <mapping>
+                            <expression query="&lt;contract&gt;{/payment/contract/text()}&lt;/contract&gt;"/>
+                            <mapsTo>contract</mapsTo>
+                        </mapping>
+                    </startingMappings>
+                    <resourcing>
+                        <offer initiator="system">
+                            <distributionSet>
+                                <initialSet>
+                                    <role>RO-967f6f96-e4fe-43b0-ae58-ab285b96ae66</role>
+                                </initialSet>
+                            </distributionSet>
+                            <familiarParticipant taskID="choose_method"/>
+                        </offer>
+                        <allocate initiator="system">
+                            <allocator>
+                                <name>RandomChoice</name>
+                            </allocator>
+                        </allocate>
+                        <start initiator="system"/>
+                    </resourcing>
+                    <decomposesTo id="cash"/>
+                </task>
+                <outputCondition id="OutputCondition"/>
+            </processControlElements>
+        </decomposition>
+        <decomposition id="apply_bg" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>application_form</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="insure" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="goods_arrival" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="fill_in_bg_form" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <outputParam>
+                <index>1</index>
+                <name>application_form</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </outputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="bank_guarantee" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="check_insurance_doc" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <outputParam>
+                <index>1</index>
+                <name>isInsuranced</name>
+                <type>insurance_status</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <defaultValue>insured</defaultValue>
+            </outputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="tax" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="cash" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="choose_method" xsi:type="WebServiceGatewayFactsType">
+            <inputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </inputParam>
+            <outputParam>
+                <index>0</index>
+                <name>contract</name>
+                <type>string</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </outputParam>
+            <outputParam>
+                <index>1</index>
+                <name>isCash</name>
+                <type>boolean</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+                <defaultValue>true</defaultValue>
+            </outputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="deliver_to_storage" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="wait_for_ship_order" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="urge_for_insurance" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="order_bg_inconsistent" xsi:type="WebServiceGatewayFactsType">
+            <outputParam>
+                <index>0</index>
+                <name>bg_status</name>
+                <type>bg_order_status</type>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </outputParam>
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+        <decomposition id="inspectation" xsi:type="WebServiceGatewayFactsType">
+            <externalInteraction>manual</externalInteraction>
+        </decomposition>
+    </specification>
+    <layout>
+        <locale language="zh" country="CN"/>
+        <specification id="hw">
+            <size w="95" h="51"/>
+            <net id="payment">
+                <bounds x="0" y="0" w="1210" h="440"/>
+                <frame x="2" y="27" w="1213" h="443"/>
+                <viewport x="0" y="0" w="1213" h="443"/>
+                <vertex id="InputCondition">
+                    <attributes>
+                        <bounds x="36.0" y="214.0" w="32.0" h="32.0"/>
+                    </attributes>
+                </vertex>
+                <vertex id="OutputCondition">
+                    <attributes>
+                        <bounds x="376.0" y="214.0" w="32.0" h="32.0"/>
+                    </attributes>
+                </vertex>
+                <container id="cash">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="244.0" y="148.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="212.0" y="180.0" w="96.0" h="22.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="bank_guarantee">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="244.0" y="280.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="203.0" y="312.0" w="114.0" h="22.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="choose_method">
+                    <vertex>
+                        <attributes>
+                            <bounds x="112.0" y="214.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="76.0" y="248.0" w="113.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                    <decorator type="XOR_split">
+                        <position>13</position>
+                        <attributes>
+                            <bounds x="143.0" y="214.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                </container>
+                <flow source="cash" target="OutputCondition">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="275.0" y="163.5"/>
+                            <value x="376.0" y="229.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="InputCondition" target="choose_method">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                    </attributes>
+                </flow>
+                <flow source="bank_guarantee" target="OutputCondition">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="275.0" y="295.5"/>
+                            <value x="376.0" y="229.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="choose_method" target="bank_guarantee">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="153.0" y="229.5"/>
+                            <value x="244.0" y="295.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="choose_method" target="cash">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="153.0" y="229.5"/>
+                            <value x="244.0" y="163.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+            </net>
+            <net id="main">
+                <bounds x="0" y="0" w="1210" h="440"/>
+                <frame x="2" y="27" w="1213" h="443"/>
+                <viewport x="0" y="0" w="1213" h="443"/>
+                <vertex id="InputCondition_1">
+                    <attributes>
+                        <bounds x="24.0" y="179.3" w="32.0" h="32.0"/>
+                    </attributes>
+                </vertex>
+                <vertex id="OutputCondition_1">
+                    <attributes>
+                        <bounds x="1120.0" y="191.3" w="32.0" h="32.0"/>
+                    </attributes>
+                </vertex>
+                <container id="check_insurance_doc">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="444.0" y="204.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="388.0" y="236.0" w="157.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                    <decorator type="XOR_split">
+                        <position>13</position>
+                        <attributes>
+                            <bounds x="475.0" y="204.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                </container>
+                <container id="insure">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="532.0" y="52.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="500.0" y="84.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="wait_for_ship_order">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="400.0" y="53.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <decorator type="XOR_split">
+                        <position>13</position>
+                        <attributes>
+                            <bounds x="431.0" y="53.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                    <label>
+                        <attributes>
+                            <bounds x="350.0" y="84.0" w="141.0" h="22.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="tax">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="894.0" y="53.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="856.0" y="84.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                    <decorator type="OR_join">
+                        <position>12</position>
+                        <attributes>
+                            <bounds x="884.0" y="53.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                </container>
+                <container id="apply_bg">
+                    <vertex>
+                        <attributes>
+                            <bounds x="200.0" y="180.8" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="164.0" y="212.0" w="105.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="urge_for_insurance">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="564.0" y="272.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="512.0" y="304.0" w="141.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="sign_contract">
+                    <vertex>
+                        <attributes>
+                            <bounds x="92.0" y="180.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="60.0" y="212.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="reject">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/RoutingTask.png</iconpath>
+                        <attributes>
+                            <bounds x="920.0" y="244.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="888.0" y="276.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="inspectation">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Inspect.png</iconpath>
+                        <attributes>
+                            <bounds x="808.0" y="85.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="776.0" y="116.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="deliver_to_storage">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="1008.0" y="152.8" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="956.0" y="184.0" w="137.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="order_bg_not_consistent">
+                    <vertex>
+                        <attributes>
+                            <bounds x="730.0" y="252.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="672.0" y="284.0" w="161.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                    <decorator type="XOR_split">
+                        <position>13</position>
+                        <attributes>
+                            <bounds x="761.0" y="252.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                </container>
+                <container id="apply_bg_1">
+                    <vertex>
+                        <attributes>
+                            <bounds x="288.0" y="133.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="256.0" y="164.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="goods_arrival">
+                    <vertex>
+                        <iconpath>/org/yawlfoundation/yawl/editor/resources/taskicons/Manual.png</iconpath>
+                        <attributes>
+                            <bounds x="728.0" y="45.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <decorator type="OR_split">
+                        <position>13</position>
+                        <attributes>
+                            <bounds x="759.0" y="45.0" w="11.0" h="32.0"/>
+                            <size w="11" h="32"/>
+                        </attributes>
+                    </decorator>
+                    <label>
+                        <attributes>
+                            <bounds x="700.0" y="76.0" w="97.0" h="22.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="payment">
+                    <vertex>
+                        <attributes>
+                            <bounds x="808.0" y="4.0" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="776.0" y="36.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <container id="insured">
+                    <vertex>
+                        <attributes>
+                            <bounds x="624.0" y="191.3" w="32.0" h="32.0"/>
+                        </attributes>
+                    </vertex>
+                    <label>
+                        <attributes>
+                            <bounds x="592.0" y="224.0" w="97.0" h="25.0"/>
+                        </attributes>
+                    </label>
+                </container>
+                <flow source="insured" target="order_bg_not_consistent">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="655.0" y="206.8"/>
+                            <value x="730.0" y="267.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="reject" target="OutputCondition_1">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="951.0" y="259.5"/>
+                            <value x="1120.0" y="206.8"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="insure" target="insured">
+                    <ports in="13" out="10"/>
+                    <attributes>
+                        <lineStyle>13</lineStyle>
+                        <points>
+                            <value x="563.0" y="67.5"/>
+                            <value x="628.0" y="112.0"/>
+                            <value x="639.5" y="191.3"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="deliver_to_storage" target="OutputCondition_1">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="1039.0" y="168.3"/>
+                            <value x="1120.0" y="206.8"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="check_insurance_doc" target="insured">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="485.0" y="219.5"/>
+                            <value x="624.0" y="206.8"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="urge_for_insurance" target="insured">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                    </attributes>
+                </flow>
+                <flow source="InputCondition_1" target="sign_contract">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="55.0" y="194.8"/>
+                            <value x="92.0" y="196.3"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="payment" target="tax">
+                    <ports in="13" out="2"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="839.0" y="19.5"/>
+                            <value x="884.0" y="68.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="inspectation" target="tax">
+                    <ports in="13" out="2"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="839.0" y="100.5"/>
+                            <value x="884.0" y="68.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="order_bg_not_consistent" target="reject">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="771.0" y="267.5"/>
+                            <value x="920.0" y="259.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="sign_contract" target="apply_bg">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="123.0" y="196.3"/>
+                            <value x="200.0" y="196.3"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="apply_bg" target="apply_bg_1">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="231.0" y="196.3"/>
+                            <value x="288.0" y="148.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="check_insurance_doc" target="urge_for_insurance">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="485.0" y="219.5"/>
+                            <value x="564.0" y="287.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="tax" target="deliver_to_storage">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>12</lineStyle>
+                        <points>
+                            <value x="925.0" y="68.5"/>
+                            <value x="956.0" y="84.0"/>
+                            <value x="968.0" y="156.0"/>
+                            <value x="1008.0" y="168.3"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="goods_arrival" target="payment">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="765.0" y="68.5"/>
+                            <value x="808.0" y="19.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="order_bg_not_consistent" target="goods_arrival">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>13</lineStyle>
+                        <points>
+                            <value x="771.0" y="267.5"/>
+                            <value x="800.0" y="240.0"/>
+                            <value x="712.0" y="176.0"/>
+                            <value x="714.0" y="68.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="apply_bg_1" target="wait_for_ship_order">
+                    <ports in="13" out="12"/>
+                    <attributes>
+                        <lineStyle>12</lineStyle>
+                        <points>
+                            <value x="319.0" y="148.5"/>
+                            <value x="336.0" y="97.0"/>
+                            <value x="390.0" y="68.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="wait_for_ship_order" target="check_insurance_doc">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>12</lineStyle>
+                        <points>
+                            <value x="441.0" y="68.5"/>
+                            <value x="464.0" y="126.0"/>
+                            <value x="432.0" y="192.0"/>
+                            <value x="444.0" y="219.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="goods_arrival" target="inspectation">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="765.0" y="68.5"/>
+                            <value x="808.0" y="100.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+                <flow source="wait_for_ship_order" target="insure">
+                    <ports in="2" out="12"/>
+                    <attributes>
+                        <lineStyle>11</lineStyle>
+                        <points>
+                            <value x="441.0" y="68.5"/>
+                            <value x="532.0" y="67.5"/>
+                        </points>
+                    </attributes>
+                </flow>
+            </net>
+        </specification>
+    </layout>
+</specificationSet>
+
+
