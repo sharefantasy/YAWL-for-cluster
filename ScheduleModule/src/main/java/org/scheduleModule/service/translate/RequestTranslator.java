@@ -25,7 +25,7 @@ import java.util.Map;
 @Transactional
 public class RequestTranslator extends AbstractTranslator {
     @Autowired
-    @Qualifier("publicToInternal")
+    @Qualifier("internalToPublic")
     private ValueTranslator i2p;
     @Autowired
     @Qualifier("publicToInternal")
@@ -51,9 +51,9 @@ public class RequestTranslator extends AbstractTranslator {
         Map<String, String> translated = new HashMap<>();
         for (Map.Entry<String, String> entry : orginParams.entrySet()) {
             String result;
-            if (entry.getKey().equals("workitem") && entry.getValue().startsWith("<workitem>")) {
+            if (entry.getKey().equalsIgnoreCase("workitem")) {
                 result = walkDocument(entry.getValue(), engine, translator);
-            } else if (entry.getKey().equals("id") && translator instanceof PublicToInternal) {
+            } else if ((entry.getKey().equalsIgnoreCase("caseid") || entry.getKey().equals("id"))) {
                 result = translator.Case(entry.getValue(), engine);
             } else {
                 result = translateValue(entry.getKey(), entry.getValue(), engine, translator);

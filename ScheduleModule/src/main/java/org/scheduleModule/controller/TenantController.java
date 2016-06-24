@@ -1,11 +1,9 @@
 package org.scheduleModule.controller;
 
+import org.scheduleModule.entity.Engine;
 import org.scheduleModule.entity.Tenant;
 import org.scheduleModule.entity.User;
-import org.scheduleModule.repo.CaseRepo;
-import org.scheduleModule.repo.SpecRepo;
-import org.scheduleModule.repo.TenantRepo;
-import org.scheduleModule.repo.UserRepo;
+import org.scheduleModule.repo.*;
 import org.scheduleModule.service.translate.RequestTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by fantasy on 2016/5/14.
@@ -29,41 +28,39 @@ public class TenantController {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private CaseRepo caseRepo;
-    @Autowired
-    private SpecRepo specRepo;
+    private EngineRepo engineRepo;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public
     @ResponseBody
-    String list() {
-        List<Tenant> tenants = tenantRepo.findAll();
-        StringBuilder sb = new StringBuilder();
-        for (Tenant t : tenants) {
-            sb.append(",").append(t);
-        }
-        return sb.toString();
+    List<Tenant> list() {
+        return tenantRepo.findAll();
     }
 
+    @RequestMapping(value = "/{tid}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Tenant find(@PathVariable String tid) {
+        return tenantRepo.findOne(tid);
+    }
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(ModelMap modelMap) {
-
+        modelMap.addAttribute("newTenant", new Tenant());
+        modelMap.addAttribute("tenants", tenantRepo.findAll());
+        modelMap.addAttribute("engines", engineRepo.findAll().stream().map(Engine::getId).collect(Collectors.toList()));
         return "createTenant";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(String name, long engineNum) {
-        Tenant tenant = new Tenant();
-        tenant.setName(name);
-
+    public String create(Tenant tenant) {
         User user = new User();
         tenant.getUserSet().add(user.getId());
         user.setOwner(tenant);
-        user.setUserName(name);
-        user.setPassword(name);
+        user.setUserName(tenant.getName());
+        user.setPassword(tenant.getName());
         tenantRepo.save(tenant);
         userRepo.save(user);
-        return "createEngine";
+        return "redirect:/tenant/" + tenant.getId();
     }
 
     @RequestMapping(value = "/delete/{tid}", method = RequestMethod.GET)
@@ -71,6 +68,6 @@ public class TenantController {
     @ResponseBody
     String delete(@PathVariable("tid") String tid) {
         tenantRepo.delete(tid);
-        return "successful";
+        return "delete successful";
     }
 }

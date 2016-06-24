@@ -1,5 +1,18 @@
 {
+  "connect": {
+    "interface": "a",
+    "RoutingRules": "none"
+  },
+  "checkConnection": {
+    "interface": "a",
+    "RoutingRules": "none"
+  },
+  "disconnect": {
+    "interface": "a",
+    "RoutingRules": "none"
+  },
   "upload": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -10,9 +23,10 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
+    "RoutingRules": "inner_all"
   },
   "unload": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -23,18 +37,22 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
+    "RoutingRules": "inner_all"
   },
   "getAccounts": {
+    "interface": "a",
     "RoutingRules": "any"
   },
   "getClientAccount": {
+    "interface": "a",
     "RoutingRules": "any"
   },
   "getPassword": {
+    "interface": "a",
     "RoutingRules": "any"
   },
   "createAccount": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -45,9 +63,10 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
+    "RoutingRules": "inner_all"
   },
   "updateAccount": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -58,9 +77,10 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
+    "RoutingRules": "inner_all"
   },
   "deleteAccount": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -71,9 +91,10 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
+    "RoutingRules": "inner_all"
   },
   "newPassword": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -87,9 +108,11 @@
     "RoutingRules": "all"
   },
   "getYAWLServices": {
+    "interface": "a",
     "RoutingRules": "any"
   },
   "newYAWLService": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -103,6 +126,7 @@
     "RoutingRules": "all"
   },
   "removeYAWLService": {
+    "interface": "a",
     "MergeRules": {
       "response": [
         "combine",
@@ -113,27 +137,6 @@
         "name_attribute_content"
       ]
     },
-    "RoutingRules": "all"
-  },
-  "getAllRunningCases": {
-    "MergeRules": {
-      "response": [
-        "combine",
-        "name"
-      ],
-      "AllRunningCases": [
-        "combine",
-        "name"
-      ],
-      "specificationID": [
-        "combine",
-        "name_attribute"
-      ]
-    },
-    "RoutingRules": "all"
-  },
-  "getCasesForSpecification": {
-    "MergeRules": {},
     "RoutingRules": "all"
   }
 }

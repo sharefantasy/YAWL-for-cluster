@@ -14,7 +14,7 @@
       <entry name="!?*.aj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
+      <profile default="true" name="Default" enabled="true">
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for checkspring" enabled="true">
@@ -33,8 +33,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="algorithmSimulation" target="1.5" />
-      <module name="checkspring" target="1.7" />
-      <module name="ScheduleModule" target="1.7" />
+      <module name="ScheduleModule" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

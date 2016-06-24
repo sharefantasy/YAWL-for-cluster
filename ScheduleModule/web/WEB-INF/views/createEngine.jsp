@@ -16,14 +16,13 @@
 </head>
 <body>
 <form:form modelAttribute="engine" method="post">
-    <label for="id">id：</label><form:input path="id"/><br>
     <label for="address">引擎地址：</label><form:input path="address"/><br>
     <label for="port">引擎端口</label><form:input path="port"/><br>
-    <label for="tenant">选择租户：</label>
-    <form:select path="tenant">
-        <form:option value="null"/>
-        <form:options items="${tenants}"/>
-    </form:select><br>
+    <%--<label for="tenant">选择租户：</label>--%>
+    <%--<form:select path="tenant">--%>
+    <%--<form:option value="null"/>--%>
+    <%--<form:options items="${tenants}"/>--%>
+    <%--</form:select><br>--%>
     <input type="submit" value="确认">
 </form:form>
 </body>

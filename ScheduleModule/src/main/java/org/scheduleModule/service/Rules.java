@@ -2,67 +2,60 @@ package org.scheduleModule.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.scheduleModule.service.merge.*;
+import org.scheduleModule.service.merge.ActSpec;
+import org.scheduleModule.service.router.RoutingRule;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by fantasy on 2016/6/6.
- */
-class MergeRule {
-    public MergeAction mergeAction;
-    public MergeCriteria mergeCriteria;
-
-    public MergeRule(MergeAction mergeAction, MergeCriteria mergeCriteria) {
-        this.mergeAction = mergeAction;
-        this.mergeCriteria = mergeCriteria;
-    }
-
-    public static final MergeRule DEFAULT_RULE = new MergeRule(Append.getInstance(), NodeName.getInstance());
-}
-
-class ActSpec extends HashMap<String, MergeRule> {
-    public ActSpec(String name, MergeAction mergeAction, MergeCriteria mergeCriteria) {
-        MergeRule rule = new MergeRule(mergeAction, mergeCriteria);
-        put(name, rule);
-    }
-
-    public ActSpec() {
-    }
-}
-
+@Component
 public class Rules extends HashMap<String, ActSpec> {
 
-    private static final HashMap<String, MergeAction> actions = new HashMap<String, MergeAction>() {{
-        put("combine", Combine.getInstance());
-        put("append", Append.getInstance());
-        put("complement", Complement.getInstance());
-    }};
-    private static final HashMap<String, MergeCriteria> criteria = new HashMap<String, MergeCriteria>() {{
-        put("name", NodeName.getInstance());
-        put("name_attribute", NodeNameAndAttribute.getInstance());
-        put("name_attribute_content", NodeNameAndAttributeAndContent.getInstance());
-    }};
-    private static final Rules instance = new Rules();
 
-    public static Rules getInstance() {
-        return instance;
+    private File[] debug() throws IllegalArgumentException {
+        File directory;
+        File[] files = null;
+        directory = new File("interfaces");
+        if (directory.isDirectory()) {
+            files = directory.listFiles(pathname -> pathname.getPath().endsWith(".json"));
+        }
+        return files;
+    }
+
+    private File[] release() {
+        URL path = Thread.currentThread()
+                .getContextClassLoader()
+                .getResource("../interfaces");
+        File directory;
+        File[] files = null;
+        if (path != null) {
+            directory = new File(path.getFile());
+            if (directory.isDirectory()) {
+                files = directory.listFiles(pathname -> pathname.getPath().endsWith(".json"));
+            }
+        }
+        return files;
     }
 
     @SuppressWarnings("unchecked")
-    private Rules() {
-        File directory = new File("interfaces");
-        File[] files = directory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(".json");
-            }
-        });
+    public Rules() {
+        File[] files = release();
+        if (files == null) {
+            files = debug();
+        }
+        if (files == null) {
+            throw new IllegalArgumentException();
+        }
         for (File f : files) {
-            JSONObject rulesJSON = JSON.parseObject(getFileString(f));
+            String jsonfile = getFileString(f);
+            if (jsonfile.equals(""))
+                continue;
+            JSONObject rulesJSON = JSON.parseObject(jsonfile);
             for (Entry<String, Object> ruleString : rulesJSON.entrySet()) {
                 ActSpec actSpec = new ActSpec();
                 JSONObject ruleMap = (JSONObject) ruleString.getValue();
@@ -70,16 +63,21 @@ public class Rules extends HashMap<String, ActSpec> {
                     JSONObject MergeRules = (JSONObject) ruleMap.get("MergeRules");
                     for (Map.Entry<String, Object> mergeRule : MergeRules.entrySet()) {
                         List<String> r = (List<String>) mergeRule.getValue();
-                        actSpec.put(mergeRule.getKey(),
-                                new MergeRule(actions.get(r.get(0)),
-                                        criteria.get(r.get(1))));
+                        actSpec.mergeRule.put(mergeRule.getKey(),
+                                MergeRuleFactory.buildMergeRule(r.get(0), r.get(1)));
                     }
-                    put(ruleString.getKey(), actSpec);
                 }
+                if (ruleMap.containsKey("RoutingRules")) {
+                    actSpec.routingRule = (String) ruleMap.get("RoutingRules");
+                }
+                if (!ruleMap.containsKey("interface"))
+                    throw new IllegalArgumentException();
+
+                actSpec.dest = RoutingRuleFactory.getInterfacePath((String) ruleMap.get("interface"));
+                put(ruleString.getKey(), actSpec);
             }
         }
     }
-
     private String getFileString(File file) {
         StringBuilder sb = new StringBuilder();
         if (file != null) {
@@ -97,7 +95,6 @@ public class Rules extends HashMap<String, ActSpec> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         return sb.toString();
     }

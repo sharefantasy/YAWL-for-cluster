@@ -10,5 +10,5 @@ import java.util.List;
  * Created by fantasy on 2016/5/16.
  */
 public interface EngineRepo extends MongoRepository<Engine, String> {
-    Engine findByAddress(String address);
+    List<Engine> findByAddress(String address);
 }

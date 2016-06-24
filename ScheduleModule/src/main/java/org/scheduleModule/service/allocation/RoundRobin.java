@@ -1,11 +1,10 @@
-package org.scheduleModule.service;
+package org.scheduleModule.service.allocation;
 
 import org.scheduleModule.entity.Engine;
 import org.scheduleModule.entity.Tenant;
 import org.scheduleModule.repo.EngineRepo;
-import org.scheduleModule.repo.TenantRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -14,15 +13,14 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by fantasy on 2016/6/7.
  */
-@Service
-public class AllocatorService {
+@Component
+public class RoundRobin implements AllocationStrategy {
     Map<Tenant, Iterator<String>> engines = new ConcurrentHashMap<>();
     @Autowired
     private EngineRepo engineRepo;
-    @Autowired
-    private TenantRepo tenantRepo;
 
     //rr allocation
+    @Override
     public Engine allocate(Tenant tenant) {
         Iterator<String> iter = engines.get(tenant);
         if (iter == null) {

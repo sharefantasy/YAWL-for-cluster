@@ -103,7 +103,8 @@
 
     <context-param>
         <param-name>DefaultWorklist</param-name>
-        <param-value>http://localhost:8080/resourceService/ib#resource</param-value>
+        <param-value>http://localhost:8000/5767919db20dd227a4955c85/resourceService/127.0.0.1/8080/ib#resource
+        </param-value>
         <description>
             The URL and password (separated by a hash) of the default worklist handler
             (by default set to the Resource Service). This is the service that handles

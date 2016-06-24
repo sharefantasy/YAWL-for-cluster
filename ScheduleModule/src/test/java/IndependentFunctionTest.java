@@ -11,6 +11,7 @@ import org.scheduleModule.service.MergeService;
 import org.scheduleModule.service.Rules;
 import org.scheduleModule.service.translate.ResponseTranslator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.SystemProfileValueSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -71,22 +72,27 @@ public class IndependentFunctionTest {
 
     @Test
     public void MergeTestWithTheSame() {
+        long t = System.currentTimeMillis();
+        System.out.println();
         List<String> results = new ArrayList<>();
         String result1 = "<AllRunningCases><specificationID identifier=\"UID_8c36d244-2282-4063-a13c-ef04dd36f5d8\" version=\"0.5\" uri=\"hw\"><caseID>1</caseID><caseID>2</caseID><caseID>3</caseID><caseID>4</caseID></specificationID></AllRunningCases>";
         String result2 = "<AllRunningCases><specificationID identifier=\"UID_8c36d244-2282-4063-a13c-ef04dd36f5d8\" version=\"0.5\" uri=\"hw\"><caseID>5</caseID><caseID>6</caseID><caseID>7</caseID><caseID>8</caseID></specificationID></AllRunningCases>";
         results.add(result1);
         results.add(result2);
         System.out.println(mergeService.merge(results, "getAllRunningCases"));
+        System.out.println(System.currentTimeMillis() - t);
     }
 
     @Test
     public void MergeTestWithDiffrentAttr() {
+        long t = System.currentTimeMillis();
         List<String> results = new ArrayList<>();
         String result1 = "<AllRunningCases><specificationID identifier=\"UID_8c36d244-2282-4063-a13c-ef04dd36f5d8\" version=\"0.5\" uri=\"hw\"><caseID>1</caseID><caseID>2</caseID><caseID>3</caseID><caseID>4</caseID></specificationID></AllRunningCases>";
         String result2 = "<AllRunningCases><specificationID identifier=\"UID_8c36d244-2282-4063-a13c-ef04dd36f5d2\" version=\"0.5\" uri=\"hw\"><caseID>5</caseID><caseID>6</caseID><caseID>7</caseID><caseID>8</caseID></specificationID></AllRunningCases>";
         results.add(result1);
         results.add(result2);
         System.out.println(mergeService.merge(results, "getAllRunningCases"));
+        System.out.println(System.currentTimeMillis() - t);
     }
 
     @Test

@@ -10,20 +10,20 @@ import java.util.Set;
  */
 public class Spec {
     @Id
-    private String id;
-    private Tenant owner;
     private String specid;
+    private Tenant owner;
     private String version;
     private String uri;
     private Map<Engine, Integer> internalIds;
 
-
-    public String getId() {
-        return id;
+    public Spec() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Spec(Tenant owner, String specid, String version, String uri) {
+        this.owner = owner;
+        this.specid = specid;
+        this.version = version;
+        this.uri = uri;
     }
 
     public Tenant getOwner() {

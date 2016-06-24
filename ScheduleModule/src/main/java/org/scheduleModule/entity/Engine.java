@@ -26,6 +26,10 @@ public class Engine implements Serializable {
         this.tenant = tenant;
     }
 
+    public Engine(String address, int port) {
+        this.address = address;
+        this.port = port;
+    }
 
     public String getId() {
         return id;

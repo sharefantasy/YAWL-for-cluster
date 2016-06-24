@@ -1,37 +1,42 @@
 package org.scheduleModule.service.router.strategy;
 
 import org.scheduleModule.entity.Engine;
+import org.scheduleModule.entity.Response;
 import org.scheduleModule.entity.Tenant;
-import org.scheduleModule.repo.CaseRepo;
-import org.scheduleModule.repo.EngineRepo;
-import org.scheduleModule.repo.TenantRepo;
-import org.scheduleModule.service.router.RoutingStrategy;
+import org.scheduleModule.service.MergeService;
+import org.scheduleModule.service.router.RoutingRule;
+import org.scheduleModule.util.SchedulerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by fantasy on 2016/5/22.
  */
 @Component
-public class AllEngineInTenant implements RoutingStrategy {
+public class AllEngineInTenant extends RoutingRule {
+    @Autowired
+    protected MergeService mergeService;
 
-    @Autowired
-    private TenantRepo tenantRepo;
-    @Autowired
-    private CaseRepo caseRepo;
-    @Autowired
-    private EngineRepo engineRepo;
+    protected static final AllEngineInTenant instance = new AllEngineInTenant();
+
+    public static AllEngineInTenant getInstance() {
+        return instance;
+    }
 
     @Override
-    public Set<Engine> getDestination(String token) {
-        Set<Engine> engines = new HashSet<>();
-        for (String s : tenantRepo.findOne(token).getEngineSet()) {
-            engines.add(engineRepo.findOne(s));
+    public String send(Tenant tenant, Map<String, String> params, String interfce) {
+        List<String> results = new ArrayList<>();
+        for (String s : tenant.getEngineSet()) {
+            Engine e = engineRepo.findOne(s);
+            params = requestTranslator.publicToInternal(params, e);
+            String session = connectionService.getSession(e);
+            params.replace("sessionHandle", session);
+            String result = sendWithSessionRetry(e, params, interfce);
+            results.add(result);
         }
-        return engines;
+        return mergeService.merge(results, params.get("action"));
     }
 }

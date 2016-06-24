@@ -9,4 +9,5 @@ import org.springframework.data.repository.Repository;
  * Created by fantasy on 2016/5/24.
  */
 public interface UserRepo extends MongoRepository<User, String> {
+    User findByUserName(String userid);
 }

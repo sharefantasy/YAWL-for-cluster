@@ -25,13 +25,8 @@ public class InternalToPublic extends AbstractValueTranslator {
         }
         String rootCaseId = caseId.split("\\.")[0];
         List<Case> rootCase = caseRepo.findByInternalId(rootCaseId);
-        Case theCase = null;
-        for (Case c : rootCase) {
-            if (c.getEngine().equals(engine)) {
-                theCase = c;
-                break;
-            }
-        }
+
+        Case theCase = rootCase.stream().filter(c -> c.getEngine().getId().equals(engine.getId())).findFirst().get();
         if (theCase == null)
             throw new IllegalStateException(String.format("can't found case internal(%s, %s)", caseId, engine.getId()));
         return caseId.replaceFirst(rootCaseId, theCase.getId());

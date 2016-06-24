@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.scheduleModule.entity.Engine;
 import org.scheduleModule.entity.Tenant;
+import org.scheduleModule.entity.User;
 import org.scheduleModule.repo.CaseRepo;
 import org.scheduleModule.repo.EngineRepo;
 import org.scheduleModule.repo.TenantRepo;
@@ -13,7 +14,10 @@ import org.scheduleModule.service.SemanticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -61,4 +65,32 @@ public class mongoDBConnect {
         Assert.assertNotNull(tenant.getEngineSet());
     }
 
+    @Test
+    public void createuser() {
+        Tenant tenant = tenantRepo.findOne("5767b5afb20dd21d98abbaef");
+        User admin = null;
+        try {
+            admin = new User("admin", PasswordEncryptor.encrypt("YAWL"), tenant);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (admin != null) {
+            userRepo.save(admin);
+        }
+    }
+
+    @Test
+    public void link() {
+//        Engine engine = engineRepo.findByAddress("127.0.0.1").get(1);
+        Tenant tenant = tenantRepo.findOne("5767b5afb20dd21d98abbaef");
+//        tenant.addEngine(engine);
+//        engine.setTenant(tenant);
+//        engineRepo.save(engine);
+//        tenantRepo.save(tenant);
+        Engine engine = new Engine("127.0.0.1", 2000);
+        engineRepo.save(engine);
+        tenant.getEngineSet().clear();
+        tenant.addEngine(engine);
+        tenantRepo.save(tenant);
+    }
 }

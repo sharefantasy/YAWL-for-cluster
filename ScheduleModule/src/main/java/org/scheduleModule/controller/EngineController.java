@@ -27,25 +27,23 @@ public class EngineController {
     @ResponseBody
     String list() {
         StringBuffer stringBuffer = new StringBuffer();
-        for (Engine e : engineRepo.findAll()) {
-            stringBuffer.append(e);
-        }
+        engineRepo.findAll()
+                .forEach(e -> stringBuffer.append(e).append(","));
         return stringBuffer.toString();
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(ModelMap modelMap) {
         modelMap.addAttribute("engine", new Engine());
-        modelMap.addAttribute("tenants", tenantRepo.findAll());
-        return "create";
+        return "createEngine";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public
     @ResponseBody
-    Engine create(Engine engine) {
+    String create(Engine engine) {
         engine = engineRepo.save(engine);
-        return engine;
+        return engine.toString();
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)

@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/resourceService/lib/YAWL_Standalone_3.0.1.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/resourceService _origin/src" />
+    </SOURCES>
   </library>
 </component>

@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.scheduleModule.entity.Engine;
 import org.scheduleModule.util.SchedulerUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,13 +19,17 @@ public abstract class AbstractTranslator {
     private static final Logger _logger = Logger.getLogger(AbstractTranslator.class);
 
     protected String walkDocument(String doc, Engine engine, ValueTranslator translator) {
-        Document document = SchedulerUtils.stringToDocument(doc);
+        Document document;
+        try {
+            document = SchedulerUtils.stringToDocument(doc);
+        } catch (JDOMException | IOException e) {
+            return doc;
+        }
         walkElement(document.getRootElement(), engine, translator);
-        return "" + SchedulerUtils.DocumentToString(document);
+        return "" + SchedulerUtils.documentToString(document);
     }
 
     protected void walkElement(Element element, Engine engine, ValueTranslator translator) {
-        _logger.debug("walking " + element.getName());
         for (Attribute a : element.getAttributes()) {
             a.setValue(translateValue(a.getName(), a.getValue(), engine, translator));
         }
@@ -38,7 +44,6 @@ public abstract class AbstractTranslator {
     }
 
     protected String translateValue(String name, String value, Engine engine, ValueTranslator translator) {
-        name = name.toLowerCase();
         if (name.equalsIgnoreCase("uniqueid") || name.equalsIgnoreCase("workitemid")) {
             return translator.Workitem(value, engine);
         } else if (name.equalsIgnoreCase("caseid")) {

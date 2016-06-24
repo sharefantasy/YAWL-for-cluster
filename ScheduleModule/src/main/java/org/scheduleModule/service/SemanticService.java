@@ -1,12 +1,16 @@
 package org.scheduleModule.service;
 
 import org.apache.log4j.Logger;
-import org.jdom2.Document;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.jdom2.JDOMException;
 import org.scheduleModule.entity.*;
 import org.scheduleModule.repo.CaseRepo;
 import org.scheduleModule.repo.EngineRepo;
 import org.scheduleModule.repo.SpecRepo;
 import org.scheduleModule.repo.UserRepo;
+import org.scheduleModule.service.allocation.AllocationStrategy;
 import org.scheduleModule.service.translate.InternalToPublic;
 import org.scheduleModule.service.translate.RequestTranslator;
 import org.scheduleModule.service.translate.ResponseTranslator;
@@ -54,7 +58,7 @@ public class SemanticService {
     @Autowired
     private ConnectionService connectionService;
     @Autowired
-    private AllocatorService allocatorService;
+    private AllocationStrategy allocatorService;
     private static final Logger _logger = Logger.getLogger(SemanticService.class);
 
     public SemanticService() {
@@ -114,7 +118,7 @@ public class SemanticService {
     }
 
     public String unload(Tenant tenant, String specid, String specversion, String specuri) {
-        Spec spec = specRepo.findBySpecid(specid);
+        Spec spec = specRepo.findOne(specid);
         if (spec == null || !spec.getOwner().equals(tenant)) {
             return SchedulerUtils.failure("no such specification");
         }
@@ -211,48 +215,6 @@ public class SemanticService {
         return AllEngineNoReturn(tenant, params, "removeYAWLService", "ia");
     }
 
-    private String AllEngineNoReturn(Tenant tenant, Map<String, String> params, String action, String interfce) {
-        params.put("action", action);
-        for (String s : tenant.getEngineSet()) {
-            Engine e = engineRepo.findOne(s);
-            params.put("sessionHandle", connectionService.getSession(e));
-            String result = sendWithSessionRetry(params, e, interfce);
-            if (!result.equals(SchedulerUtils.SUCCESS)) {
-                return SchedulerUtils.failure("inconsistent post");
-            }
-        }
-        return SchedulerUtils.SUCCESS;
-    }
-
-    private String OneEngine(Tenant tenant, Map<String, String> params, String name) {
-        params.put("action", name);
-        for (String s : tenant.getEngineSet()) {
-            Engine e = engineRepo.findOne(s);
-            params.put("sessionHandle", connectionService.getSession(e));
-            String result = sendWithSessionRetry(params, e, "ia");
-            if (result != null) {
-                return result;
-            }
-            params.remove("sessionHandle");
-        }
-        return SchedulerUtils.failure("cannot get connect to any engine");
-    }
-
-    private String sendWithSessionRetry(Map<String, String> params, Engine e, String interfce) {
-        try {
-            String result = connectionService.forward(e, params, interfce);
-            if (SchedulerUtils.isInvalidSession(result)) {
-                params.remove("sessionHandle");
-                params.put("sessionHandle", connectionService.getSessionOnline(e));
-                result = connectionService.forward(String.format("http://%s:%s/yawl/%s",
-                        e.getAddress(), e.getPort(), interfce), params);
-            }
-            return result;
-        } catch (IOException e1) {
-            _logger.error("cannot connect engine(+" + e.getId() + ")");
-            return SchedulerUtils.failure("fail to connect");
-        }
-    }
 
     public String checkIsAdmin(Tenant tenant, String sessionHandle) {
         Map<String, String> params = new HashMap<>();
@@ -266,27 +228,6 @@ public class SemanticService {
         return AllEngineWithReturn(tenant, "getAllRunningCases", new HashMap<String, String>(), "ib");
     }
 
-    private String AllEngineWithReturn(Tenant tenant, String name, Map<String, String> params, String interfce) {
-        List<String> results = new ArrayList<>();
-        params.put("action", name);
-        for (String s : tenant.getEngineSet()) {
-            Engine e = engineRepo.findOne(s);
-            String session = connectionService.getSession(e);
-            params.put("sessionHandle", session);
-            try {
-                String result = connectionService.forward(e, params, interfce);
-
-//                result = responseTranslator.internalToPublic(result,e);
-                if (!SchedulerUtils.isInvalidSession(result)) {
-                    results.add(result);
-                }
-            } catch (IOException e1) {
-                _logger.warn("inconsistent error");
-            }
-            params.remove("sessionHandle");
-        }
-        return mergeService.merge(results, name);
-    }
 
     public String getCasesForSpecification(Tenant tenant, String specidentifier, String specversion, String specuri) {
         HashMap<String, String> params = new HashMap<>();
@@ -307,22 +248,7 @@ public class SemanticService {
         return OneEngineByCaseID("getCaseData", caseID, "ib");
     }
 
-    private String OneEngineByCaseID(String name, String caseID, String interfce) {
-        Engine engine;
-        Case c = caseRepo.findOne(caseID);
-        if (c != null) {
-            engine = c.getEngine();
-        } else {
-            return SchedulerUtils.failure("invalid case");
-        }
-        HashMap<String, String> params = new HashMap<>();
-        params.put("action", name);
-        params.put("caseID", responseTranslator.publicToInternal(caseID, engine));
-        String session = connectionService.getSession(engine);
-        params.put("sessionHandle", session);
-        String result = sendWithSessionRetry(params, engine, interfce);
-        return responseTranslator.internalToPublic(result, engine);
-    }
+
 
     public String getCaseInstanceSummary(Tenant tenant) {
         return AllEngineWithReturn(tenant, "getCaseInstanceSummary", new HashMap<String, String>(), "ib");
@@ -363,21 +289,7 @@ public class SemanticService {
         return OneEngineByWorkitemID("checkAddInstanceEligible", workItemID, params);
     }
 
-    private String OneEngineByWorkitemID(String name, String workItemID, Map<String, String> params) {
-        String caseid = getCaseId(workItemID);
-        Case c = caseRepo.findOne(caseid);
-        Engine engine;
-        if (c != null) {
-            engine = c.getEngine();
-        } else {
-            return SchedulerUtils.failure("no such case");
-        }
-        params.put("action", name);
-        params.put("workItemID", workItemID);
-        params = requestTranslator.publicToInternal(params, engine);
-        String result = sendWithSessionRetry(params, engine, "ib");
-        return responseTranslator.internalToPublic(result, engine);
-    }
+
 
     private String getCaseId(String workItemID) {
         if (workItemID.contains(":")) {
@@ -597,17 +509,7 @@ public class SemanticService {
         return sendToDefaultRSByCase(engine, caseID, "announceCaseSuspending", new HashMap<String, String>());
     }
 
-    private String sendToDefaultRSByCase(Engine engine, String caseID, String action, Map<String, String> params) {
-        params.put("caseID", caseID);
-        params.put("action", action);
-        String result = null;
-        try {
-            result = connectionService.forward(engine.getTenant().getDefaultWorklist(), params);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return responseTranslator.publicToInternal(result, engine);
-    }
+
 
     public String announceCaseSuspended(Engine engine, String caseID) {
         return sendToDefaultRSByCase(engine, caseID, "announceCaseSuspended", new HashMap<String, String>());
@@ -618,8 +520,17 @@ public class SemanticService {
     }
 
     public String announceItemEnabled(Engine engine, String workItem) {
-        Document doc = SchedulerUtils.stringToDocument(workItem);
-        String caseID = JDOMUtil.selectElement(doc, "/workItem/caseid").getText();
+        Document doc = null;
+        try {
+            doc = SchedulerUtils.stringToDocument(workItem);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        if (doc == null) {
+            return SchedulerUtils.wrap("invalid action");
+
+        }
+        String caseID = ((Element) doc.selectNodes("/workItem/caseid").get(0)).getText();
         Case c = caseRepo.findOne(caseID);
         if (c != null) {
             Map<String, String> params = new HashMap<>();
@@ -631,8 +542,13 @@ public class SemanticService {
     }
 
     public String announceItemStatus(Engine engine, String workItem, String oldStatus, String newStatus) {
-        Document doc = SchedulerUtils.stringToDocument(workItem);
-        String caseID = JDOMUtil.selectElement(doc, "/workItem/caseid").getText();
+        Document doc = null;
+        try {
+            doc = SchedulerUtils.stringToDocument(workItem);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        String caseID = ((Element) doc.selectNodes("/workItem/caseid").get(0)).getText();
         Case c = caseRepo.findOne(caseID);
         if (c != null) {
             Map<String, String> params = new HashMap<>();
@@ -646,7 +562,14 @@ public class SemanticService {
     }
 
     public String announceItemCancelled(Engine engine, String workItem) {
-        Document doc = SchedulerUtils.stringToDocument(workItem);
+        Document doc = null;
+        try {
+            doc = SchedulerUtils.stringToDocument(workItem);
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String caseID = JDOMUtil.selectElement(doc, "/workItem/caseid").getText();
         Case c = caseRepo.findOne(caseID);
         if (c != null) {
@@ -663,7 +586,14 @@ public class SemanticService {
     }
 
     public String announceTimerExpiry(Engine engine, String workItem) {
-        Document doc = SchedulerUtils.stringToDocument(workItem);
+        Document doc = null;
+        try {
+            doc = SchedulerUtils.stringToDocument(workItem);
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String caseID = JDOMUtil.selectElement(doc, "/workItem/caseid").getText();
         Case c = caseRepo.findOne(caseID);
         if (c != null) {
@@ -677,5 +607,117 @@ public class SemanticService {
 
     public String timerExpiry(Engine engine, String workItem) {
         return announceTimerExpiry(engine, workItem);
+    }
+
+
+    private String AllEngineWithReturn(Tenant tenant, String name, Map<String, String> params, String interfce) {
+        List<String> results = new ArrayList<>();
+        params.put("action", name);
+        for (String s : tenant.getEngineSet()) {
+            Engine e = engineRepo.findOne(s);
+            String session = connectionService.getSession(e);
+            params.put("sessionHandle", session);
+            try {
+                String result = connectionService.forward(e, params, interfce);
+
+//                result = responseTranslator.internalToPublic(result,e);
+                if (!SchedulerUtils.isInvalidSession(result)) {
+                    results.add(result);
+                }
+            } catch (IOException e1) {
+                _logger.warn("inconsistent error");
+            }
+            params.remove("sessionHandle");
+        }
+        return mergeService.merge(results, name);
+    }
+
+    private String AllEngineNoReturn(Tenant tenant, Map<String, String> params, String action, String interfce) {
+        params.put("action", action);
+        for (String s : tenant.getEngineSet()) {
+            Engine e = engineRepo.findOne(s);
+            params.put("sessionHandle", connectionService.getSession(e));
+            String result = sendWithSessionRetry(params, e, interfce);
+            if (!result.equals(SchedulerUtils.SUCCESS)) {
+                return SchedulerUtils.failure("inconsistent post");
+            }
+            params.remove("sessionHandle");
+        }
+        return SchedulerUtils.SUCCESS;
+    }
+
+    private String OneEngine(Tenant tenant, Map<String, String> params, String name) {
+        params.put("action", name);
+        for (String s : tenant.getEngineSet()) {
+            Engine e = engineRepo.findOne(s);
+            params.put("sessionHandle", connectionService.getSession(e));
+            String result = sendWithSessionRetry(params, e, "ia");
+            if (result != null) {
+                return result;
+            }
+            params.remove("sessionHandle");
+        }
+        return SchedulerUtils.failure("cannot get connect to any engine");
+    }
+
+    private String OneEngineByCaseID(String name, String caseID, String interfce) {
+        Engine engine;
+        Case c = caseRepo.findOne(caseID);
+        if (c != null) {
+            engine = c.getEngine();
+        } else {
+            return SchedulerUtils.failure("invalid case");
+        }
+        HashMap<String, String> params = new HashMap<>();
+        params.put("action", name);
+        params.put("caseID", responseTranslator.publicToInternal(caseID, engine));
+        String session = connectionService.getSession(engine);
+        params.put("sessionHandle", session);
+        String result = sendWithSessionRetry(params, engine, interfce);
+        return responseTranslator.internalToPublic(result, engine);
+    }
+
+    private String OneEngineByWorkitemID(String name, String workItemID, Map<String, String> params) {
+        String caseid = getCaseId(workItemID);
+        Case c = caseRepo.findOne(caseid);
+        Engine engine;
+        if (c != null) {
+            engine = c.getEngine();
+        } else {
+            return SchedulerUtils.failure("no such case");
+        }
+        params.put("action", name);
+        params.put("workItemID", workItemID);
+        params = requestTranslator.publicToInternal(params, engine);
+        String result = sendWithSessionRetry(params, engine, "ib");
+        return responseTranslator.internalToPublic(result, engine);
+    }
+
+    private String sendWithSessionRetry(Map<String, String> params, Engine e, String interfce) {
+        try {
+            String result = connectionService.forward(e, params, interfce);
+            if (SchedulerUtils.isInvalidSession(result)) {
+                params.remove("sessionHandle");
+                params.put("sessionHandle", connectionService.getSessionOnline(e));
+                result = connectionService.forward(String.format("http://%s:%s/yawl/%s",
+                        e.getAddress(), e.getPort(), interfce), params);
+            }
+            return result;
+        } catch (IOException e1) {
+            _logger.error("cannot connect engine(+" + e.getId() + ")");
+            return SchedulerUtils.failure("fail to connect");
+        }
+    }
+
+    private String sendToDefaultRSByCase(Engine engine, String caseID, String action, Map<String, String> params) {
+        params.put("caseID", caseID);
+        params.put("action", action);
+        String result = null;
+        try {
+            result = connectionService.forward(engine.getTenant().getDefaultWorklist(), params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return responseTranslator.publicToInternal(result, engine);
     }
 }

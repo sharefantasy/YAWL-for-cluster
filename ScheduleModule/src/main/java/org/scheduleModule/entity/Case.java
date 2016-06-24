@@ -14,6 +14,15 @@ public class Case {
     private Engine engine;
     private Tenant tenant;
 
+    public Case() {
+    }
+
+    public Case(String internalId, Engine engine) {
+        this.internalId = internalId;
+        this.engine = engine;
+        this.tenant = engine.getTenant();
+    }
+
     public String getId() {
         return id;
     }

@@ -1,1 +1,158 @@
-{}
+{
+  "getAllRunningCases": {
+    "interface": "bi",
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ],
+      "AllRunningCases": [
+        "combine",
+        "name"
+      ],
+      "specificationID": [
+        "combine",
+        "name_attribute"
+      ]
+    },
+    "RoutingRules": "all"
+  },
+  "getCasesForSpecification": {
+    "interface": "bi",
+    "RoutingRules": "all",
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ]
+    }
+  },
+  "getCaseState": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getCaseData": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getWorkItemInstanceSummary": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getParameterInstanceSummary": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "launchCase": {
+    "interface": "bi",
+    "RoutingRules": "new"
+  },
+  "cancelCase": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "checkAddInstanceEligible": {
+    "interface": "bi",
+    "RoutingRules": "all",
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ]
+    }
+  },
+  "getLiveItems": {
+    "interface": "bi",
+    "RoutingRules": "all",
+    "MergeRules": {
+      "response": [
+        "combine",
+        "name"
+      ]
+    }
+  },
+  "getWorkItemsWithIdentifier": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getChildren": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getWorkItemExpiryTime": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getWorkItem": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getStartingDataSnapshot": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "createInstance": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "checkout": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "rejectAnnouncedEnabledTask": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "startOne": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "suspend": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "rollback": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "unsuspend": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "checkin": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "skip": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getSpecificationPrototypesList": {
+    "interface": "bi",
+    "RoutingRules": "any"
+  },
+  "getSpecificationForCase": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getSpecification": {
+    "interface": "bi",
+    "RoutingRules": "any"
+  },
+  "getSpecificationDataSchema": {
+    "interface": "bi",
+    "RoutingRules": "any"
+  },
+  "taskInformation": {
+    "interface": "bi",
+    "RoutingRules": "any"
+  },
+  "getMITaskAttributes": {
+    "interface": "bi",
+    "RoutingRules": "one"
+  },
+  "getResourcingSpecs": {
+    "interface": "bi",
+    "RoutingRules": "any"
+  }
+}
