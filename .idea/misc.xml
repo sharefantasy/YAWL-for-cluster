@@ -65,8 +65,8 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/algorithmSimulation/pom.xml" />
         <option value="$PROJECT_DIR$/ScheduleModule/pom.xml" />
+        <option value="$PROJECT_DIR$/cluster_client/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="jaranalyzer-1.2">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/build/analyzer/jaranalyzer-1.2.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

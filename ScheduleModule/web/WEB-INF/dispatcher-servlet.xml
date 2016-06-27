@@ -46,7 +46,7 @@
     <!--<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">-->
     <!--<property name="classesToBeBound">-->
     <!--<list>-->
-    <!--<value>org.scheduleModule.entity.Response</value>-->
+    <!--<value>Response</value>-->
     <!--</list>-->
     <!--</property>-->
     <!--</bean>-->

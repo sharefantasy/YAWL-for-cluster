@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="engine_original:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/engine_original_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="engine_original" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="yawl_lib" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="engine_original/web/Web" />
+    </root>
+  </artifact>
+</component>

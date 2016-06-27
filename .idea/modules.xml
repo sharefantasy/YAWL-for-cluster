@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ScheduleModule/ScheduleModule.iml" filepath="$PROJECT_DIR$/ScheduleModule/ScheduleModule.iml" />
-      <module fileurl="file://$PROJECT_DIR$/algorithmSimulation/algorithmSimulation.iml" filepath="$PROJECT_DIR$/algorithmSimulation/algorithmSimulation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cluster_client/cluster_client.iml" filepath="$PROJECT_DIR$/cluster_client/cluster_client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/clusterServer/clusterServer.iml" filepath="$PROJECT_DIR$/clusterServer/clusterServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/engineLoad/engineLoad.iml" filepath="$PROJECT_DIR$/engineLoad/engineLoad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engine_modified/engine_modified.iml" filepath="$PROJECT_DIR$/engine_modified/engine_modified.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engine_original/engine_original.iml" filepath="$PROJECT_DIR$/engine_original/engine_original.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService/resourceService.iml" filepath="$PROJECT_DIR$/resourceService/resourceService.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" filepath="$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/yawl-3.0.1.iml" filepath="$PROJECT_DIR$/yawl-3.0.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scheduleModule/ScheduleModule.iml" filepath="$PROJECT_DIR$/scheduleModule/ScheduleModule.iml" />
     </modules>
   </component>
 </project>

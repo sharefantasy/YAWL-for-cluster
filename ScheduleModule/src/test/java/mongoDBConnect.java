@@ -1,16 +1,13 @@
-import com.mongodb.assertions.Assertions;
 import junit.framework.Assert;
-import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.scheduleModule.entity.Engine;
-import org.scheduleModule.entity.Tenant;
-import org.scheduleModule.entity.User;
-import org.scheduleModule.repo.CaseRepo;
-import org.scheduleModule.repo.EngineRepo;
-import org.scheduleModule.repo.TenantRepo;
-import org.scheduleModule.repo.UserRepo;
-import org.scheduleModule.service.SemanticService;
+import org.yawlfoundation.cluster.scheduleModule.entity.Engine;
+import org.yawlfoundation.cluster.scheduleModule.entity.Tenant;
+import org.yawlfoundation.cluster.scheduleModule.entity.User;
+import org.yawlfoundation.cluster.scheduleModule.repo.CaseRepo;
+import org.yawlfoundation.cluster.scheduleModule.repo.EngineRepo;
+import org.yawlfoundation.cluster.scheduleModule.repo.TenantRepo;
+import org.yawlfoundation.cluster.scheduleModule.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -18,8 +15,6 @@ import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by fantasy on 2016/5/14.
@@ -37,7 +32,7 @@ public class mongoDBConnect {
     @Autowired
     private UserRepo userRepo;
     @Autowired
-    private SemanticService semanticService;
+//    private SemanticService semanticService;
 
     @Test
     public void connectDB() {
@@ -67,7 +62,7 @@ public class mongoDBConnect {
 
     @Test
     public void createuser() {
-        Tenant tenant = tenantRepo.findOne("5767b5afb20dd21d98abbaef");
+        Tenant tenant = tenantRepo.findOne("576cf863cae642357c4a3de0");
         User admin = null;
         try {
             admin = new User("admin", PasswordEncryptor.encrypt("YAWL"), tenant);
