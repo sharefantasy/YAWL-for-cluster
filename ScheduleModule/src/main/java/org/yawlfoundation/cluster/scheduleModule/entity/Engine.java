@@ -4,6 +4,7 @@ package org.yawlfoundation.cluster.scheduleModule.entity;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by fantasy on 2016/5/10.
@@ -65,5 +66,20 @@ public class Engine implements Serializable {
     @Override
     public String toString() {
         return String.format("Engine(%s){address='%s', port=%d}", id, address, port);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof Engine))
+			return false;
+		Engine engine = (Engine) o;
+		return Objects.equals(id, engine.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
     }
 }

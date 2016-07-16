@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.yawlfoundation.cluster.scheduleModule.repo.EngineRepo;
 import org.yawlfoundation.cluster.scheduleModule.repo.UserRepo;
+import org.yawlfoundation.yawl.util.PasswordEncryptor;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,13 +56,14 @@ public class TenantController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Tenant tenant) {
-        User user = new User();
+		User user = new User(tenant.getName(), tenant.getName(), tenant);
+		User admin = new User("admin", PasswordEncryptor.encrypt("YAWL", null), tenant);
+		userRepo.save(user);
+		userRepo.save(admin);
         tenant.getUserSet().add(user.getId());
-        user.setOwner(tenant);
-        user.setUserName(tenant.getName());
-        user.setPassword(tenant.getName());
+		tenant.getUserSet().add(admin.getId());
         tenantRepo.save(tenant);
-        userRepo.save(user);
+
         return "redirect:/tenant/" + tenant.getId();
     }
 

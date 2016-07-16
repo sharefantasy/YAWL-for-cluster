@@ -49,7 +49,7 @@
   },
   "cancelCase": {
     "interface": "bi",
-    "RoutingRules": "one"
+    "RoutingRules": "inner_one"
   },
   "checkAddInstanceEligible": {
     "interface": "bi",

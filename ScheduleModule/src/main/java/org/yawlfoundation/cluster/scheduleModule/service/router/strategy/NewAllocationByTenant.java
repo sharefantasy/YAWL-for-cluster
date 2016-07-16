@@ -8,6 +8,7 @@ import org.yawlfoundation.cluster.scheduleModule.service.allocation.AllocationSt
 import org.yawlfoundation.cluster.scheduleModule.service.router.RoutingRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.yawlfoundation.cluster.scheduleModule.util.SchedulerUtils;
 
 import java.util.Map;
 
@@ -32,7 +33,8 @@ public class NewAllocationByTenant extends RoutingRule {
         Engine engine = strategy.allocate(tenant);
         params = requestTranslator.publicToInternal(params, engine);
         String result = sendUntranslated(engine, params, interfce);
-        Case c = new Case(result, engine);
+		String internalID = SchedulerUtils.unwrap(result);
+		Case c = new Case(internalID, engine);
         caseRepo.save(c);
         return c.getId();
     }

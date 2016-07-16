@@ -6,6 +6,6 @@
     <import resource="dispatcher-config.xml"/>
     <import resource="openstack-config.xml"/>
     <!--<import resource="simulation-config.xml"/>-->
-    <mvc:resources mapping="/static/**" location="/WEB-INF/static/"/>
+    <mvc:resources mapping="/static/**" location="static"/>
 
 </beans>

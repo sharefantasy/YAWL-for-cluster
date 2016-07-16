@@ -5,10 +5,12 @@ import net.sf.ehcache.store.chm.ConcurrentHashMap;
 import org.yawlfoundation.cluster.scheduleModule.entity.Engine;
 import org.yawlfoundation.cluster.scheduleModule.entity.User;
 import org.springframework.stereotype.Service;
+import org.yawlfoundation.yawl.engine.interfce.Interface_Client;
 import org.yawlfoundation.yawl.util.PasswordEncryptor;
 import org.yawlfoundation.yawl.util.StringUtil;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -16,7 +18,7 @@ import java.util.*;
  */
 
 @Service
-public class ConnectionService {
+public class ConnectionService extends Interface_Client {
     Map<Engine, String> connectionPool = new ConcurrentHashMap<>();
     ;
 
@@ -63,14 +65,11 @@ public class ConnectionService {
     }
 
     public String forward(Engine e, Map<String, String> params, String interfce) throws IOException {
-        return executePost(String.format("http://%s:%s/yawl/%s/", e.getAddress(), e.getPort(), interfce), params);
+		return executeGet(String.format("http://%s:%s/yawl/%s/", e.getAddress(), e.getPort(), interfce), params);
     }
 
     public String forward(String uri, Map<String, String> params) throws IOException {
-        return executePost(uri, params);
+		return executeGet(uri, params);
     }
 
-    private String executePost(String url, Map<String, String> params) throws IOException {
-        return Requests.post(url).params(params).send().readToText();
-    }
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static org.yawlfoundation.cluster.scheduleModule.util.SchedulerUtils.*;
+
 /**
  * Created by fantasy on 2016/6/20.
  */
@@ -25,38 +27,39 @@ public class Inner extends RoutingRule {
     @Override
     public String send(Tenant tenant, Map<String, String> params, String interfce) {
         String sessionHandle = params.get("sessionHandle");
-        String result = null;
+		String result;
         switch (params.get("action")) {
             case "connect":
                 User u = userRepo.findByUserName(params.get("userid"));
                 if (u != null) {
                     if (u.getPassword().equals(params.get("password"))) {
                         result = sessionService.connect(u);
+					} else {
+						result = failure("password is wrong");
                     }
                 } else {
-                    result = SchedulerUtils.failure("no such user.id or password is wrong");
+					result = failure("no such user");
                 }
                 break;
             case "checkConnection":
                 result = (sessionService.checkConnection(sessionHandle))
-                        ? SchedulerUtils.SUCCESS
-                        : SchedulerUtils.failure("Invalid or expired session.");
+						? SUCCESS
+						: failure("Invalid or expired session.");
                 break;
             case "disconnect":
                 if (!sessionService.checkConnection(sessionHandle))
-                    result = SchedulerUtils.failure("Invalid or expired session.");
+					result = failure("Invalid or expired session.");
                 else {
                     result = sessionService.disconnect(sessionHandle)
-                            ? SchedulerUtils.SUCCESS
-                            : SchedulerUtils.failure("Invalid or expired session.");
+							? SUCCESS
+							: failure("Invalid or expired session.");
                 }
                 break;
-            case "default":
+			default :
                 _logger.error(params.get("action"));
-                result = SchedulerUtils.failure("Invalid Action");
+				result = failure("Invalid Action");
                 break;
-
         }
-        return result == null ? null : String.format("<response>%s</response>", result);
+		return result;
     }
 }

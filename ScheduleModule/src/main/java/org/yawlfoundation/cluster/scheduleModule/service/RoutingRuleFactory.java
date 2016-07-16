@@ -27,6 +27,9 @@ public class RoutingRuleFactory {
     @Autowired
     protected InnerAndAll innerAndAll;
 
+	@Autowired
+	protected InnerAndOne innerAndOne;
+
     protected static final HashMap<String, String> interfacePath = new HashMap<String, String>() {{
         put("a", "ia");
         put("bi", "ib");
@@ -45,6 +48,8 @@ public class RoutingRuleFactory {
                 return newAllocate;
             case "inner_all":
                 return innerAndAll;
+			case "inner_one" :
+				return innerAndOne;
             default:
                 return null;
         }

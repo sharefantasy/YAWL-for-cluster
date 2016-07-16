@@ -6,6 +6,7 @@ import org.dom4j.Element;
 import org.yawlfoundation.cluster.scheduleModule.service.merge.MergeAction;
 import org.yawlfoundation.cluster.scheduleModule.service.merge.MergeCriteria;
 import org.yawlfoundation.cluster.scheduleModule.service.merge.MergeRule;
+import org.yawlfoundation.cluster.scheduleModule.util.SchedulerUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,8 @@ public class MergeRuleFactory {
         if (toCombineTo == null) {
             base.add(child);
         } else {
-            ((List<Element>) child.elements()).forEach(e -> toCombineTo.add(e.createCopy()));
+			List<Element> elements = SchedulerUtils.removeElement(child);
+			elements.stream().forEach(e -> toCombineTo.add(e.createCopy()));
         }
     };
     private static final MergeAction Append = (base, child, criteria) -> base.add(child.createCopy());

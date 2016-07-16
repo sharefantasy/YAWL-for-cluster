@@ -1,5 +1,6 @@
 package org.yawlfoundation.cluster.scheduleModule.service;
 
+import com.sun.org.apache.xml.internal.utils.DOMHelper;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -8,7 +9,10 @@ import org.yawlfoundation.cluster.scheduleModule.service.merge.ActSpec;
 import org.yawlfoundation.cluster.scheduleModule.service.merge.MergeRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yawlfoundation.cluster.scheduleModule.util.SchedulerUtils;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -43,7 +47,7 @@ public class MergeService {
         Element element;
         element = doc.elementByID("response") == null
                 ? (Element) doc.getRootElement().elements().get(0)
-                : doc.getRootElement().elementByID("response");
+				: doc.elementByID("response");
 
         Document result = DocumentHelper.createDocument(element.createCopy());
         return result;
@@ -52,7 +56,8 @@ public class MergeService {
     @SuppressWarnings("unchecked")
     private void r_merge(Element base, ActSpec _mergeRules) {
         if (!base.elements().isEmpty()) {
-            for (Element e : (List<Element>) base.elements()) {
+			List<Element> elements = SchedulerUtils.removeElement(base);
+			for (Element e : elements) {
                 mergeElementIntoBase(base, e, _mergeRules);
             }
             for (Element e : (List<Element>) base.elements()) {
@@ -67,4 +72,5 @@ public class MergeService {
                 : MergeRuleFactory.DEFAULT_MERGE_RULE;
         rule.mergeAction.act(base, childToMerge, rule.mergeCriteria);
     }
+
 }

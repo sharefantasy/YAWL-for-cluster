@@ -52,7 +52,7 @@ public abstract class RoutingRule {
         }
         try {
             result = connectionService.forward(e, params, interfce);
-            if (SchedulerUtils.isInvalidSession(result)) {
+			if (SchedulerUtils.isInvalidAction(result)) {
                 params.replace("sessionHandle", connectionService.getSessionOnline(e));
                 result = connectionService.forward(
                         String.format("http://%s:%s/yawl/%s", e.getAddress(), e.getPort(), interfce), params);

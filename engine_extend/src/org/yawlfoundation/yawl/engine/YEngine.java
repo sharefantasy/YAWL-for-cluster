@@ -67,6 +67,7 @@ public abstract class YEngine implements InterfaceADesign, InterfaceAManagement,
 		return _persisting;
 	}
 	private static void setPersisting(boolean persist) {
+
 		_persisting = persist;
 	}
 	public static YPersistenceManager getPersistenceManager() {
@@ -87,34 +88,34 @@ public abstract class YEngine implements InterfaceADesign, InterfaceAManagement,
 	}
 	public static YEngine getInstance() {
 		if (_thisInstance == null) {
-			return getInstanceInner();
+			try {
+				return (YEngine) defaultEngineImplClass.getMethod("getInstance").invoke(null);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			}
 		}
 		return _thisInstance;
 	}
 	public static YEngine getInstance(boolean persisting) throws YPersistenceException {
 		if (_thisInstance == null) {
-			return getInstanceInner(persisting, false);
+			_persisting = persisting;
+			try {
+				return (YEngine) defaultEngineImplClass.getMethod("getInstance", boolean.class).invoke(null,
+						persisting);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			}
 		}
 		return _thisInstance;
 	}
 	public static YEngine getInstance(boolean persisting, boolean gatherHbnStats) throws YPersistenceException {
 		if (_thisInstance == null) {
 			YEngine._persisting = persisting;
-			return getInstanceInner(persisting, gatherHbnStats);
-		}
-		return _thisInstance;
-	}
-	private static YEngine getInstanceInner(Object... params) {
-		if (_thisInstance == null) {
-			Class<?>[] types = new Class[params.length];
-			for (int i = 0; i < params.length; i++) {
-				types[i] = params.getClass();
-			}
 			try {
-				return (YEngine) defaultEngineImplClass.getMethod("getInstance", types).invoke(null, params);
+				return (YEngine) defaultEngineImplClass.getMethod("getInstance", boolean.class, boolean.class)
+						.invoke(null, persisting, gatherHbnStats);
 			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 				e.printStackTrace();
-
 			}
 		}
 		return _thisInstance;

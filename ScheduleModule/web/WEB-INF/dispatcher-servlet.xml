@@ -15,12 +15,12 @@
            "
 >
 
-    <context:component-scan base-package="org.scheduleModule"/>
+    <context:component-scan base-package="org.yawlfoundation.cluster.scheduleModule"/>
     <context:annotation-config/>
     <mvc:annotation-driven/>
 
     <mongo:mongo host="127.0.0.1" port="27017"/>
-    <mongo:repositories base-package="org.scheduleModule.repo"/>
+    <mongo:repositories base-package="org.yawlfoundation.cluster.scheduleModule.repo"/>
     <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
         <constructor-arg ref="mongo"/>
         <constructor-arg name="databaseName" value="db_mongo"/>
