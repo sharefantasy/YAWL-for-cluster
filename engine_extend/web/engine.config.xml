@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extend-config>
+    <engine>
+        <engine-class></engine-class>
+        <description></description>
+    </engine>
+    <cluster>
+        <enable-cluster>true</enable-cluster>
+        <cluster-server-url></cluster-server-url>
+        <default-engine-role>default</default-engine-role>
+    </cluster>
+    <persisting-manager>
+        <persisting-class></persisting-class>
+    </persisting-manager>
+
+</extend-config>
