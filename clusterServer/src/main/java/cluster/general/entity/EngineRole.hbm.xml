@@ -1,0 +1,19 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cluster.general.entity">
+    <class name="EngineRole" table="engine_role">
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+        <property name="role" column="role" type="java.lang.String"/>
+        <many-to-one name="host" cascade="save-update"/>
+        <many-to-one name="tenant" cascade="delete"/>
+        <many-to-one name="engine" column="engine" unique="true" cascade="save-update"/>
+        <set name="speedRcds" cascade="delete" inverse="true">
+            <key column="role" not-null="true"/>
+            <one-to-many class="cluster.general.entity.data.EngineRoleSpeedRcd"/>
+        </set>
+    </class>
+</hibernate-mapping>

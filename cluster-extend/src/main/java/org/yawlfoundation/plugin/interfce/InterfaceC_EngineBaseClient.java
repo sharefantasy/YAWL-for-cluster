@@ -15,11 +15,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,46 +25,29 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by fantasy on 2016/7/14.
  */
+
 public class InterfaceC_EngineBaseClient extends Interface_Client implements ObserverGateway {
-	public static final Logger _logger = Logger.getLogger(InterfaceC_EngineBaseClient.class);
+	private static final Logger _logger = Logger.getLogger(InterfaceC_EngineBaseClient.class);
 	private volatile int caseCounter = 0;
 	private volatile int workItemCounter = 0;
 	private ScheduledExecutorService executorService;
-	private String url;
-	private static InterfaceC_EngineBaseClient instance;
+	private String cluster_service_url;
 	private boolean toSend = false;
-	public static InterfaceC_EngineBaseClient getInstance() {
-		if (instance == null) {
-			instance = new InterfaceC_EngineBaseClient();
-		}
-		return instance;
-	}
-	private InterfaceC_EngineBaseClient() {
-		Properties properties = new Properties();
-		try {
-			File file = release();
-			if (file == null) {
-				file = debug();
-			}
-			properties.load(new BufferedInputStream(new FileInputStream(file)));
-			url = properties.getProperty("cluster.url");
-			toSend = HttpURLValidator.pingUntilAvailable(url, 10);
-			YPersistenceManager a = new YPersistenceManager();
 
-			YEngine e = YEngine.getInstance();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	InterfaceC_EngineBaseClient(String url) throws MalformedURLException {
+		if (url == null)
+			return;
+		cluster_service_url = url;
+		toSend = HttpURLValidator.pingUntilAvailable(cluster_service_url, 10);
 		if (toSend) {
 			executorService = Executors.newScheduledThreadPool(1);
 			Runnable sender = new Runnable() {
-				@Override
 				public void run() {
 					Map<String, String> params = prepareParamMap("CaseSnapshot", null);
 					params.put("snapshot", getSnapshotJSON());
 					flushCounter();
 					try {
-						executePost(url, params);
+						executePost(cluster_service_url, params);
 					} catch (IOException e) {
 						_logger.error("cluster server lost connection");
 						executorService.shutdown();
@@ -77,6 +58,11 @@ public class InterfaceC_EngineBaseClient extends Interface_Client implements Obs
 		} else {
 			_logger.error("cluster server is not available");
 		}
+	}
+
+	public String getRole() throws IOException {
+		Map<String, String> params = prepareParamMap("getRole", null);
+		return executePost(cluster_service_url, params);
 	}
 
 	private void flushCounter() {
@@ -109,13 +95,19 @@ public class InterfaceC_EngineBaseClient extends Interface_Client implements Obs
 			return;
 		caseCounter++;
 	}
+
+	@Override
+	public void announceCaseCompletion(Set<YAWLServiceReference> services, YIdentifier caseID, Document caseData) {
+
+	}
+
 	@Override
 	public void shutdown() {
 		if (!toSend)
 			return;
 		Map<String, String> params = prepareParamMap("announceEngineShutdown", null);
 		try {
-			executePost(url, params);
+			executePost(cluster_service_url, params);
 		} catch (IOException e) {
 			_logger.error("cluster service lost connection");
 		} finally {
@@ -150,10 +142,6 @@ public class InterfaceC_EngineBaseClient extends Interface_Client implements Obs
 
 	}
 
-	@Override
-	public void announceCaseCompletion(Set<YAWLServiceReference> services, YIdentifier caseID, Document caseData) {
-
-	}
 
 	@Override
 	public void announceCaseSuspended(Set<YAWLServiceReference> services, YIdentifier caseID) {

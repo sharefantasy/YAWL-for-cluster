@@ -3,6 +3,10 @@ package org.yawlfoundation.yawl.engine;
 import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.yawlfoundation.plugin.persistX.DynamicSourcePersistenceManager;
 import org.yawlfoundation.yawl.authentication.YClient;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
 import org.yawlfoundation.yawl.authentication.YSessionCache;
@@ -36,8 +40,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by fantasy on 2016/7/16.
  */
 public class YEngineClusterExtent extends YEngine {
+
 	// Constants
-	private static final YPersistenceManager _pmgr = new YPersistenceManager();
+	private static YPersistenceManager _pmgr = DynamicSourcePersistenceManager.getInstance();
 	private static final boolean ENGINE_PERSISTS_BY_DEFAULT = false;
 	private static final String CURRENT_YAWL_VERSION = "3.0";
 
@@ -49,6 +54,7 @@ public class YEngineClusterExtent extends YEngine {
 	private static boolean _generateUIMetaData = true; // extended attributes
 	private static boolean _persisting;
 	private static boolean _restoring;
+	private static boolean migrating;
 
 	// NON-STATIC MEMBERS //
 
@@ -119,6 +125,11 @@ public class YEngineClusterExtent extends YEngine {
 	public static YEngine getInstance(boolean persisting) throws YPersistenceException {
 		return getInstance(persisting, false);
 	}
+
+	public void setMigrating(boolean migrating) {
+		YEngineClusterExtent.migrating = migrating;
+	}
+
 	private void persistenceInit(boolean persisting, boolean gatherHbnStats) throws YPersistenceException {
 		_logger.debug("--> YEngine: Creating initial instance");
 		// Initialise the persistence layer & restore state
@@ -165,7 +176,7 @@ public class YEngineClusterExtent extends YEngine {
 	 * @throws YPersistenceException
 	 *             when there's a problem with the restore process
 	 */
-	private void restore() throws YPersistenceException {
+	public void restore() throws YPersistenceException {
 		_logger.debug("--> restore");
 		_restoring = true;
 
@@ -2223,4 +2234,7 @@ public class YEngineClusterExtent extends YEngine {
 		_yawllog.disable();
 	}
 
+	public boolean isMigrating() {
+		return migrating;
+	}
 }

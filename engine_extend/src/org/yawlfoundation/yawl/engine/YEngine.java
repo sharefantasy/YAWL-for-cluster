@@ -35,8 +35,8 @@ public abstract class YEngine implements InterfaceADesign, InterfaceAManagement,
 	private static Class<?> defaultEngineImplClass;
 	static {
 		// String defaultEngineImpl =
-		// System.getProperty("defaultEngineImplClass");
-		String defaultEngineImpl = null;
+		// ;
+		String defaultEngineImpl = System.getProperty("defaultEngineImplClass");
 		if (!(defaultEngineImpl == null)) {
 			if (!defaultEngineImpl.equals("")) {
 				try {
@@ -67,7 +67,6 @@ public abstract class YEngine implements InterfaceADesign, InterfaceAManagement,
 		return _persisting;
 	}
 	private static void setPersisting(boolean persist) {
-
 		_persisting = persist;
 	}
 	public static YPersistenceManager getPersistenceManager() {

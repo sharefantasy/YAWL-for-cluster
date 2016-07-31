@@ -1,0 +1,13 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cluster.general.entity.data">
+    <class name="HostCapability" table="hostCapability">
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="host" class="cluster.general.entity.Host"/>
+        <property name="capability" column="capability" type="java.lang.Double"/>
+        <property name="eNum" column="eNum" type="java.lang.Integer"/>
+    </class>
+</hibernate-mapping>

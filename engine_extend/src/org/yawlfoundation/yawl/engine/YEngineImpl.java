@@ -59,7 +59,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class YEngineImpl extends YEngine {
 
 	// Constants
-	private static final YPersistenceManager _pmgr = new YPersistenceManager();
+	private static YPersistenceManager _pmgr = new YPersistenceManager();
 	private static final boolean ENGINE_PERSISTS_BY_DEFAULT = false;
 	private static final String CURRENT_YAWL_VERSION = "3.0";
 

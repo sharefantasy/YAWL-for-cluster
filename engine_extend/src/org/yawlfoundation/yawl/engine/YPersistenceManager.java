@@ -59,7 +59,8 @@ public class YPersistenceManager {
 	private static final boolean UPDATE = true;
 	private static Logger logger = null;
 
-	private static SessionFactory factory = null;
+	// fixed: fankainang , modified to inherit and modified the session factory
+	protected static SessionFactory factory = null;
 	private boolean restoring = false;
 	private boolean enabled = false;
 

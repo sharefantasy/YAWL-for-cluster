@@ -1,0 +1,25 @@
+<!DOCTYPE hibernate-mapping
+        PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="cluster.general.entity">
+    <class name="Host" table="host">
+        <id name="id" column="id" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+        <property name="name" type="java.lang.String"/>
+        <property name="ip" type="java.lang.String"/>
+        <bag name="engineList" cascade="save-update" inverse="true">
+            <key column="host" not-null="true"/>
+            <one-to-many class="EngineRole"/>
+        </bag>
+        <set name="capabilitySet" cascade="delete" inverse="true">
+            <key column="host" not-null="true"/>
+            <one-to-many class="cluster.general.entity.data.HostCapability"/>
+        </set>
+        <set name="speedRcds" cascade="delete" inverse="true">
+            <key column="host" not-null="true"/>
+            <one-to-many class="cluster.general.entity.data.HostSpeedRcd"/>
+        </set>
+    </class>
+</hibernate-mapping>
