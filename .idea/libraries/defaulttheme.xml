@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="defaulttheme">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/resourceService _origin/lib/defaulttheme.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
