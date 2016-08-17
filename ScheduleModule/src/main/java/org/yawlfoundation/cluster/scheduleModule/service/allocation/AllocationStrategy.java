@@ -1,5 +1,6 @@
 package org.yawlfoundation.cluster.scheduleModule.service.allocation;
 
+import org.yawlfoundation.cluster.scheduleModule.entity.Case;
 import org.yawlfoundation.cluster.scheduleModule.entity.Engine;
 import org.yawlfoundation.cluster.scheduleModule.entity.Tenant;
 
@@ -9,5 +10,5 @@ import org.yawlfoundation.cluster.scheduleModule.entity.Tenant;
 @FunctionalInterface
 public interface AllocationStrategy {
     //rr allocation
-    Engine allocate(Tenant tenant);
+	Engine allocate(Tenant tenant, Case caseToAllocate);
 }

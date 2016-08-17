@@ -81,9 +81,13 @@ fabric.properties
 /cluster-extend/cluster-extend.iml
 cluster-extend/src/main/java/org/yawlfoundation/plugin/yawl/
 
-resourceService _origin/resouce.db.h2.db
-resourceService _origin/resouce.db.lock.db
-resourceService _origin/resouce.db.trace.db
-resourceService _origin/resourceService _origin.iml
-
+resourceService _origin/
 engine_modified/
+engine_original/
+resourceService/
+/yawl-3.0.1.iml
+/yawl_project.eap
+/cluster-extend/target/
+/clusterServer/target/
+/scheduleModule/target/
+/namingService/zookeeper-3.5.2-alpha/

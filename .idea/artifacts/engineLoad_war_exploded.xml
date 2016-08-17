@@ -5,7 +5,6 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="engineLoad" />
-          <element id="module-output" name="yawl-3.0.1" />
           <element id="module-output" name="engine_original" />
         </element>
         <element id="directory" name="lib">
@@ -13,7 +12,6 @@
         </element>
       </element>
       <element id="javaee-facet-resources" facet="engineLoad/web/Web" />
-      <element id="javaee-facet-resources" facet="yawl-3.0.1/web/Web" />
     </root>
   </artifact>
 </component>

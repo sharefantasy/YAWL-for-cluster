@@ -14,42 +14,28 @@
       <entry name="!?*.aj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true">
+      <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Annotation profile for checkspring" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Annotation profile for ScheduleModule" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="ScheduleModule" />
       </profile>
       <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="cluster_client" />
-      </profile>
-      <profile default="false" name="Annotation profile for clusterServer" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="clusterServer" />
+        <module name="ComputeServer" />
+        <module name="naming-client" />
+        <module name="scheduleModule" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="algorithmSimulation" target="1.5" />
-      <module name="cluster_client" target="1.5" />
+      <module name="BackEndServer" target="1.8" />
+      <module name="cluster-extend" target="1.7" />
       <module name="clusterServer" target="1.8" />
-      <module name="ScheduleModule" target="1.8" />
+      <module name="ComputeServer" target="1.6" />
+      <module name="engine_clusterExtend" target="1.5" />
+      <module name="naming-client" target="1.8" />
+      <module name="namingService" target="1.8" />
       <module name="scheduleModule" target="1.8" />
     </bytecodeTargetLevel>
   </component>

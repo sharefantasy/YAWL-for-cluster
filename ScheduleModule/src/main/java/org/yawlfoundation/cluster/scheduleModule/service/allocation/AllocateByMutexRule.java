@@ -1,6 +1,6 @@
 package org.yawlfoundation.cluster.scheduleModule.service.allocation;
 
-import org.springframework.stereotype.Component;
+import org.yawlfoundation.cluster.scheduleModule.entity.Case;
 import org.yawlfoundation.cluster.scheduleModule.entity.Engine;
 import org.yawlfoundation.cluster.scheduleModule.entity.Tenant;
 
@@ -10,7 +10,7 @@ import org.yawlfoundation.cluster.scheduleModule.entity.Tenant;
 
 public class AllocateByMutexRule implements AllocationStrategy {
 	@Override
-	public Engine allocate(Tenant tenant) {
+	public Engine allocate(Tenant tenant, Case caseToAllocate) {
 		return null;
 	}
 }

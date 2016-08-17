@@ -1,4 +1,4 @@
-package org.yawlfoundation.plugin.HA;
+package org.yawlfoundation.cluster.backend;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;

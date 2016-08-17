@@ -1,7 +1,10 @@
 package org.yawlfoundation.cluster.backend.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Created by fantasy on 2016/8/6.
  */
-public class ContainerController {
+@Service
+public class ContainerService {
 }

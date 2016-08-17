@@ -6,13 +6,10 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="clusterServer" />
-          <element id="module-output" name="yawl-3.0.1" />
-          <element id="module-output" name="engine_original" />
+          <element id="module-output" name="engine_modified" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="YAWL_Standalone_3.0.1" />
-          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
-          <element id="library" level="project" name="Maven: taglibs:standard:1.1.2" />
         </element>
       </element>
     </root>

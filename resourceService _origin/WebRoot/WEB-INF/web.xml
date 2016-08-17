@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <!--<!DOCTYPE web-app-->
-    <!--PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.4//EN"-->
-    <!--"http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">-->
+<!--PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.4//EN"-->
+<!--"http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">-->
 
 
 <web-app version="2.4">
@@ -21,7 +21,8 @@
 
     <context-param>
         <param-name>InterfaceB_BackEnd</param-name>
-        <param-value>http://localhost:8002/scheduleModule/alter/5772290b1c410020781ee56a/yawl/ib</param-value>
+        <param-value>http://localhost:8000/scheduleModule/routing/577499847ca26e1914044ea0/yawl/ib</param-value>
+        <!--<param-value>http://localhost:8080/yawl/ib</param-value>-->
         <description>
             The URL of the engine's interface B.
         </description>
@@ -52,59 +53,59 @@
     </context-param>
 
     <!--<context-param>-->
-        <!--<param-name>UserName</param-name>-->
-        <!--<param-value></param-value>-->
-        <!--<description>-->
-            <!--If you need to invoke a web service and this is deployed behind-->
-            <!--an authenticating proxy server then you ought to set this variable-->
-            <!--appropriately.-->
-        <!--</description>-->
+    <!--<param-name>UserName</param-name>-->
+    <!--<param-value></param-value>-->
+    <!--<description>-->
+    <!--If you need to invoke a web service and this is deployed behind-->
+    <!--an authenticating proxy server then you ought to set this variable-->
+    <!--appropriately.-->
+    <!--</description>-->
     <!--</context-param>-->
 
     <!--<context-param>-->
-        <!--<param-name>Password</param-name>-->
-        <!--<param-value></param-value>-->
-        <!--<description>-->
-            <!--If you need to invoke a web service and this is deployed behind-->
-            <!--an authenticating proxy server then you ought to set this variable-->
-            <!--appropriately.-->
-        <!--</description>-->
+    <!--<param-name>Password</param-name>-->
+    <!--<param-value></param-value>-->
+    <!--<description>-->
+    <!--If you need to invoke a web service and this is deployed behind-->
+    <!--an authenticating proxy server then you ought to set this variable-->
+    <!--appropriately.-->
+    <!--</description>-->
     <!--</context-param>-->
 
     <!--<context-param>-->
-        <!--<param-name>ProxyHost</param-name>-->
-        <!--<param-value></param-value>-->
-        <!--<description>-->
-            <!--If you need to invoke a web service and this is deployed behind-->
-            <!--an authenticating proxy server then you ought to set this variable-->
-            <!--appropriately.-->
-        <!--</description>-->
+    <!--<param-name>ProxyHost</param-name>-->
+    <!--<param-value></param-value>-->
+    <!--<description>-->
+    <!--If you need to invoke a web service and this is deployed behind-->
+    <!--an authenticating proxy server then you ought to set this variable-->
+    <!--appropriately.-->
+    <!--</description>-->
     <!--</context-param>-->
 
     <!--<context-param>-->
-        <!--<param-name>ProxyPort</param-name>-->
-        <!--<param-value></param-value>-->
-        <!--<description>-->
-            <!--If you need to invoke a web service and this is deployed behind-->
-            <!--an authenticating proxy server then you ought to set this variable-->
-            <!--appropriately.-->
-        <!--</description>-->
+    <!--<param-name>ProxyPort</param-name>-->
+    <!--<param-value></param-value>-->
+    <!--<description>-->
+    <!--If you need to invoke a web service and this is deployed behind-->
+    <!--an authenticating proxy server then you ought to set this variable-->
+    <!--appropriately.-->
+    <!--</description>-->
     <!--</context-param>-->
 
     <context-param>
-	    <param-name>EnablePersistence</param-name>
-    	<param-value>true</param-value>
-    	<description>
-    		'true' to enable persistence and logging
-    		'false' to disable
+        <param-name>EnablePersistence</param-name>
+        <param-value>true</param-value>
+        <description>
+            'true' to enable persistence and logging
+            'false' to disable
         </description>
     </context-param>
 
     <context-param>
-	    <param-name>OrgDataSource</param-name>
-    	<param-value>HibernateImpl</param-value>
-    	<description>
-    		The name of the class (an extension of 'DataSource') which is used
+        <param-name>OrgDataSource</param-name>
+        <param-value>HibernateImpl</param-value>
+        <description>
+            The name of the class (an extension of 'DataSource') which is used
             as the 'data translation layer' between the ResourceService and a source
             of organisational data. The default YAWL implementation is the
             'HibernateImpl' class. NOTE: For external data sources, the fully qualified
@@ -113,9 +114,9 @@
     </context-param>
 
     <context-param>
-	    <param-name>ExternalUserAuthentication</param-name>
-    	<param-value>false</param-value>
-    	<description>
+        <param-name>ExternalUserAuthentication</param-name>
+        <param-value>false</param-value>
+        <description>
             When set to false (the default), user passwords are encrypted and stored
             within each user record, and authentication is handled within the
             resource service.
@@ -123,7 +124,7 @@
             implemented external org data source, and passwords are sent to the
             data source as plain text (rather than the default encryption). It is up
             to the external data source to provide valid user authentication in this case.
-    		A setting of true is only relevant if an external data source is active; if
+            A setting of true is only relevant if an external data source is active; if
             the default YAWL org database is in use, this setting is ignored.
         </description>
     </context-param>
@@ -141,9 +142,9 @@
     </context-param>
 
     <context-param>
-	    <param-name>OrgDataRefreshRate</param-name>
-    	<param-value>-1</param-value>
-    	<description>
+        <param-name>OrgDataRefreshRate</param-name>
+        <param-value>-1</param-value>
+        <description>
             The number of minutes delay between refreshes of org data from data store.
             That is, every X minutes reload the org data from the data store into the
             ResourceService. If the org data source is updated externally, specify
@@ -155,9 +156,9 @@
     </context-param>
 
     <context-param>
-	    <param-name>BlockOnUnavailableSecondaryResources</param-name>
-    	<param-value>false</param-value>
-    	<description>
+        <param-name>BlockOnUnavailableSecondaryResources</param-name>
+        <param-value>false</param-value>
+        <description>
             For each workitem that has secondary resources allocated to it, setting this
             parameter to 'true' will prevent the workitem from being started if any of
             its secondary resources are unavailable.
@@ -194,7 +195,7 @@
         <description>
             An authorized user may choose to 'pile' a certain task, which means they
             will receive all instances of that task, across all instances of the
-            process that contains the task.            
+            process that contains the task.
             When this param is set to true, piling of tasks for a user will cease when
             the affected user logs out.
             When this param is set to false (the default), piling of tasks for a user
@@ -215,10 +216,10 @@
             A value of -1 (the default) disables data generation; a value greater than
             100 is treated as 100.
             Some conditions apply:
-                1. The default YAWL database is selected (via an 'OrgDataSource'
-                   param-value of 'HibernateImpl' above); and
-                2. The org data tables must be empty; and
-                3. Persistence must be enabled (via the 'EnablePersistence' param above).
+            1. The default YAWL database is selected (via an 'OrgDataSource'
+            param-value of 'HibernateImpl' above); and
+            2. The org data tables must be empty; and
+            3. Persistence must be enabled (via the 'EnablePersistence' param above).
         </description>
     </context-param>
 
@@ -271,24 +272,24 @@
     <!-- This param, when available, enables allocators to use cost information
          provided by the cost service. -->
 
-<!--      <context-param>
-        <param-name>CostService_BackEnd</param-name>
-        <param-value>http://localhost:8080/costService/gateway</param-value>
-        <description>
-           The URL of the cost service.
-        </description>
-     </context-param>
- -->
+    <!--      <context-param>
+            <param-name>CostService_BackEnd</param-name>
+            <param-value>http://localhost:8080/costService/gateway</param-value>
+            <description>
+               The URL of the cost service.
+            </description>
+         </context-param>
+     -->
 
     <!-- This param, when available, enables the service to handle stored documents. -->
 
-<!--      <context-param>
-        <param-name>DocStore_BackEnd</param-name>
-        <param-value>http://localhost:8080/documentStore/</param-value>
-        <description>
-           The URL of the document store.
-        </description>
-     </context-param> -->
+    <!--      <context-param>
+            <param-name>DocStore_BackEnd</param-name>
+            <param-value>http://localhost:8080/documentStore/</param-value>
+            <description>
+               The URL of the document store.
+            </description>
+         </context-param> -->
 
 
     <!-- This param, when available, enables the worklet exception
@@ -296,45 +297,45 @@
          is enabled in the engine, then this param should also be
          made available. If it is disabled in the engine, the
          entire context-param should be commented out. -->
-<!--
-    <context-param>
-       <param-name>InterfaceX_BackEnd</param-name>
-       <param-value>http://localhost:8080/workletService</param-value>
-       <description>
-          The URL of the worklet exception service.
-       </description>
-    </context-param>
--->    
+    <!--
+        <context-param>
+           <param-name>InterfaceX_BackEnd</param-name>
+           <param-value>http://localhost:8080/workletService</param-value>
+           <description>
+              The URL of the worklet exception service.
+           </description>
+        </context-param>
+    -->
 
     <!-- This param, when available, enables scheduling announcements to a
          scheduling service listening on Interface S. -->
-<!--
-    <context-param>
-       <param-name>InterfaceS_BackEnd</param-name>
-       <param-value>http://localhost:8080/schedulingService</param-value>
-       <description>
-          The URL of the scheduling service.
-       </description>
-    </context-param>
--->
+    <!--
+        <context-param>
+           <param-name>InterfaceS_BackEnd</param-name>
+           <param-value>http://localhost:8080/schedulingService</param-value>
+           <description>
+              The URL of the scheduling service.
+           </description>
+        </context-param>
+    -->
 
     <!-- END OF CONTEXT PARAMETERS -->
 
     <!--CharsetFilter -->
 
-     <filter>
-       <filter-name>CharsetFilter</filter-name>
-       <filter-class>org.yawlfoundation.yawl.util.CharsetFilter</filter-class>
-         <init-param>
-           <param-name>requestEncoding</param-name>
-           <param-value>UTF-8</param-value>
-         </init-param>
-     </filter>
+    <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>org.yawlfoundation.yawl.util.CharsetFilter</filter-class>
+        <init-param>
+            <param-name>requestEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
 
-     <filter-mapping>
-       <filter-name>CharsetFilter</filter-name>
-       <url-pattern>/*</url-pattern>
-     </filter-mapping>
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!-- SERVLETS -->
 
@@ -351,13 +352,13 @@
     </servlet>
 
     <servlet>
-		<servlet-name>ErrorServlet</servlet-name>
-		<description>
+        <servlet-name>ErrorServlet</servlet-name>
+        <description>
             Reports that the URI request found nothing, hence the error report.
         </description>
-		<servlet-class>org.yawlfoundation.yawl.engine.interfce.ErrorServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
+        <servlet-class>org.yawlfoundation.yawl.engine.interfce.ErrorServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
     <servlet>
         <servlet-name>rsGateway</servlet-name>
@@ -404,10 +405,10 @@
         <url-pattern>/ib</url-pattern>
     </servlet-mapping>
 
-	<servlet-mapping>
-		<servlet-name>ErrorServlet</servlet-name>
-		<url-pattern>/error</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ErrorServlet</servlet-name>
+        <url-pattern>/error</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>rsGateway</servlet-name>
@@ -446,9 +447,9 @@
     </error-page>
 
     <error-page>
-         <error-code>500</error-code>
-         <location>/error404.html</location>
-     </error-page>
+        <error-code>500</error-code>
+        <location>/error404.html</location>
+    </error-page>
 
 
     <!--
@@ -456,126 +457,126 @@
          THE FOLLOWING DESCRIBES JAVA SERVER FACES SETTINGS
     -->
 
-  <context-param>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>server</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.faces.CONFIG_FILES</param-name>
-    <param-value>/WEB-INF/navigation.xml,/WEB-INF/managed-beans.xml</param-value>
-  </context-param>
-  <context-param>
-    <param-name>com.sun.faces.validateXml</param-name>
-    <param-value>true</param-value>
-  </context-param>
-  <context-param>
-    <param-name>com.sun.faces.verifyObjects</param-name>
-    <param-value>false</param-value>
-  </context-param>
-  <filter>
-    <filter-name>UploadFilter</filter-name>
-    <filter-class>com.sun.rave.web.ui.util.UploadFilter</filter-class>
-    <init-param>
-      <description>
-          The maximum allowed upload size in bytes.  If this is set
-          to a negative value, there is no maximum.  The default
-          value is 1000000.
-        </description>
-      <param-name>maxSize</param-name>
-      <param-value>-1</param-value>
-    </init-param>
-    <init-param>
-      <description>
-          The size (in bytes) of an uploaded file which, if it is
-          exceeded, will cause the file to be written directly to
-          disk instead of stored in memory.  Files smaller than or
-          equal to this size will be stored in memory.  The default
-          value is 4096.
-        </description>
-      <param-name>sizeThreshold</param-name>
-      <param-value>8388608</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>UploadFilter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-  </filter-mapping>
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>server</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/WEB-INF/navigation.xml,/WEB-INF/managed-beans.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.validateXml</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>com.sun.faces.verifyObjects</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <filter>
+        <filter-name>UploadFilter</filter-name>
+        <filter-class>com.sun.rave.web.ui.util.UploadFilter</filter-class>
+        <init-param>
+            <description>
+                The maximum allowed upload size in bytes. If this is set
+                to a negative value, there is no maximum. The default
+                value is 1000000.
+            </description>
+            <param-name>maxSize</param-name>
+            <param-value>-1</param-value>
+        </init-param>
+        <init-param>
+            <description>
+                The size (in bytes) of an uploaded file which, if it is
+                exceeded, will cause the file to be written directly to
+                disk instead of stored in memory. Files smaller than or
+                equal to this size will be stored in memory. The default
+                value is 4096.
+            </description>
+            <param-name>sizeThreshold</param-name>
+            <param-value>8388608</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>UploadFilter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
 
-  <listener>
-    <listener-class>
-       org.yawlfoundation.yawl.resourcing.jsf.SessionListener
-    </listener-class>
-  </listener>
+    <listener>
+        <listener-class>
+            org.yawlfoundation.yawl.resourcing.jsf.SessionListener
+        </listener-class>
+    </listener>
 
-<filter>
-   <filter-name>SessionTimeoutFilter</filter-name>
-   <filter-class>
-       org.yawlfoundation.yawl.resourcing.jsf.SessionTimeoutFilter
-   </filter-class>
-</filter>
+    <filter>
+        <filter-name>SessionTimeoutFilter</filter-name>
+        <filter-class>
+            org.yawlfoundation.yawl.resourcing.jsf.SessionTimeoutFilter
+        </filter-class>
+    </filter>
 
-<filter-mapping>
-   <filter-name>SessionTimeoutFilter</filter-name>
-   <url-pattern>*.jsp</url-pattern>
-</filter-mapping>
+    <filter-mapping>
+        <filter-name>SessionTimeoutFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
 
-  <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet>
-    <servlet-name>ExceptionHandlerServlet</servlet-name>
-    <servlet-class>com.sun.errorhandler.ExceptionHandler</servlet-class>
-    <init-param>
-      <param-name>errorHost</param-name>
-      <param-value>localhost</param-value>
-    </init-param>
-    <init-param>
-      <param-name>errorPort</param-name>
-      <param-value>25444</param-value>
-    </init-param>
-  </servlet>
-  <servlet>
-    <servlet-name>ThemeServlet</servlet-name>
-    <servlet-class>com.sun.rave.web.ui.theme.ThemeServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ExceptionHandlerServlet</servlet-name>
-    <url-pattern>/error/ExceptionHandler</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>ThemeServlet</servlet-name>
-    <url-pattern>/theme/*</url-pattern>
-  </servlet-mapping>
-  <welcome-file-list>
-    <welcome-file>faces/Login.jsp</welcome-file>
-  </welcome-file-list>
-  <error-page>
-    <exception-type>javax.servlet.ServletException</exception-type>
-    <location>/error/ExceptionHandler</location>
-  </error-page>
-  <error-page>
-    <exception-type>java.io.IOException</exception-type>
-    <location>/error/ExceptionHandler</location>
-  </error-page>
-  <error-page>
-    <exception-type>javax.faces.FacesException</exception-type>
-    <location>/error/ExceptionHandler</location>
-  </error-page>
-  <error-page>
-    <exception-type>com.sun.rave.web.ui.appbase.ApplicationException</exception-type>
-    <location>/error/ExceptionHandler</location>
-  </error-page>
-  <jsp-config>
-    <jsp-property-group>
-      <url-pattern>*.jspf</url-pattern>
-      <is-xml>true</is-xml>
-    </jsp-property-group>
-  </jsp-config>
-    
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>ExceptionHandlerServlet</servlet-name>
+        <servlet-class>com.sun.errorhandler.ExceptionHandler</servlet-class>
+        <init-param>
+            <param-name>errorHost</param-name>
+            <param-value>localhost</param-value>
+        </init-param>
+        <init-param>
+            <param-name>errorPort</param-name>
+            <param-value>25444</param-value>
+        </init-param>
+    </servlet>
+    <servlet>
+        <servlet-name>ThemeServlet</servlet-name>
+        <servlet-class>com.sun.rave.web.ui.theme.ThemeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExceptionHandlerServlet</servlet-name>
+        <url-pattern>/error/ExceptionHandler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ThemeServlet</servlet-name>
+        <url-pattern>/theme/*</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>faces/Login.jsp</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <exception-type>javax.servlet.ServletException</exception-type>
+        <location>/error/ExceptionHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.io.IOException</exception-type>
+        <location>/error/ExceptionHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>javax.faces.FacesException</exception-type>
+        <location>/error/ExceptionHandler</location>
+    </error-page>
+    <error-page>
+        <exception-type>com.sun.rave.web.ui.appbase.ApplicationException</exception-type>
+        <location>/error/ExceptionHandler</location>
+    </error-page>
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jspf</url-pattern>
+            <is-xml>true</is-xml>
+        </jsp-property-group>
+    </jsp-config>
+
 </web-app>

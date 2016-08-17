@@ -2,7 +2,7 @@
   <artifact type="exploded-war" name="resourceService _origin:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/resourceService__origin_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="resourceService _origin/web/Web2" />
+      <element id="javaee-facet-resources" facet="resourceService _origin/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="resourceService _origin" />
@@ -11,6 +11,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="yawl_lib" />
           <element id="library" level="project" name="YAWL_Standalone_3.0.1" />
+          <element id="library" level="project" name="defaulttheme" />
         </element>
       </element>
     </root>

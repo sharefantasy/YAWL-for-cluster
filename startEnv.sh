@@ -2,4 +2,5 @@
 
 echo "YAWL Cluster Environment starting..."
 
-if exists 
+sh /cygdrive/c/dev/component/zkServer.sh start
+sh /cygdrive/c/dev/component/zkCli.sh

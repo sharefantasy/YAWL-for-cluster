@@ -26,7 +26,7 @@
 
 	<context-param>
 		<param-name>EnablePersistence</param-name>
-		<param-value>false</param-value>
+        <param-value>false</param-value>
 		<description>
 			Set this value to 'true' to enable persistence and process logging.
 			Set to 'false' to disable.
@@ -45,7 +45,9 @@
 
     <context-param>
         <param-name>DefaultWorklist</param-name>
-        <param-value>http://localhost:8000/scheduleModule/alter/577499847ca26e1914044ea0/resourceService/127.0.0.1/8080/ib#resource</param-value>
+        <param-value>
+            http://localhost:8000/scheduleModule/routing/577499847ca26e1914044ea0/resourceService/127.0.0.1/8082/ib#resource
+        </param-value>
         <description>
             The URL and password (separated by a hash) of the default worklist handler
             (by default set to the Resource Service). This is the service that handles
@@ -123,7 +125,7 @@
 
     <!--<context-param>-->
         <!--<param-name>ObserverGateway</param-name>-->
-        <!--<param-value></param-value>-->
+    <!--<param-value></param-value>-->
         <!--<description>-->
             <!--The class name of an ObserverGateway implementation. Multiple-->
             <!--implementations can be separated with semi-colons ';'-->
@@ -172,7 +174,7 @@
 		<servlet-class>
             org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EngineBasedServer
         </servlet-class>
-		<load-on-startup>1</load-on-startup>
+        <load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>InterfaceAServlet</servlet-name>

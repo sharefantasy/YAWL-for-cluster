@@ -1,3 +1,5 @@
+package org.yawlfoundation.cluster.naming;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @EnableAutoConfiguration
 public class NamingServerApplication {
-    public static void main(String[] args){
-        SpringApplication.run(NamingServerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(NamingServerApplication.class, args);
+	}
 }

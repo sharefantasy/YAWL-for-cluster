@@ -2,11 +2,5 @@
 <project version="4">
   <component name="ResourceBundleManager">
     <file url="file://$PROJECT_DIR$/namingService/src/main/resources/application.properties" />
-    <file url="file://$PROJECT_DIR$/namingService/src/main/resources/application_dev.properties" />
-    <custom-resource-bundle>
-      <file value="file://$PROJECT_DIR$/namingService/src/main/resources/application.properties" />
-      <file value="file://$PROJECT_DIR$/namingService/src/main/resources/application_dev.properties" />
-      <base-name>application</base-name>
-    </custom-resource-bundle>
   </component>
 </project>

@@ -1,1 +1,29 @@
-{ "properties": [ ] }
+{
+  "properties": [
+    {
+      "name": "zk.service.namespace",
+      "type": "java.lang.String",
+      "description": "Description for zk.service.namespace."
+    },
+    {
+      "name": "zk.connection",
+      "type": "java.lang.String",
+      "description": "Description for zk.connection."
+    },
+    {
+      "name": "zk.namespace",
+      "type": "java.lang.String",
+      "description": "Description for zk.namespace."
+    },
+    {
+      "name": "naming.service.address",
+      "type": "java.lang.String",
+      "description": "Description for naming.service.address."
+    },
+    {
+      "name": "naming.service.path",
+      "type": "java.lang.String",
+      "description": "Description for naming.service.path."
+    }
+  ]
+}

@@ -38,6 +38,13 @@
       <property name="caretWidth" class="java.lang.Integer" />
     </properties>
   </component>
+  <component name="EclipseCodeFormatter">
+    <option name="defaultSettings" value="true" />
+    <option name="formatter" value="ECLIPSE" />
+    <option name="id" value="1468394502589" />
+    <option name="name" value="default" />
+    <option name="pathToConfigFileJava" value="$PROJECT_DIR$/../vpalact/vpalact-webapp/.settings/org.eclipse.jdt.core.prefs" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
@@ -67,6 +74,9 @@
       <list>
         <option value="$PROJECT_DIR$/ScheduleModule/pom.xml" />
         <option value="$PROJECT_DIR$/cluster_client/pom.xml" />
+        <option value="$PROJECT_DIR$/clusterServer/pom.xml" />
+        <option value="$PROJECT_DIR$/cluster-extend/pom.xml" />
+        <option value="$PROJECT_DIR$/namingService/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -85,7 +95,7 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 " project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="false" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
