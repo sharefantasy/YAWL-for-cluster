@@ -30,10 +30,11 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="BackEndServer" target="1.8" />
-      <module name="cluster-extend" target="1.7" />
+      <module name="cluster-extend" target="1.8" />
       <module name="clusterServer" target="1.8" />
       <module name="ComputeServer" target="1.6" />
       <module name="engine_clusterExtend" target="1.5" />
+      <module name="monitorClient" target="1.8" />
       <module name="naming-client" target="1.8" />
       <module name="namingService" target="1.8" />
       <module name="scheduleModule" target="1.8" />

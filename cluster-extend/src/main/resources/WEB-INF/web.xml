@@ -26,6 +26,10 @@
         <param-value>true</param-value>
     </context-param>
     <context-param>
+        <param-name>collector</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
         <param-name>cluster-definition</param-name>
         <param-value>classpath:cluster-definition.properties</param-value>
     </context-param>

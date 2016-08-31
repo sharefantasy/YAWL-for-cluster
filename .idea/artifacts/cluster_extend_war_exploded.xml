@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="cluster-extend:war exploded">
-    <output-path>$PROJECT_DIR$/out/artifacts/cluster_extend_war_exploded</output-path>
+    <output-path>$PROJECT_DIR$/cluster-extend/target/artifacts/cluster_extend</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="cluster-extend/web/Web" />
       <element id="directory" name="WEB-INF">

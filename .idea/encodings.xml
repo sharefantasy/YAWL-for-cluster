@@ -2,7 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/BackEndServer" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ComputeServer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/BackEndServer/monitorClient" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ComputeServer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/namingService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/namingService/naming-client" charset="UTF-8" />

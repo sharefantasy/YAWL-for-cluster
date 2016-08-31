@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ContainerService {
+    public String getHandlerByEngineId(String id) {
+        return null;
+    }
 }

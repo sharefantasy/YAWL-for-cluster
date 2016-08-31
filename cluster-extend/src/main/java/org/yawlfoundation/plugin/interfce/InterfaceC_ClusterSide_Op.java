@@ -7,6 +7,8 @@ import org.yawlfoundation.plugin.interfce.vo.EngineVO;
  */
 public interface InterfaceC_ClusterSide_Op {
 	void shutdown(String sessionHandler, EngineVO engine);
-	void setEngineRole(String sessionHandler, EngineVO engineVO);
-	void restore(String sessionHandler, EngineVO engineVO);
+
+    void migrate(String sessionHandler, EngineVO engineVO, String role);
+
+    void restore(String sessionHandler, EngineVO engineVO);
 }

@@ -3,6 +3,7 @@ package org.yawlfoundation.plugin.interfce;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StopWatch;
 import org.yawlfoundation.plugin.HA.HAService;
 import org.yawlfoundation.yawl.engine.YEngine;
 import org.yawlfoundation.yawl.engine.YEngineClusterExtent;
@@ -10,7 +11,6 @@ import org.yawlfoundation.yawl.engine.interfce.EngineGatewayClusterExtent;
 import org.yawlfoundation.yawl.engine.interfce.EngineGatewayClusterExtentImpl;
 import org.yawlfoundation.yawl.engine.interfce.ServletUtils;
 import org.yawlfoundation.yawl.engine.interfce.YHttpServlet;
-import org.yawlfoundation.yawl.exceptions.YAWLException;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
 
 import javax.servlet.ServletContext;
@@ -20,9 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.Date;
 
 /**
  * Created by fantasy on 2016/7/16.
@@ -60,51 +58,18 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 				// connect with monitor service
 				loadSpring();
 				haService = (HAService) factory.getBean("HAService");
-				String monitorAddress = haService.getMonitorServerAddress();
-				haService.follow();
 
-				InterfaceC_EngineBaseClient client = new InterfaceC_EngineBaseClient(monitorAddress);
-				_engineGW.registerObserverGateway(client);
+                haService.follow();
+                String collectorAddress = context.getInitParameter("collector");
+                InterfaceC_EngineBaseClient client = new InterfaceC_EngineBaseClient(collectorAddress);
+                _engineGW.registerObserverGateway(client);
 				_engineGW.setActualFilePath(context.getRealPath("/"));
 				context.setAttribute("engine", _engineGW);
-
-				// String clusterDefinition =
-				// context.getInitParameter("cluster-definition");
-				// if (clusterDefinition.startsWith("classpath")){
-				// clusterDefinition =
-				// context.getResource(clusterDefinition.substring(clusterDefinition.lastIndexOf("classpath:"))).getFile();
-				// }
-				// Properties properties = new Properties();
-				// properties.load(new BufferedInputStream(new
-				// FileInputStream(clusterDefinition)));
-				// if (properties.contains("cluster.engine")){
-				// System.setProperty("cluster.engine",properties.getProperty("cluster.engine"));
-				// if (properties.contains("cluster.engine.gateway")){
-				// Class classType = Class.forName(properties.getProperty(
-				// "cluster.engine.gateway"));
-				// @SuppressWarnings("unchecked")
-				// Constructor<EngineGatewayClusterExtent> constructor =
-				// classType.getConstructor(boolean.class,boolean.class);
-				// _engineGW = constructor.newInstance(false,enableHbnStats);
-				// }else {
-				// _engineGW = new EngineGatewayClusterExtentImpl(false,
-				// enableHbnStats);
-				// }
-				// _engineGW.setActualFilePath(context.getRealPath("/"));
-				// context.setAttribute("engine", _engineGW);
-				//
-				//
-				// }
 			} catch (YPersistenceException e) {
 				_log.fatal("Failure to initialise runtime (persistence failure)", e);
 				throw new UnavailableException("Persistence failure");
 			} catch (MalformedURLException e) {
 				_log.error("cluster definition file path is wrong");
-				e.printStackTrace();
-			} catch (IllegalAccessException | NoSuchMethodException | InstantiationException | ClassNotFoundException
-					| InvocationTargetException e) {
-				_log.error("no such engine gateway");
-			} catch (YAWLException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -145,7 +110,8 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 		String action = request.getParameter("action");
 		String session = request.getParameter("sessionHandle");
 		String result = "success";
-		switch (action) {
+        StopWatch stopWatch = new StopWatch();
+        switch (action) {
 			case "shutdown" :
 				_engineGW.shutdown();
 				break;
@@ -153,14 +119,18 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 				_engineGW.restore(session);
 				break;
 			case "migrate" :
-				Date start = new Date();
-				String role = request.getParameter("role");
+                stopWatch.start();
+                String role = request.getParameter("role");
 				result = (role != null) ? haService.coupDetat(role) : "new role is null";
-				System.out.println("migrate time: " + ((new Date()).getTime() - start.getTime()));
-				break;
+                stopWatch.stop();
+                _log.info("migrate time: " + stopWatch.getLastTaskTimeMillis());
+                break;
 			case "exile" :
-				result = haService.exile();
-				break;
+                stopWatch.start();
+                result = haService.exile();
+                stopWatch.stop();
+                _log.info("exile time: " + stopWatch.getLastTaskTimeMillis());
+                break;
 		}
 		return result;
 	}

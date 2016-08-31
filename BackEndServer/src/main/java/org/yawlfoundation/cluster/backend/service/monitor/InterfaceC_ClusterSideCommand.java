@@ -4,7 +4,7 @@ package org.yawlfoundation.cluster.backend.service.monitor;
 /**
  * Created by fantasy on 2016/7/18.
  */
-public interface InterfaceC_ClusterSide_Op {
+public interface InterfaceC_ClusterSideCommand {
 
 
 	/**
