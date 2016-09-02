@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cluster-extend:war">
+    <output-path>$PROJECT_DIR$/cluster-extend/target</output-path>
+    <root id="archive" name="engine-cluster-extend-1.0-SNAPSHOT.war" />
+  </artifact>
+</component>

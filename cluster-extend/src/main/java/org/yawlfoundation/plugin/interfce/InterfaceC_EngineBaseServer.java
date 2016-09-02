@@ -1,5 +1,15 @@
 package org.yawlfoundation.plugin.interfce;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.UnavailableException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -12,15 +22,6 @@ import org.yawlfoundation.yawl.engine.interfce.EngineGatewayClusterExtentImpl;
 import org.yawlfoundation.yawl.engine.interfce.ServletUtils;
 import org.yawlfoundation.yawl.engine.interfce.YHttpServlet;
 import org.yawlfoundation.yawl.exceptions.YPersistenceException;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 
 /**
  * Created by fantasy on 2016/7/16.
@@ -78,7 +79,8 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 
 	}
 	private void loadSpring() {
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:/WEB-INF/applicationContext.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"classpath:/src/main/webapps/WEB-INF/applicationContext.xml");
 		factory = context.getAutowireCapableBeanFactory();
 	}
 

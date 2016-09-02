@@ -8,7 +8,7 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
         <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1:3306/b</property>
-        <property name="connection.password"></property>
+        <property name="connection.password">dev</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
         <property name="hibernate.current_session_context_class">thread</property>

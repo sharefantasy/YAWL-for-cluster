@@ -1,11 +1,13 @@
 package org.yawlfoundation.yawl.engine;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 import org.yawlfoundation.plugin.persistX.DynamicSourcePersistenceManager;
 import org.yawlfoundation.yawl.authentication.YClient;
 import org.yawlfoundation.yawl.authentication.YExternalClient;
@@ -30,11 +32,6 @@ import org.yawlfoundation.yawl.schema.XSDType;
 import org.yawlfoundation.yawl.schema.YDataValidator;
 import org.yawlfoundation.yawl.unmarshal.YMarshal;
 import org.yawlfoundation.yawl.util.*;
-
-import java.io.InputStream;
-import java.net.URI;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by fantasy on 2016/7/16.
@@ -293,7 +290,7 @@ public class YEngineClusterExtent extends YEngine {
 	}
 
 	public void setEngineClassesRootFilePath(String path) {
-		String pkgPath = "WEB-INF/classes/org/yawlfoundation/yawl/";
+		String pkgPath = "src/main/webapps/WEB-INF/classes/org/yawlfoundation/yawl/";
 		_engineClassesRootFilePath = path + pkgPath;
 	}
 

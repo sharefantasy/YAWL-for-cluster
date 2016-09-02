@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="engine_extend:jar">
+    <output-path>$PROJECT_DIR$/engine_extend/target/artifacts</output-path>
+    <root id="archive" name="engine_extend.jar">
+      <element id="module-output" name="engine_extend" />
+      <element id="library" level="project" name="yawl_lib" />
+    </root>
+  </artifact>
+</component>

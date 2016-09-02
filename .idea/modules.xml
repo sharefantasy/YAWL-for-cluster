@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/ComputeServer/ComputeServer.iml" filepath="$PROJECT_DIR$/ComputeServer/ComputeServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/cluster-extend/cluster-extend.iml" filepath="$PROJECT_DIR$/cluster-extend/cluster-extend.iml" />
       <module fileurl="file://$PROJECT_DIR$/clusterServer/clusterServer.iml" filepath="$PROJECT_DIR$/clusterServer/clusterServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/configServer/configServer.iml" filepath="$PROJECT_DIR$/configServer/configServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/engineLoad/engineLoad.iml" filepath="$PROJECT_DIR$/engineLoad/engineLoad.iml" />
       <module fileurl="file://$PROJECT_DIR$/engine_extend/engine_extend.iml" filepath="$PROJECT_DIR$/engine_extend/engine_extend.iml" />
       <module fileurl="file://$PROJECT_DIR$/engine_original/engine_original.iml" filepath="$PROJECT_DIR$/engine_original/engine_original.iml" />

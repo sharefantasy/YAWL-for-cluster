@@ -22,8 +22,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="cluster-extend" />
         <module name="clusterServer" />
         <module name="ComputeServer" />
+        <module name="configServer" />
         <module name="naming-client" />
         <module name="scheduleModule" />
       </profile>
@@ -33,6 +35,7 @@
       <module name="cluster-extend" target="1.8" />
       <module name="clusterServer" target="1.8" />
       <module name="ComputeServer" target="1.6" />
+      <module name="configServer" target="1.8" />
       <module name="engine_clusterExtend" target="1.5" />
       <module name="monitorClient" target="1.8" />
       <module name="naming-client" target="1.8" />

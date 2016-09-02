@@ -77,6 +77,7 @@
         <option value="$PROJECT_DIR$/clusterServer/pom.xml" />
         <option value="$PROJECT_DIR$/cluster-extend/pom.xml" />
         <option value="$PROJECT_DIR$/namingService/pom.xml" />
+        <option value="$PROJECT_DIR$/configServer/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

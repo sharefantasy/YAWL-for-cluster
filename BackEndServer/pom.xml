@@ -6,10 +6,6 @@
     <groupId>org.yawlfoundation.cluster</groupId>
     <artifactId>BackendServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <modules>
-        <module>../ComputeServer</module>
-        <module>monitorClient</module>
-    </modules>
     <packaging>pom</packaging>
 
     <name>BackendServer</name>
@@ -96,6 +92,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
