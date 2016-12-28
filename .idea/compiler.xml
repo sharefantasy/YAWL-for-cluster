@@ -26,8 +26,10 @@
         <module name="clusterServer" />
         <module name="ComputeServer" />
         <module name="configServer" />
+        <module name="metricsCollector" />
         <module name="naming-client" />
         <module name="scheduleModule" />
+        <module name="simpleLoad" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -37,10 +39,12 @@
       <module name="ComputeServer" target="1.6" />
       <module name="configServer" target="1.8" />
       <module name="engine_clusterExtend" target="1.5" />
+      <module name="metricsCollector" target="1.5" />
       <module name="monitorClient" target="1.8" />
       <module name="naming-client" target="1.8" />
       <module name="namingService" target="1.8" />
       <module name="scheduleModule" target="1.8" />
+      <module name="simpleLoad" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

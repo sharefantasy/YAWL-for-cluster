@@ -5,9 +5,18 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="engine_original" />
+          <element id="module-output" name="metricsCollector" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="yawl_lib" />
+          <element id="library" level="project" name="metrics-collector-1.0-SNAPSHOT-jar-with-dependencies" />
+          <element id="library" level="module" name="Maven: org.yawlfoundation:yawl-extended:3.0.1" module-name="metricsCollector" />
+          <element id="library" level="project" name="Maven: org.influxdb:influxdb-java:2.2" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:18.0" />
+          <element id="library" level="project" name="Maven: com.squareup.retrofit:retrofit:1.9.0" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.3.1" />
+          <element id="library" level="project" name="Maven: com.squareup.okhttp:okhttp:2.4.0" />
+          <element id="library" level="project" name="Maven: com.squareup.okio:okio:1.4.0" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="engine_original/web/Web2" />

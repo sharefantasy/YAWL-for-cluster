@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="simpleLoad:war exploded">
+    <output-path>$PROJECT_DIR$/../docker-deploy/simpleload</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="simpleLoad" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="module" name="Maven: org.yawlfoundation:yawl-extended:3.0.1" module-name="simpleLoad" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="simpleLoad/web/Web" />
+    </root>
+  </artifact>
+</component>

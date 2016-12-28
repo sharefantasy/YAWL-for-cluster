@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="simpleLoad:war">
+    <output-path>$PROJECT_DIR$/simpleLoad/target</output-path>
+    <root id="archive" name="simple-load-1.0-SNAPSHOT.war" />
+  </artifact>
+</component>

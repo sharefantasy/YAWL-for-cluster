@@ -1,5 +1,12 @@
 package org.yawlfoundation.yawl.engine;
 
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.yawlfoundation.yawl.authentication.YClient;
@@ -19,13 +26,6 @@ import org.yawlfoundation.yawl.logging.YLogDataItemList;
 import org.yawlfoundation.yawl.logging.table.YAuditEvent;
 import org.yawlfoundation.yawl.util.YBuildProperties;
 
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Created by fantasy on 2016/7/16.
  */
@@ -34,8 +34,6 @@ public abstract class YEngine implements InterfaceADesign, InterfaceAManagement,
 
 	private static Class<?> defaultEngineImplClass;
 	static {
-		// String defaultEngineImpl =
-		// ;
 		String defaultEngineImpl = System.getProperty("defaultEngineImplClass");
 		if (!(defaultEngineImpl == null)) {
 			if (!defaultEngineImpl.equals("")) {

@@ -2,7 +2,6 @@ package org.yawlfoundation.plugin.interfce;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -59,7 +58,6 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 				// connect with monitor service
 				loadSpring();
 				haService = (HAService) factory.getBean("HAService");
-
                 haService.follow();
                 String collectorAddress = context.getInitParameter("collector");
                 InterfaceC_EngineBaseClient client = new InterfaceC_EngineBaseClient(collectorAddress);
@@ -69,9 +67,6 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 			} catch (YPersistenceException e) {
 				_log.fatal("Failure to initialise runtime (persistence failure)", e);
 				throw new UnavailableException("Persistence failure");
-			} catch (MalformedURLException e) {
-				_log.error("cluster definition file path is wrong");
-				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -80,7 +75,7 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 	}
 	private void loadSpring() {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"classpath:/src/main/webapps/WEB-INF/applicationContext.xml");
+				"classpath:applicationContext.xml");
 		factory = context.getAutowireCapableBeanFactory();
 	}
 
@@ -105,7 +100,7 @@ public class InterfaceC_EngineBaseServer extends YHttpServlet {
 		outputWriter.write(output.toString());
 		outputWriter.flush();
 		outputWriter.close();
-		// todo find out how to provide a meaningful 500 message in the format
+		// todo :find out how to provide a meaningful 500 message in the format
 		// of a fault message.
 	}
 	private String processQuery(HttpServletRequest request) {

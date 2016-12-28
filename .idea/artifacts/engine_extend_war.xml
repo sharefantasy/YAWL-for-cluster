@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="engine_extend:war">
+    <output-path>target/artifacts/engine_extend_war</output-path>
+    <root id="archive" name="engine_extend_war.war">
+      <element id="artifact" artifact-name="engine_extend:war exploded" />
+    </root>
+  </artifact>
+</component>

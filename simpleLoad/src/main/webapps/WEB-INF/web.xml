@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <display-name>YawlTest</display-name>
+
+    <context-param>
+        <param-name>UserName</param-name>
+        <param-value>test</param-value>
+    </context-param>
+    <context-param>
+        <param-name>Password</param-name>
+        <param-value>test</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>DefaultWorklist</param-name>
+        <param-value>http://127.0.0.1:8080/resourceService/ib#resource</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>InterfaceBWebSideController</param-name>
+        <param-value>org.yawlfoundation.test.service.TestForYawl</param-value>
+    </context-param>
+
+
+    <context-param>
+        <param-name>InterfaceB_BackEnd</param-name>
+        <param-value>http://192.168.253.128:33/yawl/ib</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>org.yawlfoundation.yawl.util.CharsetFilter</filter-class>
+        <init-param>
+            <param-name>requestEncoding</param-name>
+            <param-value>UTF-8</param-value>
+
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>testForYawl</servlet-name>
+        <servlet-class>org.yawlfoundation.yawl.engine.interfce.interfaceB.InterfaceB_EnvironmentBasedServer
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>testForYawl</servlet-name>
+        <url-pattern>/ib</url-pattern>
+    </servlet-mapping>
+</web-app>

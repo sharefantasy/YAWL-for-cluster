@@ -40,5 +40,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="yawl_lib" level="project" />
+    <orderEntry type="module" module-name="metricsCollector" />
   </component>
 </module>

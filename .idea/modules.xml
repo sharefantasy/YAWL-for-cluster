@@ -7,15 +7,16 @@
       <module fileurl="file://$PROJECT_DIR$/cluster-extend/cluster-extend.iml" filepath="$PROJECT_DIR$/cluster-extend/cluster-extend.iml" />
       <module fileurl="file://$PROJECT_DIR$/clusterServer/clusterServer.iml" filepath="$PROJECT_DIR$/clusterServer/clusterServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/configServer/configServer.iml" filepath="$PROJECT_DIR$/configServer/configServer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/engineLoad/engineLoad.iml" filepath="$PROJECT_DIR$/engineLoad/engineLoad.iml" />
       <module fileurl="file://$PROJECT_DIR$/engine_extend/engine_extend.iml" filepath="$PROJECT_DIR$/engine_extend/engine_extend.iml" />
       <module fileurl="file://$PROJECT_DIR$/engine_original/engine_original.iml" filepath="$PROJECT_DIR$/engine_original/engine_original.iml" />
+      <module fileurl="file://$PROJECT_DIR$/metricsCollector/metricsCollector.iml" filepath="$PROJECT_DIR$/metricsCollector/metricsCollector.iml" />
       <module fileurl="file://$PROJECT_DIR$/BackEndServer/monitorClient/monitorClient.iml" filepath="$PROJECT_DIR$/BackEndServer/monitorClient/monitorClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/namingService/naming-client/naming-client.iml" filepath="$PROJECT_DIR$/namingService/naming-client/naming-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/namingService/namingService.iml" filepath="$PROJECT_DIR$/namingService/namingService.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService/resourceService.iml" filepath="$PROJECT_DIR$/resourceService/resourceService.iml" />
       <module fileurl="file://$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" filepath="$PROJECT_DIR$/resourceService _origin/resourceService _origin.iml" />
       <module fileurl="file://$PROJECT_DIR$/scheduleModule/scheduleModule.iml" filepath="$PROJECT_DIR$/scheduleModule/scheduleModule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/simpleLoad/simpleLoad.iml" filepath="$PROJECT_DIR$/simpleLoad/simpleLoad.iml" />
     </modules>
   </component>
 </project>
